@@ -1,15 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+
+// Component Imports
+import AppNavbar from "./components/navbar";
+import { RepoTable } from "./components/RepoTable";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      <AppNavbar></AppNavbar>
+      <RepoTable></RepoTable>
+      {/* UNCOMMENT BELOW FOR DEFAULT REACT OUTPUT*/}
+      {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
+        <p>Hello world, this is a test!</p>
         <a
           className="App-link"
           href="https://reactjs.org"
@@ -18,7 +22,7 @@ function App() {
         >
           Learn React
         </a>
-      </header>
+      </header> */}
     </div>
   );
 }

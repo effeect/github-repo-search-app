@@ -1,0 +1,19 @@
+// Simple Navbar
+import { useState } from "react";
+// Based on https://pure-css.github.io/menus/ horiziontal menu example
+export default function AppNavbar() {
+  return (
+    <div className="pure-menu pure-menu-horizontal">
+      <a href="#" className="pure-menu-heading pure-menu-link">
+        Github Search Repo Project
+      </a>
+      <ul className="pure-menu-list">
+        <li className="pure-menu-item">
+          <a href="#" className="pure-menu-link">
+            Test Link
+          </a>
+        </li>
+      </ul>
+    </div>
+  );
+}
