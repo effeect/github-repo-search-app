@@ -33,6 +33,7 @@ export async function SearchCode({
         query = query + ` ${key}:${value}`;
       }
     }
+    return query;
   };
   try {
     const formattedQuery = createQuery(queryParam);
