@@ -12,7 +12,7 @@ type SearchCode = {
 };
 
 // Setup of the Octokit "kit"
-const octokitHandler = new Octokit({
+const octokitHandle = new Octokit({
   auth: process.env.REACT_APP_GITHUB_TOKEN,
 });
 
@@ -36,8 +36,8 @@ export async function SearchCode({
   };
   try {
     const formattedQuery = createQuery(queryParam);
-    const user = await octokitHandler.rest.users.getAuthenticated();
-    const result = await octokitHandler.rest.search.code({
+    const user = await octokitHandle.rest.users.getAuthenticated();
+    const result = await octokitHandle.rest.search.code({
       q: formattedQuery,
     });
     console.log(result);
@@ -47,33 +47,15 @@ export async function SearchCode({
   }
 }
 
-// // Based on https://octokit.github.io/rest.js/v18/#search-repos
-// export async function searchRepos({
-//   query,
-//   language = "",
-//   sort = "",
-//   order = "",
-//   pageNum = 1,
-//   quantity = 20,
-// }: SearchQuery) {
-//   // Following this q=tetris+language:assembly&sort=stars&order=desc
-//   const queryHandle = (query: string, language: string) => {
-//     if (language !== "") {
-//       const result = `${query}+language:${language}`;
-//       return result;
-//     } else {
-//       const result = `${query}`;
-//       return result;
-//     }
-//   };
-//   try {
-//     const result = await octokitHandle.rest.search.repos({
-//       q: queryHandle(query, language),
-//       per_page: quantity,
-//       page: pageNum,
-//     });
-//     return result.data.items;
-//   } catch (error: any) {
-//     console.error("Error in searchRepos:", error.message || error);
-//   }
-// }
+// Other search functions needed for this application I feel
+// They belong in other .ts files I feel, lets crack this tomorrow.
+
+export async function SearchCommits() {}
+
+export async function SearchIssuePRs() {}
+
+export async function SearchLabels() {}
+
+export async function SearchTopics() {}
+
+export async function SearchUsers() {}
