@@ -2,13 +2,14 @@
 
 .RepoTable {
   background-color: #282c34;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   display: flex;
   margin: auto;
   /* CHANGE PADDING LATER*/
   padding: 20%;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
   justify-content: center;
   /* font-size: calc(10px + 2vmin); */
+  color: white;
 }

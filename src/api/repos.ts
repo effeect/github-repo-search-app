@@ -1,24 +1,34 @@
 import { Octokit } from "octokit";
+// Importing Interfaces
+import { SearchQuery } from "../types/repo";
 
 // Setup of the Octokit "kit"
 const octokitHandle = new Octokit({
-  auth: process.env.GITHUB_TOKEN,
+  auth: process.env.REACT_APP_GITHUB_TOKEN,
 });
 
-/*
-  For this "api", we are taking advantage of Octokit https://octokit.github.io/rest.js
-
-*/
-
 // Based on https://octokit.github.io/rest.js/v18/#search-repos
-export async function searchRepos(
-  query: string,
-  pageNum: number = 1,
-  quantity: number = 20
-) {
+export async function searchRepos({
+  query,
+  language = "",
+  sort = "",
+  order = "",
+  pageNum = 1,
+  quantity = 20,
+}: SearchQuery) {
+  // Following this q=tetris+language:assembly&sort=stars&order=desc
+  const queryHandle = (query: string, language: string) => {
+    if (language !== "") {
+      const result = `${query}+language:${language}`;
+      return result;
+    } else {
+      const result = `${query}`;
+      return result;
+    }
+  };
   try {
     const result = await octokitHandle.rest.search.repos({
-      q: query,
+      q: queryHandle(query, language),
       per_page: quantity,
       page: pageNum,
     });

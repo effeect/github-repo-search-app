@@ -4,6 +4,7 @@ import "./App.css";
 // Component Imports
 import AppNavbar from "./components/navbar";
 import { RepoTable } from "./components/RepoTable";
+import { SearchRepoObject, SearchCodeObject } from "./components/testObject";
 import "./styles/App.module.css";
 
 function App() {
@@ -11,6 +12,9 @@ function App() {
     <div className="App">
       <AppNavbar></AppNavbar>
       <RepoTable></RepoTable>
+      <SearchRepoObject></SearchRepoObject>
+      <SearchCodeObject></SearchCodeObject>
+
       {/* UNCOMMENT BELOW FOR DEFAULT REACT OUTPUT*/}
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />

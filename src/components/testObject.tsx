@@ -1,28 +1,39 @@
-// Not sure what we want to do atm but this is just placeholder at the moment
+// Simple React Component to test the API endpoint
+
+// PLACEHOLDER FOR UI
 import { useState } from "react";
-import { fetchRepos } from "../api/repos";
+import { searchRepos, fetchRepos } from "../api/repos";
+import { SearchCode } from "../api/search";
 // Import Styles
 import styles from "../styles/RepoTable.module.css";
+// Types
+import { SearchQuery } from "../types/repo";
 
-export function RepoTable() {
+// 1. Search Repos
+export function SearchRepoObject() {
   // Declaring React States for this simple example
-  const [orgQuery, setOrgQuery] = useState<string>("");
-  const [repos, setRepos] = useState<any[]>([]);
+  const [query, setQuery] = useState<string>("");
+  const [results, setResults] = useState<any[]>([]);
   const [page, setPage] = useState(1); // initin it to 1, may allow the number to be set elsewhere
 
   // handle for organisation Querys
-  // TODO: We are expecting a return for an array!
-  const handleOrgQuery = async () => {
-    const data = await fetchRepos(orgQuery);
-    setRepos(data);
+  const handleQuery = async () => {
+    const data = await searchRepos({ query: query, language: "javascript" });
+    // console.log(data);
+    setResults(data);
   };
 
   // Might trigger this so we can have the next one ready so the user don't notice
   const handlePageChange = async (newPageNumber: number) => {
     setPage(newPageNumber);
     // And we will request to get the next page data
-    const data = await fetchRepos(orgQuery, newPageNumber);
-    setRepos(data);
+    const data = await searchRepos({
+      query: query,
+      language: "assembly",
+      pageNum: page,
+    });
+    // console.log(data);
+    setResults(data);
   };
 
   return (
@@ -34,12 +45,12 @@ export function RepoTable() {
             <input
               type="text"
               className="pure-input-rounded"
-              value={orgQuery}
-              onChange={(e) => setOrgQuery(e.target.value)}
-              placeholder="Org Name Here"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Repo Name here"
             />
             <div className="pure-u-1-3">
-              <button onClick={handleOrgQuery} className="pure-button">
+              <button onClick={handleQuery} className="pure-button">
                 Search
               </button>
             </div>
@@ -58,12 +69,12 @@ export function RepoTable() {
                 </tr>
               </thead>
               <tbody>
-                {repos.map((repo) => (
-                  <tr key={repo.id}>
-                    <td>{repo.id}</td>
-                    <td>{repo.full_name}</td>
-                    <td>{repo.description}</td>
-                    <td>{repo.stargazers_count}</td>
+                {results.map((result) => (
+                  <tr>
+                    <td>{result.id}</td>
+                    <td>{result.full_name}</td>
+                    <td>{result.description}</td>
+                    <td>{result.stargazers_count}</td>
                   </tr>
                 ))}
               </tbody>
@@ -86,4 +97,24 @@ export function RepoTable() {
       </div>
     </>
   );
+}
+
+// 2. Search Code Test
+
+export function SearchCodeObject() {
+  const handleCodeSearch = async () => {
+    // Example Query
+    // We will do more advanced ones later
+    // console.log in:file language:ts repo:effeect/LANMAN-Containers
+    const data = await SearchCode({
+      queryParam: {
+        keyword: "console.log",
+        in: "file",
+        language: "ts",
+        repo: "effeect/LANMAN-Containers",
+      },
+    });
+    console.log(data);
+  };
+  return <button onClick={handleCodeSearch}>Code Button</button>;
 }
