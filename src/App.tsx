@@ -4,6 +4,7 @@ import "./App.css";
 // Component Imports
 import AppNavbar from "./components/navbar";
 import { RepoTable } from "./components/RepoTable";
+import "./styles/App.module.css";
 
 function App() {
   return (
