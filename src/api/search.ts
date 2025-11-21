@@ -1,15 +1,14 @@
 // Search in Repos
 import { Octokit } from "octokit";
-import { SearchQueryParams } from "../types/SearchQueryParams";
+import { CodeSearchParams, CodeSearch } from "../types/CodeSearch";
 
-// https://docs.github.com/en/rest/search/search?apiVersion=2022-11-28#search-code--parameters
-type SearchCode = {
-  queryParam: SearchQueryParams;
-  sort?: string;
-  order?: string;
-  per_page?: string;
-  page?: string;
-};
+// type SearchCommits = {
+//   queryParam: SearchQueryParams;
+//   sort?: string;
+//   order?: string;
+//   per_page?: string;
+//   page?: string;
+// };
 
 // Setup of the Octokit "kit"
 const octokitHandle = new Octokit({
@@ -22,8 +21,9 @@ export async function SearchCode({
   order,
   per_page,
   page,
-}: SearchCode) {
-  const createQuery = (input: SearchQueryParams) => {
+}: CodeSearch) {
+  // Function to sort out the query and potenial options
+  const createQuery = (input: CodeSearchParams) => {
     // Specials thanks to https://stackoverflow.com/questions/14379274/how-to-iterate-over-a-javascript-object
     let query = `${input.keyword}`;
     for (let [key, value] of Object.entries(input)) {
@@ -51,7 +51,13 @@ export async function SearchCode({
 // Other search functions needed for this application I feel
 // They belong in other .ts files I feel, lets crack this tomorrow.
 
-export async function SearchCommits() {}
+export async function SearchCommits({
+  queryParam,
+  sort,
+  order,
+  per_page,
+  page,
+}: CodeSearch) {}
 
 export async function SearchIssuePRs() {}
 

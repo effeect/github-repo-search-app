@@ -7,7 +7,7 @@ import { SearchCode } from "../api/search";
 // Import Styles
 import styles from "../styles/RepoTable.module.css";
 // Types
-import { SearchQuery } from "../types/repo";
+import { SearchQuery } from "../types/RepoSearch";
 
 // 1. Search Repos
 export function SearchRepoObject() {

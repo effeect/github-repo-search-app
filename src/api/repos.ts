@@ -1,6 +1,6 @@
 import { Octokit } from "octokit";
 // Importing Interfaces
-import { SearchQuery } from "../types/repo";
+import { RepoSearchParams } from "../types/RepoSearch";
 
 // Setup of the Octokit "kit"
 const octokitHandle = new Octokit({
@@ -15,7 +15,7 @@ export async function searchRepos({
   order = "",
   pageNum = 1,
   quantity = 20,
-}: SearchQuery) {
+}: RepoSearchParams) {
   // Following this q=tetris+language:assembly&sort=stars&order=desc
   const queryHandle = (query: string, language: string) => {
     if (language !== "") {
