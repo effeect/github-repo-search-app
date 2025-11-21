@@ -1,6 +1,4 @@
 // Simple Footer
-// Will make better later
-import { useState } from "react";
 // Based on https://pure-css.github.io/menus/ horiziontal menu example
 export default function AppFooter() {
   const getYear = () => {

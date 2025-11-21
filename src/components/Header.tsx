@@ -1,7 +1,6 @@
 // Main Header
 
 import { useState } from "react";
-import { fetchRepos } from "../api/searchRepo";
 // Import Styles
 import styles from "../styles/AppHeader.module.css";
 
@@ -17,39 +16,75 @@ export function AppHeader() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [page, setPage] = useState(1);
+  const [cache, setCache] = useState<Record<number, any[]>>({});
+  // Cache Stuff for the Table Design
+  // Scary Use State below...
 
-  // handle for organisation Querys
+  /*    
+    To keep it snappy, we will load in 45 repos
+    However, we will only display 15,
+    When we are browsing to 30-45, we will load the next 45 in prep
+    Keeps the UI snappy
+    Also caching the result so its quick and easy 
+  */
+
+  // This will handle the query,
+
+  const fetchPageData = async (Page: number) => {
+    if (cache[Page]) return; // Don't bother if its already there
+    const data = await GetSearchRepos({
+      query: query,
+      language: "javascript",
+      pageNum: Page,
+      quantity: 30,
+    });
+    // The data being stored is the Repos in this case
+    setCache((prev) => ({ ...prev, [Page]: data }));
+  };
+
+  // Please note we are setting the Page to 1 when a new request is triggered
   const handleQuery = async () => {
-    const data = await GetSearchRepos({ query: query, language: "javascript" });
-    // console.log(data);
+    const data = await GetSearchRepos({
+      query: query,
+      language: "javascript",
+      pageNum: 1,
+      quantity: 30,
+    });
+    setCache({ 1: data });
+    setPage(1);
     setResults(data);
   };
 
   // Might trigger this so we can have the next one ready so the user don't notice
   const handlePageChange = async (newPageNumber: number) => {
     setPage(newPageNumber);
-    // And we will request to get the next page data
-    const data = await GetSearchRepos({
-      query: query,
-      language: "assembly",
-      pageNum: page,
-    });
-    // console.log(data);
-    setResults(data);
+    const apiPage = Math.ceil(newPageNumber / 3); //In current setup, should be 15 per page
+    await fetchPageData(apiPage);
+    // Prefetch the next chunk if we are on page 2/3
+    if (newPageNumber % 3 === 2) {
+      await fetchPageData(apiPage + 1);
+    }
   };
-
+  //============================
+  // Tidy this area up
+  const apiPage = Math.ceil(page / 3);
+  const chunk = cache[apiPage] || [];
+  const startIndex = ((page - 1) % 3) * 10;
+  const visibleResults = chunk.slice(startIndex, startIndex + 10);
+  //=============================
   return (
     <>
       <div className={styles.AppHeader}>
-        {/* Need to center this */}
+        {/* Need to center this  */}
         <h1 className="pure-heading">Search Your Things Here!</h1>
         <div className="pure-g">
           <SearchBar query={query} setQuery={setQuery} onSearch={handleQuery} />
         </div>
         <div className="pure-g">
-          <SearchRepoTable results={results} />
+          <SearchRepoTable results={visibleResults} />
         </div>
-        <div className="pure-g">
+        <div className="padding">{page}</div>
+        <div>
           <PageControls page={page} handlePageChange={handlePageChange} />
         </div>
       </div>

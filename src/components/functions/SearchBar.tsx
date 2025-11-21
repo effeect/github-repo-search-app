@@ -10,15 +10,8 @@ export function SearchBar(search: SearchBarDef) {
   return (
     <div className={styles.searchform}>
       <div className={styles.centerContent}>
-        <form
-          className="pure-form pure-g"
-          onSubmit={(e) => {
-            // Note that this is needed as the default form behaviour will break the page lol.
-            e.preventDefault();
-            search.onSearch();
-          }}
-        >
-          <div className="pure-u-1 pure-u-md-18-24">
+        <div className="pure-u-1 pure-u-md-1-2">
+          <div className={styles.buttonContainer}>
             <input
               type="text"
               className="pure-input pure-input-rounded"
@@ -28,15 +21,29 @@ export function SearchBar(search: SearchBarDef) {
               aria-label="Search"
             />
           </div>
-          <div className="pure-u-1 pure-u-md-6-24">
+        </div>
+        <div className="pure-u-1 pure-u-md-1-4">
+          <div className={styles.buttonContainer}>
             <button
-              type="submit"
-              className="pure-button pure-button-primary pure-input-1"
+              onClick={(e) => {
+                search.onSearch();
+              }}
+              className={`${styles.buttonContainer} pure-button`}
             >
               Search
             </button>
           </div>
-        </form>
+        </div>
+        <div className="pure-u-1 pure-u-md-1-4">
+          <div className={styles.buttonContainer}>
+            <button
+              type="submit"
+              className={`${styles.buttonContainer} pure-button `}
+            >
+              Add Rule
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

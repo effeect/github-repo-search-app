@@ -2,14 +2,6 @@
 import { Octokit } from "octokit";
 import { CodeSearchParams, CodeSearch } from "../types/CodeSearch";
 
-// type SearchCommits = {
-//   queryParam: SearchQueryParams;
-//   sort?: string;
-//   order?: string;
-//   per_page?: string;
-//   page?: string;
-// };
-
 // Setup of the Octokit "kit"
 const octokitHandle = new Octokit({
   auth: process.env.REACT_APP_GITHUB_TOKEN,

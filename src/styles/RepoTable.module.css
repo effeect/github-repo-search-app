@@ -1,15 +1,62 @@
 /* Note that this taken from the React Quickstart */
 
 .RepoTable {
-  background-color: #282c34;
-  /* min-height: 100vh; */
+  background-color: #504e4e;
   display: flex;
-  margin: auto;
-  /* CHANGE PADDING LATER*/
-  padding: 20%;
+  min-height: 70vh; /* Needed */
   flex-direction: column;
-  align-items: left;
-  justify-content: center;
-  /* font-size: calc(10px + 2vmin); */
+  align-items: center;
+  justify-content: flex-start;
   color: white;
+  min-width: 100%;
+  width: 100%;
+}
+
+/* Overrides for pure.css*/
+.pureList {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.pureListItem {
+  text-align: left;
+  display: flex;
+  width: 100%;
+}
+
+.repoItem {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.repoName {
+  font-weight: bold;
+  margin: 0;
+  align-items: left;
+}
+
+.repoDescription {
+  margin: 0.5rem 0;
+  color: #ffffff;
+}
+
+.repoStars {
+  font-size: 0.9rem;
+  color: #ffffff;
+}
+
+.repoLink {
+  text-decoration: none;
+  color: inherit; /* Needed or the links go all ugly and blue */
+  flex: 1;
+  display: block;
+}
+
+/* If hover over the item light up the item*/
+.repoLink:hover .repoItem {
+  background-color: #d1bcbc;
+  transition: background 0.5s ease;
 }
