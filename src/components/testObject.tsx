@@ -2,12 +2,10 @@
 
 // PLACEHOLDER FOR UI
 import { useState } from "react";
-import { searchRepos, fetchRepos } from "../api/repos";
-import { SearchCode } from "../api/search";
+import { GetSearchRepos, fetchRepos } from "../api/searchRepo";
+import { GetSearchCode } from "../api/searchCode";
 // Import Styles
 import styles from "../styles/RepoTable.module.css";
-// Types
-import { SearchQuery } from "../types/RepoSearch";
 
 // 1. Search Repos
 export function SearchRepoObject() {
@@ -18,7 +16,7 @@ export function SearchRepoObject() {
 
   // handle for organisation Querys
   const handleQuery = async () => {
-    const data = await searchRepos({ query: query, language: "javascript" });
+    const data = await GetSearchRepos({ query: query, language: "javascript" });
     // console.log(data);
     setResults(data);
   };
@@ -27,7 +25,7 @@ export function SearchRepoObject() {
   const handlePageChange = async (newPageNumber: number) => {
     setPage(newPageNumber);
     // And we will request to get the next page data
-    const data = await searchRepos({
+    const data = await GetSearchRepos({
       query: query,
       language: "assembly",
       pageNum: page,
@@ -100,13 +98,12 @@ export function SearchRepoObject() {
 }
 
 // 2. Search Code Test
-
 export function SearchCodeObject() {
   const handleCodeSearch = async () => {
     // Example Query
     // We will do more advanced ones later
     // console.log in:file language:ts repo:effeect/LANMAN-Containers
-    const data = await SearchCode({
+    const data = await GetSearchCode({
       queryParam: {
         keyword: "console.log",
         in: "file",

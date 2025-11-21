@@ -3,31 +3,17 @@ import "./App.css";
 
 // Component Imports
 import AppNavbar from "./components/navbar";
-import { RepoTable } from "./components/RepoTable";
-import { SearchRepoObject, SearchCodeObject } from "./components/testObject";
+import { AppHeader } from "./components/Header";
+import AppFooter from "./components/footer";
+// Styles
 import "./styles/App.module.css";
 
 function App() {
   return (
     <div className="App">
-      <AppNavbar></AppNavbar>
-      <RepoTable></RepoTable>
-      <SearchRepoObject></SearchRepoObject>
-      <SearchCodeObject></SearchCodeObject>
-
-      {/* UNCOMMENT BELOW FOR DEFAULT REACT OUTPUT*/}
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello world, this is a test!</p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
+      <AppNavbar />
+      <AppHeader />
+      <AppFooter />
     </div>
   );
 }

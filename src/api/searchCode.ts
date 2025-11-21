@@ -15,13 +15,7 @@ const octokitHandle = new Octokit({
   auth: process.env.REACT_APP_GITHUB_TOKEN,
 });
 
-export async function SearchCode({
-  queryParam,
-  sort,
-  order,
-  per_page,
-  page,
-}: CodeSearch) {
+export async function GetSearchCode(code: CodeSearch) {
   // Function to sort out the query and potenial options
   const createQuery = (input: CodeSearchParams) => {
     // Specials thanks to https://stackoverflow.com/questions/14379274/how-to-iterate-over-a-javascript-object
@@ -36,7 +30,8 @@ export async function SearchCode({
     return query;
   };
   try {
-    const formattedQuery = createQuery(queryParam);
+    const formattedQuery = createQuery(code.queryParam);
+    // Not sure if below is needed :
     const user = await octokitHandle.rest.users.getAuthenticated();
     const result = await octokitHandle.rest.search.code({
       q: formattedQuery,
@@ -47,22 +42,3 @@ export async function SearchCode({
     console.error("Error in SearchCode: ", error.message || error);
   }
 }
-
-// Other search functions needed for this application I feel
-// They belong in other .ts files I feel, lets crack this tomorrow.
-
-export async function SearchCommits({
-  queryParam,
-  sort,
-  order,
-  per_page,
-  page,
-}: CodeSearch) {}
-
-export async function SearchIssuePRs() {}
-
-export async function SearchLabels() {}
-
-export async function SearchTopics() {}
-
-export async function SearchUsers() {}

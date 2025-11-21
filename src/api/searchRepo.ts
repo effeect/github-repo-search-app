@@ -8,14 +8,7 @@ const octokitHandle = new Octokit({
 });
 
 // Based on https://octokit.github.io/rest.js/v18/#search-repos
-export async function searchRepos({
-  query,
-  language = "",
-  sort = "",
-  order = "",
-  pageNum = 1,
-  quantity = 20,
-}: RepoSearchParams) {
+export async function GetSearchRepos(repo: RepoSearchParams) {
   // Following this q=tetris+language:assembly&sort=stars&order=desc
   const queryHandle = (query: string, language: string) => {
     if (language !== "") {
@@ -27,10 +20,14 @@ export async function searchRepos({
     }
   };
   try {
+    //Should fix/address
+    if (!repo.language) {
+      repo.language = "";
+    }
     const result = await octokitHandle.rest.search.repos({
-      q: queryHandle(query, language),
-      per_page: quantity,
-      page: pageNum,
+      q: queryHandle(repo.query, repo.language),
+      per_page: repo.quantity,
+      page: repo.pageNum,
     });
     return result.data.items;
   } catch (error: any) {
@@ -38,6 +35,8 @@ export async function searchRepos({
   }
 }
 
+// ==============================================================
+// Below is old examples, won't be used
 // Credit to Christian https://stackoverflow.com/questions/76527907/how-can-i-use-octokit-to-list-open-prs-from-all-repos-in-my-org
 export async function fetchRepos(
   org: string,
