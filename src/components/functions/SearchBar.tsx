@@ -10,7 +10,7 @@ export function SearchBar(search: SearchBarDef) {
   return (
     <div className={styles.searchform}>
       <div className={styles.centerContent}>
-        <div className="pure-u-1 pure-u-md-1-2">
+        <div className="pure-u-1-3">
           <div className={styles.buttonContainer}>
             <input
               type="text"
@@ -22,7 +22,7 @@ export function SearchBar(search: SearchBarDef) {
             />
           </div>
         </div>
-        <div className="pure-u-1 pure-u-md-1-4">
+        <div className="pure-u-1-3">
           <div className={styles.buttonContainer}>
             <button
               onClick={(e) => {
@@ -34,7 +34,7 @@ export function SearchBar(search: SearchBarDef) {
             </button>
           </div>
         </div>
-        <div className="pure-u-1 pure-u-md-1-4">
+        <div className="pure-u-3-3">
           <div className={styles.buttonContainer}>
             <button
               type="submit"
