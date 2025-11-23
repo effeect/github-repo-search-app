@@ -20,10 +20,13 @@ export async function GetSearchRepos(repo: RepoSearchParams) {
     }
   };
   try {
-    //Should fix/address
+    // Uncomment below for complete object
+    console.log(repo);
     if (!repo.language) {
+      console.log(repo.query);
       repo.language = "";
     }
+    console.log(queryHandle(repo.query, repo.language));
     const result = await octokitHandle.rest.search.repos({
       q: queryHandle(repo.query, repo.language),
       per_page: repo.quantity,

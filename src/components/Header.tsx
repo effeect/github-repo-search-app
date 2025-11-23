@@ -9,11 +9,16 @@ import { GetSearchRepos } from "../api/searchRepo";
 import { SearchBar } from "./functions/SearchBar";
 import { SearchRepoTable } from "./functions/TableResults";
 import { PageControls } from "./functions/PageControls";
+import { RepoSearchParams } from "../types/RepoSearch";
 
 // Keeping everything under AppHeader
 export function AppHeader() {
   // States from React for the App
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState<RepoSearchParams>({
+    query: "",
+    language: "",
+  });
+
   const [results, setResults] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [cache, setCache] = useState<Record<number, any[]>>({});
@@ -32,9 +37,9 @@ export function AppHeader() {
 
   const fetchPageData = async (Page: number) => {
     if (cache[Page]) return; // Don't bother if its already there
+    console.log("FetchPageData", query);
     const data = await GetSearchRepos({
-      query: query,
-      language: "javascript",
+      ...query,
       pageNum: Page,
       quantity: 30,
     });
@@ -44,12 +49,13 @@ export function AppHeader() {
 
   // Please note we are setting the Page to 1 when a new request is triggered
   const handleQuery = async () => {
+    console.log("Handle Query Result", query);
     const data = await GetSearchRepos({
-      query: query,
-      language: "javascript",
+      ...query,
       pageNum: 1,
       quantity: 30,
     });
+    console.log(query);
     setCache({ 1: data });
     setPage(1);
     setResults(data);
@@ -78,15 +84,23 @@ export function AppHeader() {
         {/* Need to center this  */}
         <h1 className="pure-heading">Search Your Things Here!</h1>
         <div className="pure-g">
-          <SearchBar query={query} setQuery={setQuery} onSearch={handleQuery} />
+          <SearchBar
+            query={query}
+            setQuery={(q: RepoSearchParams) => setQuery(q)}
+            onSearch={handleQuery}
+          />
         </div>
         <div className="pure-g">
           <SearchRepoTable results={visibleResults} />
         </div>
         <div className="padding">{page}</div>
-        <div>
-          <PageControls page={page} handlePageChange={handlePageChange} />
-        </div>
+
+        {/* Will hide page controls if there are no visible results*/}
+        {visibleResults.length > 0 && (
+          <div>
+            <PageControls page={page} handlePageChange={handlePageChange} />
+          </div>
+        )}
       </div>
     </>
   );
