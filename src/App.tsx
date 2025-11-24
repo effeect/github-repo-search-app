@@ -1,20 +1,28 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 
 // Component Imports
 import AppNavbar from "./components/navbar";
-import { AppHeader } from "./components/Header";
 import AppFooter from "./components/footer";
 // Styles
 import "./styles/App.module.css";
 
+import RepoSearchPage from "./components/routes/RepoSearchPage";
+import { RepoSearch } from "./components/routes/RepoSearch";
 function App() {
   return (
-    <div className="App">
-      <AppNavbar />
-      <AppHeader />
-      <AppFooter />
-    </div>
+    <Router>
+      <div className="App">
+        <AppNavbar />
+        <Routes>
+          {/* Default Route */}
+          <Route path="/" element={<RepoSearch />} />
+          <Route path="/repo/:owner/:name" element={<RepoSearchPage />} />
+        </Routes>
+        <AppFooter />
+      </div>
+    </Router>
   );
 }
 

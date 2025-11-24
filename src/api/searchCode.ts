@@ -13,6 +13,7 @@ export async function GetSearchCode(code: CodeSearch) {
     // Specials thanks to https://stackoverflow.com/questions/14379274/how-to-iterate-over-a-javascript-object
     let query = `${input.keyword}`;
     for (let [key, value] of Object.entries(input)) {
+      if (key === "keyword") continue;
       console.log(key, value);
       // Will only add the neccessary bit if there is a value for it
       if (value != null) {
@@ -25,6 +26,7 @@ export async function GetSearchCode(code: CodeSearch) {
     const formattedQuery = createQuery(code.queryParam);
     // Not sure if below is needed :
     const user = await octokitHandle.rest.users.getAuthenticated();
+    console.log(formattedQuery);
     const result = await octokitHandle.rest.search.code({
       q: formattedQuery,
     });

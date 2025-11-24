@@ -1,4 +1,5 @@
 import styles from "../../styles/RepoTable.module.css";
+import { Link } from "react-router-dom";
 
 type TableResultsDef = {
   results: any[];
@@ -13,14 +14,19 @@ export function SearchRepoTable({ results }: TableResultsDef) {
             <ul className={styles.pureList}>
               {results.map((result) => (
                 <li key={result.id} className={styles.pureListItem}>
-                  <a
-                    href={result.html_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    to={`/repo/${result.full_name}`}
                     className={styles.repoLink}
                   >
                     <div className={styles.repoItem}>
-                      <h3 className={styles.repoName}>{result.full_name}</h3>
+                      <a
+                        href={result.html_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.repoLink}
+                      >
+                        <h3 className={styles.repoName}>{result.full_name}</h3>
+                      </a>
                       <p className={styles.repoDescription}>
                         {result.description}
                       </p>
@@ -29,7 +35,7 @@ export function SearchRepoTable({ results }: TableResultsDef) {
                         {result.watchers}
                       </p>
                     </div>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
