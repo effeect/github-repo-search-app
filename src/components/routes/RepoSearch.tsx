@@ -10,6 +10,7 @@ import { SearchBar } from "../functions/SearchBar";
 import { SearchRepoTable } from "../functions/TableResults";
 import { PageControls } from "../functions/PageControls";
 import { RepoSearchParams } from "../../types/RepoSearch";
+import { REPO_OPTIONAL_PARAMS } from "../../constants/searchParams";
 
 // Keeping everything under AppHeader
 export function RepoSearch() {
@@ -91,10 +92,11 @@ export function RepoSearch() {
         {/* Need to center this  */}
         <h1 className="pure-heading">Search Your Things Here!</h1>
         <div className="pure-g">
-          <SearchBar
+          <SearchBar<RepoSearchParams>
             query={query}
-            setQuery={(q: RepoSearchParams) => setQuery(q)}
+            setQuery={setQuery}
             onSearch={handleQuery}
+            optionalParams={REPO_OPTIONAL_PARAMS}
           />
         </div>
         <div className="pure-g">

@@ -1,6 +1,6 @@
 // Many thanks to https://docs2.lfe.io/v3/search/, sped up the search for qualifiers massively
 export type CodeSearchParams = {
-  keyword: string;
+  query: string;
   in?: string;
   language?: string;
   repo?: string;

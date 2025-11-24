@@ -1,17 +1,17 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GetSearchCode } from "../../api/searchCode";
-import { CodeSearchParams, CodeSearch } from "../../types/CodeSearch";
+import { CodeSearchParams } from "../../types/CodeSearch";
 
 import styles from "../../styles/AppHeader.module.css";
 import { SearchCodeTable } from "../functions/CodeResults";
 import { SearchBar } from "../functions/SearchBar";
 import { PageControls } from "../functions/PageControls";
-import { RepoSearchParams } from "../../types/RepoSearch";
+import { CODE_OPTIONAL_PARAMS } from "../../constants/searchParams";
 
 export default function RepoSearchPage() {
   // For router
-  const [query, setQuery] = useState<RepoSearchParams>({ query: "" });
+  const [query, setQuery] = useState<CodeSearchParams>({ query: "" });
 
   const { owner, name } = useParams<{ owner: string; name: string }>();
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -23,9 +23,9 @@ export default function RepoSearchPage() {
     console.log("FetchPageData", query);
     const data = await GetSearchCode({
       queryParam: {
-        keyword: query.query,
+        query: query.query,
         in: "file",
-        language: "ts",
+        language: query.language,
         repo: `${owner}/${name}`,
       },
       page: Page,
@@ -40,9 +40,9 @@ export default function RepoSearchPage() {
     console.log("Handle Query Result", query);
     const data = await GetSearchCode({
       queryParam: {
-        keyword: query.query,
+        query: query.query,
         in: "file",
-        language: "ts",
+        language: query.language,
         repo: `${owner}/${name}`,
       },
     });
@@ -86,10 +86,11 @@ export default function RepoSearchPage() {
         </h1>
         <div>
           <div className={styles.AppHeader}>
-            <SearchBar
+            <SearchBar<CodeSearchParams>
               query={query}
-              setQuery={(q: RepoSearchParams) => setQuery(q)}
+              setQuery={(q) => setQuery(q)}
               onSearch={handleQuery}
+              optionalParams={CODE_OPTIONAL_PARAMS}
             />
             {/* Need to center this  */}
             <h1 className="pure-heading">Results : </h1>

@@ -11,12 +11,14 @@ export async function GetSearchCode(code: CodeSearch) {
   // Function to sort out the query and potenial options
   const createQuery = (input: CodeSearchParams) => {
     // Specials thanks to https://stackoverflow.com/questions/14379274/how-to-iterate-over-a-javascript-object
-    let query = `${input.keyword}`;
+    let query = `${input.query}`;
+    console.log("Query is", query);
     for (let [key, value] of Object.entries(input)) {
-      if (key === "keyword") continue;
+      if (key === "query") continue;
       console.log(key, value);
       // Will only add the neccessary bit if there is a value for it
       if (value != null) {
+        console.log(query);
         query = query + ` ${key}:${value}`;
       }
     }

@@ -6,104 +6,58 @@ import { useState } from "react";
 
 import { AddRule } from "../rules/AddRule";
 
-type FieldDefintion<T> = {
-  key: keyof T;
-  label: string;
-  type?: string;
-};
-
-type SearchBarDef = {
-  query: RepoSearchParams;
-  setQuery: (q: RepoSearchParams) => void;
+// Generic Type to extend on
+type SearchBarDefinition<T> = {
+  query: T;
+  setQuery: (q: T) => void;
   onSearch: () => void;
 };
 
-export function SearchBar(search: SearchBarDef) {
-  const [params, setParams] = useState<Partial<RepoSearchParams>>({});
-  const [isModalOpen, setIsModalOpen] = useState(false);
+type SearchBarProps<T> = SearchBarDefinition<T> & {
+  optionalParams: readonly (keyof Omit<T, "query">)[];
+};
 
-  const handleChange = (key: keyof RepoSearchParams, value: string) => {
+// Component will need a type input of some sorts
+export function SearchBar<T extends { query: string }>({
+  query,
+  setQuery,
+  onSearch,
+  optionalParams,
+}: SearchBarProps<T>) {
+  const [params, setParams] = useState<Partial<T>>({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  // Active Params is effectively what "rules" might be in use at any given point
+  const [activeParams, setActiveParams] = useState<(keyof Omit<T, "query">)[]>(
+    []
+  );
+
+  const handleChange = (key: keyof T, value: string) => {
     setParams({ ...params, [key]: value }); // Sets the Optional Params
 
-    search.setQuery({ ...search.query, [key]: value }); // Set the main query
+    setQuery({ ...query, [key]: value } as T); // Set the main query
   }; //Remove Handler
 
-  const handleRemoveParam = (param: keyof Omit<RepoSearchParams, "query">) => {
+  const handleRemoveParam = (param: keyof Omit<T, "query">) => {
     setActiveParams(activeParams.filter((p) => p !== param));
-
     const newParams = { ...params };
-
     delete newParams[param];
-
     setParams(newParams);
-
-    const newQuery = { ...search.query };
-
+    const newQuery = { ...query };
     delete (newQuery as any)[param];
-
-    search.setQuery(newQuery);
+    setQuery(newQuery);
   }; // To store Whichever params are active
 
-  const [activeParams, setActiveParams] = useState<
-    (keyof Omit<RepoSearchParams, "query">)[]
-  >([]);
-
   const handleAddParam = (param: string) => {
-    setActiveParams([
-      ...activeParams,
-
-      param as keyof Omit<RepoSearchParams, "query">,
-    ]);
-
+    setActiveParams([...activeParams, param as keyof Omit<T, "query">]);
     setIsModalOpen(false);
   };
-
-  const optionalParams: (keyof Omit<RepoSearchParams, "query">)[] = [
-    "in",
-
-    "language",
-
-    "topic",
-
-    "license",
-
-    "isPublic",
-
-    "isPrivate",
-
-    "mirror",
-
-    "pageNum",
-
-    "template",
-
-    "archived",
-
-    "sort",
-
-    "order",
-
-    "quantity",
-
-    "stars",
-  ];
-
+  // Button Search
   const onSearchClick = () => {
-    // Button Search
-
     console.log("Params", params);
-
-    const fullParams: RepoSearchParams = {
-      query: search.query.query,
-
-      ...params,
-    };
-
-    console.log("Full Params", fullParams);
-
-    search.setQuery(fullParams);
-
-    search.onSearch();
+    const fullParams = { query: query.query, ...params } as T;
+    // console.log("Full Params", fullParams);
+    setQuery(fullParams);
+    onSearch();
   };
 
   return (
@@ -117,9 +71,9 @@ export function SearchBar(search: SearchBarDef) {
             <input
               type="text"
               className="pure-input pure-input-rounded"
-              value={search.query.query}
+              value={query.query}
               onChange={(e) => {
-                search.setQuery({ ...search.query, query: e.target.value });
+                setQuery({ ...query, query: e.target.value });
               }}
               placeholder="Type in your Repo Name Here"
               aria-label="Search"
@@ -157,22 +111,22 @@ export function SearchBar(search: SearchBarDef) {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAdd={handleAddParam}
-        availableParams={optionalParams.filter(
-          (p) => !activeParams.includes(p)
-        )}
+        availableParams={
+          optionalParams.filter((p) => !activeParams.includes(p)) as string[]
+        }
       />
       {/* Below is the for loop for parameters */}{" "}
       {/* Render only active params */}{" "}
       {activeParams.map((key) => (
-        <div key={key} className={styles.centerContent}>
+        <div key={String(key)} className={styles.centerContent}>
           {" "}
           <div className={styles.buttonContainer}>
             {" "}
             <label>
-              {key} :{" "}
+              {String(key)} :{" "}
               <input
                 type="text"
-                value={String(search.query[key] ?? "")}
+                value={String(query[key] ?? "")}
                 onChange={(e) => handleChange(key, e.target.value)}
               />{" "}
             </label>{" "}
