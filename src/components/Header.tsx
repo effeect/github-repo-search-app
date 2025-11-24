@@ -77,6 +77,14 @@ export function AppHeader() {
   const chunk = cache[apiPage] || [];
   const startIndex = ((page - 1) % 3) * 10;
   const visibleResults = chunk.slice(startIndex, startIndex + 10);
+
+  // Look ahead to next page
+  const nextPage = page + 1;
+  const nextApiPage = Math.ceil(nextPage / 3);
+  const nextChunk = cache[nextApiPage] || [];
+  const nextStartIndex = ((nextPage - 1) % 3) * 10;
+  const nextResults = nextChunk.slice(nextStartIndex, nextStartIndex + 10);
+
   //=============================
   return (
     <>
@@ -98,7 +106,11 @@ export function AppHeader() {
         {/* Will hide page controls if there are no visible results*/}
         {visibleResults.length > 0 && (
           <div>
-            <PageControls page={page} handlePageChange={handlePageChange} />
+            <PageControls
+              page={page}
+              handlePageChange={handlePageChange}
+              disableNext={nextResults.length === 0}
+            />
           </div>
         )}
       </div>

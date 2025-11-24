@@ -4,6 +4,7 @@ import styles from "../../styles/PageButtons.module.css";
 type PageDef = {
   page: number;
   handlePageChange: (newPage: number) => void;
+  disableNext: boolean;
 };
 
 export function PageControls(controls: PageDef) {
@@ -17,7 +18,10 @@ export function PageControls(controls: PageDef) {
           Prev
         </button>
 
-        <button onClick={() => controls.handlePageChange(controls.page + 1)}>
+        <button
+          disabled={controls.disableNext}
+          onClick={() => controls.handlePageChange(controls.page + 1)}
+        >
           Next
         </button>
       </div>

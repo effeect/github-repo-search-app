@@ -9,6 +9,37 @@ const octokitHandle = new Octokit({
 
 // Based on https://octokit.github.io/rest.js/v18/#search-repos
 export async function GetSearchRepos(repo: RepoSearchParams) {
+  // Function to sort out the query and potenial options
+  const createQuery = (input: RepoSearchParams) => {
+    let query = "";
+    // Sort out the weird language filter first
+    if (input.language !== "") {
+      query = `${input.query}+language:${input.language}`;
+    } else {
+      query = `${input.query}`;
+    }
+    console.log(query);
+    //
+
+    // Specials thanks to https://stackoverflow.com/questions/14379274/how-to-iterate-over-a-javascript-object
+    for (let [key, value] of Object.entries(input)) {
+      if (
+        key === "query" ||
+        key === "language" ||
+        key === "quantity" ||
+        key === "pageNum"
+      )
+        continue; // Skipping as they are handled in a different way
+      console.log(key, value);
+      // Will only add the neccessary bit if there is a value for it
+      if (value != null) {
+        query = query + ` ${key}:${value}`;
+      }
+    }
+    console.log("Create Query Status", query);
+    return query;
+  };
+
   // Following this q=tetris+language:assembly&sort=stars&order=desc
   const queryHandle = (query: string, language: string) => {
     if (language !== "") {
@@ -26,9 +57,10 @@ export async function GetSearchRepos(repo: RepoSearchParams) {
       console.log(repo.query);
       repo.language = "";
     }
+    console.log(createQuery(repo));
     console.log(queryHandle(repo.query, repo.language));
     const result = await octokitHandle.rest.search.repos({
-      q: queryHandle(repo.query, repo.language),
+      q: createQuery(repo),
       per_page: repo.quantity,
       page: repo.pageNum,
     });

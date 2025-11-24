@@ -2,6 +2,7 @@
 
 The following tools were used :
 
+- React Router - To allow basic searching of code within the repository
 - Octokit
 - PureCSS as a starting point for CSS stuff. Would use Tailwind/Bulma for a bigger project however the word "small" is important for this project in my personal opinion. Much easier to move a smaller ship as they say...
 

@@ -2,6 +2,8 @@ import styles from "../../styles/SearchBar.module.css";
 import { RepoSearchParams } from "../../types/RepoSearch";
 import { useState } from "react";
 
+import { AddRule } from "../rules/AddRule";
+
 type SearchBarDef = {
   query: RepoSearchParams;
   setQuery: (q: RepoSearchParams) => void;
@@ -10,11 +12,25 @@ type SearchBarDef = {
 
 export function SearchBar(search: SearchBarDef) {
   const [params, setParams] = useState<Partial<RepoSearchParams>>({});
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const handleChange = (key: keyof RepoSearchParams, value: string) => {
-    search.setQuery({ ...search.query, [key]: value });
+    setParams({ ...params, [key]: value }); // Sets the Optional Params
+    search.setQuery({ ...search.query, [key]: value }); // Set the main query
   };
-  // Keys of RepoSearchParams except "query"
+
+  // To store which "rules are active"
+  const [activeParams, setActiveParams] = useState<
+    (keyof Omit<RepoSearchParams, "query">)[]
+  >([]);
+
+  const handleAddParam = (param: string) => {
+    setActiveParams([
+      ...activeParams,
+      param as keyof Omit<RepoSearchParams, "query">,
+    ]);
+    setIsModalOpen(false);
+  };
+
   const optionalParams: (keyof Omit<RepoSearchParams, "query">)[] = [
     "in",
     "language",
@@ -29,6 +45,7 @@ export function SearchBar(search: SearchBarDef) {
     "sort",
     "order",
     "quantity",
+    "stars",
   ];
 
   const onSearchClick = () => {
@@ -45,7 +62,7 @@ export function SearchBar(search: SearchBarDef) {
 
   return (
     <div className={styles.searchform}>
-      <div className={styles.centerContent}>
+      <div className="pure-g">
         <div className="pure-u-1-3">
           <div className={styles.buttonContainer}>
             <input
@@ -73,19 +90,29 @@ export function SearchBar(search: SearchBarDef) {
         <div className="pure-u-3-3">
           <div className={styles.buttonContainer}>
             <button
-              type="submit"
-              className={`${styles.buttonContainer} pure-button `}
+              type="button"
+              className={`${styles.buttonContainer} pure-button`}
+              onClick={() => setIsModalOpen(true)}
             >
               Add Rule
             </button>
           </div>
         </div>
       </div>
-      {/* Below is the for loop */}
+      <AddRule
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAdd={handleAddParam}
+        availableParams={optionalParams.filter(
+          (p) => !activeParams.includes(p)
+        )}
+      />
+      {/* Below is the for loop for parameters */}
 
-      {optionalParams.map((key) => (
-        <div className={styles.centerContent}>
-          <div key={key} className={styles.buttonContainer}>
+      {/* Render only active params */}
+      {activeParams.map((key) => (
+        <div key={key} className={styles.centerContent}>
+          <div className={styles.buttonContainer}>
             <label>
               {key} :
               <input

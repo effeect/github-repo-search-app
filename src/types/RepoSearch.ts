@@ -1,4 +1,5 @@
 // Setting up types so we can reuse them later
+// https://github.com/github/docs/blob/main/content/search-github/searching-on-github/searching-for-repositories.md
 // Only need query to be required, everything else can be defaulted/optional
 export type RepoSearchParams = {
   query: string;
@@ -10,9 +11,10 @@ export type RepoSearchParams = {
   isPrivate?: string;
   mirror?: boolean;
   pageNum?: number;
-  template?: string;
-  archived?: string;
+  template?: boolean;
+  archived?: boolean;
   sort?: string;
   order?: string;
   quantity?: number;
+  stars?: number;
 };
