@@ -1,8 +1,16 @@
 import styles from "../../styles/SearchBar.module.css";
+
 import { RepoSearchParams } from "../../types/RepoSearch";
+
 import { useState } from "react";
 
 import { AddRule } from "../rules/AddRule";
+
+type FieldDefintion<T> = {
+  key: keyof T;
+  label: string;
+  type?: string;
+};
 
 type SearchBarDef = {
   query: RepoSearchParams;
@@ -13,12 +21,29 @@ type SearchBarDef = {
 export function SearchBar(search: SearchBarDef) {
   const [params, setParams] = useState<Partial<RepoSearchParams>>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleChange = (key: keyof RepoSearchParams, value: string) => {
     setParams({ ...params, [key]: value }); // Sets the Optional Params
-    search.setQuery({ ...search.query, [key]: value }); // Set the main query
-  };
 
-  // To store which "rules are active"
+    search.setQuery({ ...search.query, [key]: value }); // Set the main query
+  }; //Remove Handler
+
+  const handleRemoveParam = (param: keyof Omit<RepoSearchParams, "query">) => {
+    setActiveParams(activeParams.filter((p) => p !== param));
+
+    const newParams = { ...params };
+
+    delete newParams[param];
+
+    setParams(newParams);
+
+    const newQuery = { ...search.query };
+
+    delete (newQuery as any)[param];
+
+    search.setQuery(newQuery);
+  }; // To store Whichever params are active
+
   const [activeParams, setActiveParams] = useState<
     (keyof Omit<RepoSearchParams, "query">)[]
   >([]);
@@ -26,45 +51,69 @@ export function SearchBar(search: SearchBarDef) {
   const handleAddParam = (param: string) => {
     setActiveParams([
       ...activeParams,
+
       param as keyof Omit<RepoSearchParams, "query">,
     ]);
+
     setIsModalOpen(false);
   };
 
   const optionalParams: (keyof Omit<RepoSearchParams, "query">)[] = [
     "in",
+
     "language",
+
     "topic",
+
     "license",
+
     "isPublic",
+
     "isPrivate",
+
     "mirror",
+
     "pageNum",
+
     "template",
+
     "archived",
+
     "sort",
+
     "order",
+
     "quantity",
+
     "stars",
   ];
 
   const onSearchClick = () => {
     // Button Search
+
     console.log("Params", params);
+
     const fullParams: RepoSearchParams = {
       query: search.query.query,
+
       ...params,
     };
+
     console.log("Full Params", fullParams);
+
     search.setQuery(fullParams);
+
     search.onSearch();
   };
 
   return (
     <div className={styles.searchform}>
       <div className="pure-g">
+        {" "}
         <div className="pure-u-1-3">
+          {" "}
           <div className={styles.buttonContainer}>
+            {" "}
             <input
               type="text"
               className="pure-input pure-input-rounded"
@@ -74,31 +123,36 @@ export function SearchBar(search: SearchBarDef) {
               }}
               placeholder="Type in your Repo Name Here"
               aria-label="Search"
-            />
-          </div>
-        </div>
+            />{" "}
+          </div>{" "}
+        </div>{" "}
         <div className="pure-u-1-3">
+          {" "}
           <div className={styles.buttonContainer}>
+            {" "}
             <button
               onClick={onSearchClick}
               className={`${styles.buttonContainer} pure-button`}
             >
-              Search
+              Search {" "}
             </button>
-          </div>
-        </div>
+             {" "}
+          </div>{" "}
+        </div>{" "}
         <div className="pure-u-3-3">
+          {" "}
           <div className={styles.buttonContainer}>
+            {" "}
             <button
               type="button"
               className={`${styles.buttonContainer} pure-button`}
               onClick={() => setIsModalOpen(true)}
             >
-              Add Rule
-            </button>
-          </div>
-        </div>
-      </div>
+              Add Rule{" "}
+            </button>{" "}
+          </div>{" "}
+        </div>{" "}
+      </div>{" "}
       <AddRule
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -107,23 +161,31 @@ export function SearchBar(search: SearchBarDef) {
           (p) => !activeParams.includes(p)
         )}
       />
-      {/* Below is the for loop for parameters */}
-
-      {/* Render only active params */}
+      {/* Below is the for loop for parameters */}{" "}
+      {/* Render only active params */}{" "}
       {activeParams.map((key) => (
         <div key={key} className={styles.centerContent}>
+          {" "}
           <div className={styles.buttonContainer}>
+            {" "}
             <label>
-              {key} :
+              {key} :{" "}
               <input
                 type="text"
                 value={String(search.query[key] ?? "")}
                 onChange={(e) => handleChange(key, e.target.value)}
-              />
-            </label>
-          </div>
+              />{" "}
+            </label>{" "}
+            <button
+              type="button"
+              className="pure-button"
+              onClick={() => handleRemoveParam(key)}
+            >
+              ✖ Remove{" "}
+            </button>{" "}
+          </div>{" "}
         </div>
-      ))}
+      ))}{" "}
     </div>
   );
 }

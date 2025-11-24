@@ -15,25 +15,21 @@ export function SearchCodeTable({ results }: TableResultsDef) {
             <ul className={styles.pureList}>
               {results.map((result) => (
                 <li key={result.id} className={styles.pureListItem}>
-                  <a
-                    href={result.html_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.repoLink}
-                  >
-                    <div className={styles.repoItem}>
-                      <h3 className={styles.repoName}> {result.full_name}</h3>
-                      <a
-                        href={result.html_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {result.path}{" "}
-                      </a>
-                    </div>
-                  </a>
-                  <div className={styles.repoLink}>
-                    Download link : {result.repository.downloads_url}
+                  <div className={styles.repoItem}>
+                    {/* File Path for the file on Github below*/}
+                    <a
+                      href={result.html_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.repoLink}
+                    >
+                      <h3 className={styles.repoName}>{result.name}</h3>
+                    </a>
+                    <p className={styles.description}>Path : {result.path}</p>
+                    <p className={styles.repoStars}>
+                      {" "}
+                      Download link : {result.repository.downloads_url}
+                    </p>
                   </div>
                 </li>
               ))}

@@ -14,10 +14,10 @@ export type CodeSearchParams = {
 
 export type CodeSearch = {
   queryParam: CodeSearchParams;
+  per_page?: number;
+  page?: number;
   sort?: string;
   order?: string;
-  per_page?: string;
-  page?: string;
 };
 
 /* 
