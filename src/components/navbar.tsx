@@ -5,7 +5,7 @@ export default function AppNavbar() {
   return (
     <div className={`${styles.NavbarFormat} pure-menu pure-menu-horizontal`}>
       <a href="/" className="pure-menu-heading pure-menu-link">
-        Github Search Repo Project
+        Home
       </a>
       <ul className="pure-menu-list">
         <li className="pure-menu-item">

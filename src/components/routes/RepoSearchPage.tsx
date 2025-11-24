@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { GetSearchCode } from "../../api/searchCode";
 import { CodeSearchParams, CodeSearch } from "../../types/CodeSearch";
 
+import styles from "../../styles/AppHeader.module.css";
+import { SearchCodeTable } from "../functions/CodeResults";
+
 export default function RepoSearchPage() {
   // For router
   const { owner, name } = useParams<{ owner: string; name: string }>();
@@ -14,34 +17,42 @@ export default function RepoSearchPage() {
       // console.log in:file language:ts repo:effeect/LANMAN-Containers
       const result = await GetSearchCode({
         queryParam: {
-          keyword: "console.log",
+          keyword: "console.error",
           in: "file",
           language: "ts",
-          repo: "effeect/LANMAN-Containers",
+          repo: `${owner}/${name}`,
         },
       });
       if (result?.data?.items) {
         console.log(result);
         setSearchResults(result.data.items);
       }
+      console.log(result);
     }
+
     fetchCodeSearch();
   }, [owner, name]);
 
   return (
-    <div>
-      <h2>
-        Code Search for {owner}/{name}
-      </h2>
-      <ul>
-        {searchResults.map((item) => (
-          <li key={item.sha}>
-            <a href={item.html_url} target="_blank" rel="noopener noreferrer">
-              {item.path}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <div className={styles.AppHeader}>
+        {/* Need to center this  */}
+        <h1 className="pure-heading">
+          {owner}/{name}
+        </h1>
+        <div>
+          <div className={styles.AppHeader}>
+            {/* Need to center this  */}
+            <h1 className="pure-heading"></h1>
+
+            {/* */}
+            <div className="pure-g">
+              {" "}
+              <SearchCodeTable results={searchResults} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

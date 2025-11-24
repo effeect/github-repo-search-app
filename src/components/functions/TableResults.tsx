@@ -19,14 +19,18 @@ export function SearchRepoTable({ results }: TableResultsDef) {
                     className={styles.repoLink}
                   >
                     <div className={styles.repoItem}>
-                      <a
-                        href={result.html_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.repoLink}
-                      >
-                        <h3 className={styles.repoName}>{result.full_name}</h3>
-                      </a>
+                      <h3 className={styles.repoName}>
+                        {" "}
+                        <a
+                          href={result.html_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.repoLink}
+                        >
+                          {result.full_name}
+                        </a>
+                      </h3>
+
                       <p className={styles.repoDescription}>
                         {result.description}
                       </p>

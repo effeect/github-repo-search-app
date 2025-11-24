@@ -55,7 +55,6 @@ export function RepoSearch() {
       pageNum: 1,
       quantity: 30,
     });
-    console.log(query);
     setCache({ 1: data });
     setPage(1);
     setResults(data);
