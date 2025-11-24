@@ -20,7 +20,6 @@ export function RepoSearch() {
     language: "",
   });
 
-  const [results, setResults] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [cache, setCache] = useState<Record<number, any[]>>({});
   // Cache Stuff for the Table Design
@@ -58,7 +57,6 @@ export function RepoSearch() {
     });
     setCache({ 1: data });
     setPage(1);
-    setResults(data);
   };
 
   // Might trigger this so we can have the next one ready so the user don't notice
@@ -90,7 +88,11 @@ export function RepoSearch() {
     <>
       <div className={styles.AppHeader}>
         {/* Need to center this  */}
-        <h1 className="pure-heading">Search Your Things Here!</h1>
+        <h1 className="pure-heading">Github Repo Search</h1>
+        <small>
+          Search for "repositories" on Github, use add rules to get more
+          specific
+        </small>
         <div className="pure-g">
           <SearchBar<RepoSearchParams>
             query={query}

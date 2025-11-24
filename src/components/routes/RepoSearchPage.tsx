@@ -9,15 +9,14 @@ import { SearchBar } from "../functions/SearchBar";
 import { PageControls } from "../functions/PageControls";
 import { CODE_OPTIONAL_PARAMS } from "../../constants/searchParams";
 
+// Repo Search Page is the overview page to search code among a selected repo
 export default function RepoSearchPage() {
-  // For router
   const [query, setQuery] = useState<CodeSearchParams>({ query: "" });
-
   const { owner, name } = useParams<{ owner: string; name: string }>();
-  const [searchResults, setSearchResults] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [cache, setCache] = useState<Record<number, any[]>>({});
 
+  // Taken from Repo Search, need to make some additonal modifications
   const fetchPageData = async (Page: number) => {
     if (cache[Page]) return; // Don't bother if its already there
     console.log("FetchPageData", query);
@@ -49,7 +48,6 @@ export default function RepoSearchPage() {
     const items = data?.data?.items ?? [];
     setCache({ 1: items });
     setPage(1);
-    setSearchResults(items);
   };
 
   // Might trigger this so we can have the next one ready so the user don't notice

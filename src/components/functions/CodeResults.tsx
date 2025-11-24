@@ -1,4 +1,5 @@
 // Similar to TableResults.tsx
+// This component shows a list of results for the Code Searching
 
 import styles from "../../styles/RepoTable.module.css";
 

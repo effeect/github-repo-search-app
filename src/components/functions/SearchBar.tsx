@@ -1,9 +1,5 @@
 import styles from "../../styles/SearchBar.module.css";
-
-import { RepoSearchParams } from "../../types/RepoSearch";
-
 import { useState } from "react";
-
 import { AddRule } from "../rules/AddRule";
 
 // Generic Type to extend on
@@ -13,6 +9,7 @@ type SearchBarDefinition<T> = {
   onSearch: () => void;
 };
 
+// Extended to add the parameter of Optional Params
 type SearchBarProps<T> = SearchBarDefinition<T> & {
   optionalParams: readonly (keyof Omit<T, "query">)[];
 };
@@ -25,6 +22,7 @@ export function SearchBar<T extends { query: string }>({
   optionalParams,
 }: SearchBarProps<T>) {
   const [params, setParams] = useState<Partial<T>>({});
+  // State of the modal, which is allowed to add "Rules"
   const [isModalOpen, setIsModalOpen] = useState(false);
   // Active Params is effectively what "rules" might be in use at any given point
   const [activeParams, setActiveParams] = useState<(keyof Omit<T, "query">)[]>(
@@ -61,52 +59,31 @@ export function SearchBar<T extends { query: string }>({
   };
 
   return (
-    <div className={styles.searchform}>
-      <div className="pure-g">
-        {" "}
-        <div className="pure-u-1-3">
-          {" "}
-          <div className={styles.buttonContainer}>
-            {" "}
-            <input
-              type="text"
-              className="pure-input pure-input-rounded"
-              value={query.query}
-              onChange={(e) => {
-                setQuery({ ...query, query: e.target.value });
-              }}
-              placeholder="Type in your Repo Name Here"
-              aria-label="Search"
-            />{" "}
-          </div>{" "}
-        </div>{" "}
-        <div className="pure-u-1-3">
-          {" "}
-          <div className={styles.buttonContainer}>
-            {" "}
-            <button
-              onClick={onSearchClick}
-              className={`${styles.buttonContainer} pure-button`}
-            >
-              Search {" "}
-            </button>
-             {" "}
-          </div>{" "}
-        </div>{" "}
-        <div className="pure-u-3-3">
-          {" "}
-          <div className={styles.buttonContainer}>
-            {" "}
-            <button
-              type="button"
-              className={`${styles.buttonContainer} pure-button`}
-              onClick={() => setIsModalOpen(true)}
-            >
-              Add Rule{" "}
-            </button>{" "}
-          </div>{" "}
-        </div>{" "}
-      </div>{" "}
+    <form
+      className={styles.searchform}
+      role="search"
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSearchClick();
+      }}
+    >
+      <label htmlFor="search">Search for stuff</label>
+      <input
+        id="search"
+        type="search"
+        placeholder="Search..."
+        value={query.query}
+        onChange={(e) => setQuery({ ...query, query: e.target.value })}
+        required
+        autoFocus
+      />
+      <button type="submit">Go</button>
+
+      {/* Add Rule button */}
+      <button type="button" onClick={() => setIsModalOpen(true)}>
+        Add Rule
+      </button>
+
       <AddRule
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -115,31 +92,23 @@ export function SearchBar<T extends { query: string }>({
           optionalParams.filter((p) => !activeParams.includes(p)) as string[]
         }
       />
-      {/* Below is the for loop for parameters */}{" "}
-      {/* Render only active params */}{" "}
+
+      {/* Render active params */}
       {activeParams.map((key) => (
         <div key={String(key)} className={styles.centerContent}>
-          {" "}
           <div className={styles.buttonContainer}>
-            {" "}
-            <label>
-              {String(key)} :{" "}
-              <input
-                type="text"
-                value={String(query[key] ?? "")}
-                onChange={(e) => handleChange(key, e.target.value)}
-              />{" "}
-            </label>{" "}
-            <button
-              type="button"
-              className="pure-button"
-              onClick={() => handleRemoveParam(key)}
-            >
-              ✖ Remove{" "}
-            </button>{" "}
-          </div>{" "}
+            <input
+              type="search"
+              placeholder={`Enter ${String(key)}...`}
+              value={String(query[key] ?? "")}
+              onChange={(e) => handleChange(key, e.target.value)}
+            />
+            <button type="button" onClick={() => handleRemoveParam(key)}>
+              ✖ Remove
+            </button>
+          </div>
         </div>
-      ))}{" "}
-    </div>
+      ))}
+    </form>
   );
 }
