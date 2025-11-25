@@ -1,3 +1,5 @@
+// Not in use at the moment, not sure if it needs to be used in the final UI but worth keeping for futures sakes
+
 import { Octokit } from "octokit";
 import { UserSearchQuery, SearchUsers } from "../types/UserSearch";
 // Setup of the Octokit "kit"
@@ -6,7 +8,6 @@ const octokitHandle = new Octokit({
 });
 
 export async function GetSearchUsers(users: SearchUsers) {
-  // Function to sort out the query and potenial options
   const createQuery = (input: UserSearchQuery) => {
     // Specials thanks to https://stackoverflow.com/questions/14379274/how-to-iterate-over-a-javascript-object
     let query = `${input.keyword}`;

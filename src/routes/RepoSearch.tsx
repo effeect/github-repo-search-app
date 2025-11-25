@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 // Import Styles
-import styles from "../../styles/AppHeader.module.css";
+import styles from "../styles/AppHeader.module.css";
 
-import { GetSearchRepos } from "../../api/searchRepo";
+import { GetSearchRepos } from "../api/searchRepo";
 
-import { SearchBar } from "../functions/SearchBar";
-import { SearchRepoTable } from "../functions/TableResults";
-import { PageControls } from "../functions/PageControls";
-import { RepoSearchParams } from "../../types/RepoSearch";
-import { REPO_OPTIONAL_PARAMS } from "../../constants/searchParams";
+import { SearchBar } from "../components/functions/SearchBar";
+import { SearchRepoTable } from "../components/functions/TableResults";
+import { PageControls } from "../components/functions/PageControls";
+import { RepoSearchParams } from "../types/RepoSearch";
+import { REPO_OPTIONAL_PARAMS } from "../constants/searchParams";
 
 // Keeping everything under AppHeader
 export function RepoSearch() {
@@ -37,7 +37,7 @@ export function RepoSearch() {
 
   const fetchPageData = async (Page: number) => {
     if (cache[Page]) return; // Don't bother if its already there
-    console.log("FetchPageData", query);
+    // console.log("FetchPageData", query);
     const data = await GetSearchRepos({
       ...query,
       pageNum: Page,
@@ -49,7 +49,7 @@ export function RepoSearch() {
 
   // Please note we are setting the Page to 1 when a new request is triggered
   const handleQuery = async () => {
-    console.log("Handle Query Result", query);
+    // console.log("Handle Query Result", query);
     const data = await GetSearchRepos({
       ...query,
       pageNum: 1,
@@ -99,6 +99,7 @@ export function RepoSearch() {
             setQuery={setQuery}
             onSearch={handleQuery}
             optionalParams={REPO_OPTIONAL_PARAMS}
+            showOrder={true}
           />
         </div>
         <div className="pure-g">

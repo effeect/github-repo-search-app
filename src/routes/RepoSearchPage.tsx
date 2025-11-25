@@ -1,13 +1,13 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { GetSearchCode } from "../../api/searchCode";
-import { CodeSearchParams } from "../../types/CodeSearch";
+import { GetSearchCode } from "../api/searchCode";
+import { CodeSearchParams } from "../types/CodeSearch";
 
-import styles from "../../styles/AppHeader.module.css";
-import { SearchCodeTable } from "../functions/CodeResults";
-import { SearchBar } from "../functions/SearchBar";
-import { PageControls } from "../functions/PageControls";
-import { CODE_OPTIONAL_PARAMS } from "../../constants/searchParams";
+import styles from "../styles/AppHeader.module.css";
+import { SearchCodeTable } from "../components/functions/CodeResults";
+import { SearchBar } from "../components/functions/SearchBar";
+import { PageControls } from "../components/functions/PageControls";
+import { CODE_OPTIONAL_PARAMS } from "../constants/searchParams";
 
 // Repo Search Page is the overview page to search code among a selected repo
 export default function RepoSearchPage() {
@@ -19,7 +19,7 @@ export default function RepoSearchPage() {
   // Taken from Repo Search, need to make some additonal modifications
   const fetchPageData = async (Page: number) => {
     if (cache[Page]) return; // Don't bother if its already there
-    console.log("FetchPageData", query);
+    // console.log("FetchPageData", query);
     const data = await GetSearchCode({
       queryParam: {
         query: query.query,
@@ -36,7 +36,7 @@ export default function RepoSearchPage() {
   };
 
   const handleQuery = async () => {
-    console.log("Handle Query Result", query);
+    // console.log("Handle Query Result", query);
     const data = await GetSearchCode({
       queryParam: {
         query: query.query,
@@ -80,7 +80,10 @@ export default function RepoSearchPage() {
       <div className={styles.AppHeader}>
         {/* Need to center this  */}
         <h1 className="pure-heading">
-          {owner}/{name}
+          Code Search for{" "}
+          <big>
+            {owner}/{name}
+          </big>
         </h1>
         <div>
           <div className={styles.AppHeader}>

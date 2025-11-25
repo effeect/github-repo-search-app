@@ -3,18 +3,18 @@
 
 // nvm found this : https://github.com/github/docs/blob/main/content/search-github/searching-on-github/searching-commits.md
 export type SearchCommitParam = {
-  keyword: string;
-  user: string;
-  org: string;
-  repo: string;
-  merge: boolean;
-  hash: string;
-  parent: string;
-  is: string;
-  authorName: string;
-  commiterName: string;
-  author: string;
-  commiter: string;
+  query: string;
+  user?: string;
+  org?: string;
+  repo?: string;
+  merge?: boolean;
+  hash?: string;
+  parent?: string;
+  is?: string;
+  authorName?: string;
+  commiterName?: string;
+  author?: string;
+  commiter?: string;
 };
 
 export type CommitSearch = {

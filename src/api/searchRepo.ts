@@ -7,6 +7,12 @@ const octokitHandle = new Octokit({
   auth: process.env.REACT_APP_GITHUB_TOKEN,
 });
 
+// https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#get-a-repository
+type repoDetails = {
+  owner: string;
+  repo: string;
+};
+
 // Based on https://octokit.github.io/rest.js/v18/#search-repos
 export async function GetSearchRepos(repo: RepoSearchParams) {
   // Function to sort out the query and potenial options
@@ -18,8 +24,7 @@ export async function GetSearchRepos(repo: RepoSearchParams) {
     } else {
       query = `${input.query}`;
     }
-    console.log(query);
-    //
+    // console.log(query);
 
     // Specials thanks to https://stackoverflow.com/questions/14379274/how-to-iterate-over-a-javascript-object
     for (let [key, value] of Object.entries(input)) {
@@ -27,44 +32,72 @@ export async function GetSearchRepos(repo: RepoSearchParams) {
         key === "query" ||
         key === "language" ||
         key === "quantity" ||
-        key === "pageNum"
+        key === "pageNum" ||
+        key === "sort" ||
+        key === "order"
       )
-        continue; // Skipping as they are handled in a different way
-      console.log(key, value);
+        continue;
       // Will only add the neccessary bit if there is a value for it
       if (value != null) {
         query = query + ` ${key}:${value}`;
       }
+      // console.log(`${key}:${value}`);
     }
-    console.log("Create Query Status", query);
+    //
+    /* Note from https://docs2.lfe.io/v3/search/#search-repositories
+    sort	string	The sort field. One of stars, forks, or updated. Default: results are sorted by best match.
+    order	string	The sort order if sort parameter is provided. One of asc or desc. Default: desc
+    */
+    // Now handle sort + order explicitly
+    if (input.sort) {
+      query += ` sort:${input.sort}`;
+      if (input.order) {
+        // Order doesn't appear to be working, will investigate later
+        // query += ` order:${input.order}`;
+      }
+    }
+
+    // console.log("Create Query Status", query);
     return query;
   };
 
   // Following this q=tetris+language:assembly&sort=stars&order=desc
-  const queryHandle = (query: string, language: string) => {
-    if (language !== "") {
-      const result = `${query}+language:${language}`;
-      return result;
-    } else {
-      const result = `${query}`;
-      return result;
-    }
-  };
+  // const queryHandle = (query: string, language: string) => {
+  //   if (language !== "") {
+  //     const result = `${query}+language:${language}`;
+  //     return result;
+  //   } else {
+  //     const result = `${query}`;
+  //     return result;
+  //   }
+  // };
+
   try {
-    // Uncomment below for complete object
-    console.log(repo);
     if (!repo.language) {
-      console.log(repo.query);
       repo.language = "";
     }
-    console.log(createQuery(repo));
-    console.log(queryHandle(repo.query, repo.language));
+    // console.log(queryHandle(repo.query, repo.language));
     const result = await octokitHandle.rest.search.repos({
       q: createQuery(repo),
       per_page: repo.quantity,
       page: repo.pageNum,
     });
     return result.data.items;
+  } catch (error: any) {
+    console.error("Error in searchRepos:", error.message || error);
+  }
+}
+
+// Function to grab a specific details about a repo, meant for the repo menu table
+export async function GetRepoDetails(repo: repoDetails) {
+  try {
+    // console.log(queryHandle(repo.query, repo.language));
+    const result = await octokitHandle.rest.repos.get({
+      owner: repo.owner,
+      repo: repo.repo,
+    });
+    console.log(result);
+    return result.data;
   } catch (error: any) {
     console.error("Error in searchRepos:", error.message || error);
   }

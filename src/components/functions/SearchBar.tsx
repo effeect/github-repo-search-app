@@ -2,24 +2,30 @@ import styles from "../../styles/SearchBar.module.css";
 import { useState } from "react";
 import { AddRule } from "../rules/AddRule";
 
-// Generic Type to extend on
+type BaseQuery = {
+  query: string;
+  sort?: "stars" | "forks" | "updated";
+  order?: "asc" | "desc";
+};
+
 type SearchBarDefinition<T> = {
   query: T;
   setQuery: (q: T) => void;
   onSearch: () => void;
 };
 
-// Extended to add the parameter of Optional Params
 type SearchBarProps<T> = SearchBarDefinition<T> & {
   optionalParams: readonly (keyof Omit<T, "query">)[];
+  showOrder?: boolean;
 };
 
 // Component will need a type input of some sorts
-export function SearchBar<T extends { query: string }>({
+export function SearchBar<T extends BaseQuery>({
   query,
   setQuery,
   onSearch,
   optionalParams,
+  showOrder,
 }: SearchBarProps<T>) {
   const [params, setParams] = useState<Partial<T>>({});
   // State of the modal, which is allowed to add "Rules"
@@ -30,11 +36,11 @@ export function SearchBar<T extends { query: string }>({
   );
 
   const handleChange = (key: keyof T, value: string) => {
-    setParams({ ...params, [key]: value }); // Sets the Optional Params
+    setParams({ ...params, [key]: value });
+    setQuery({ ...query, [key]: value } as T);
+  };
 
-    setQuery({ ...query, [key]: value } as T); // Set the main query
-  }; //Remove Handler
-
+  // If the remove button is clicked, this will occur
   const handleRemoveParam = (param: keyof Omit<T, "query">) => {
     setActiveParams(activeParams.filter((p) => p !== param));
     const newParams = { ...params };
@@ -43,17 +49,16 @@ export function SearchBar<T extends { query: string }>({
     const newQuery = { ...query };
     delete (newQuery as any)[param];
     setQuery(newQuery);
-  }; // To store Whichever params are active
+  };
 
+  // Add an optional param
   const handleAddParam = (param: string) => {
     setActiveParams([...activeParams, param as keyof Omit<T, "query">]);
     setIsModalOpen(false);
   };
-  // Button Search
+  // Button Search here
   const onSearchClick = () => {
-    console.log("Params", params);
-    const fullParams = { query: query.query, ...params } as T;
-    // console.log("Full Params", fullParams);
+    const fullParams = { ...query, ...params } as T;
     setQuery(fullParams);
     onSearch();
   };
@@ -67,7 +72,7 @@ export function SearchBar<T extends { query: string }>({
         onSearchClick();
       }}
     >
-      <label htmlFor="search">Search for stuff</label>
+      <label htmlFor="search">Search</label>
       <input
         id="search"
         type="search"
@@ -94,9 +99,9 @@ export function SearchBar<T extends { query: string }>({
       />
 
       {/* Render active params */}
-      {activeParams.map((key) => (
-        <div key={String(key)} className={styles.centerContent}>
-          <div className={styles.buttonContainer}>
+      <div className={styles.centerContent}>
+        {activeParams.map((key) => (
+          <div className={styles.centerContent} key={String(key)}>
             <input
               type="search"
               placeholder={`Enter ${String(key)}...`}
@@ -104,11 +109,42 @@ export function SearchBar<T extends { query: string }>({
               onChange={(e) => handleChange(key, e.target.value)}
             />
             <button type="button" onClick={() => handleRemoveParam(key)}>
-              ✖ Remove
+              Remove
             </button>
           </div>
+        ))}
+      </div>
+      {/* Sort Dropdown for search*/}
+      {showOrder && (
+        <div className={styles.centerContent}>
+          <label htmlFor="sort">Sort by:</label>
+          <select
+            id="sort"
+            // Best Match by default
+            value={query.sort ?? ""}
+            onChange={(e) => setQuery({ ...query, sort: e.target.value })}
+          >
+            <option value="">Best Match (default)</option>
+            <option value="stars">Stars</option>
+            <option value="forks">Forks</option>
+            <option value="updated">Updated</option>
+          </select>
         </div>
-      ))}
+      )}
+
+      {/* Order dropdown */}
+      {/* <div className={styles.centerContent}>
+        <label htmlFor="order">Order:</label>
+        <select
+          id="order"
+          // Descending by default
+          value={query.order ?? "desc"}
+          onChange={(e) => setQuery({ ...query, order: e.target.value })}
+        >
+          <option value="desc">Descending (default)</option>
+          <option value="asc">Ascending</option>
+        </select>
+      </div> */}
     </form>
   );
 }

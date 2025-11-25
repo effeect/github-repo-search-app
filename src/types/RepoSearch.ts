@@ -7,14 +7,14 @@ export type RepoSearchParams = {
   language?: string;
   topic?: string;
   license?: string;
-  isPublic?: string;
-  isPrivate?: string;
+  isPublic?: boolean;
+  isPrivate?: boolean;
   mirror?: boolean;
   pageNum?: number;
   template?: boolean;
   archived?: boolean;
-  sort?: string;
-  order?: string;
+  sort?: "stars" | "forks" | "updated";
+  order?: "asc" | "desc";
   quantity?: number;
   stars?: number;
 };

@@ -9,3 +9,8 @@ The following tools were used :
 IDE/Tools for code formatting :
 
 - Prettier
+
+# Features
+
+- Ability to search for repos and sort and add rules
+- Ability to search for code and view individual files within the GUI
