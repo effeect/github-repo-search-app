@@ -1,37 +1,35 @@
 // Search Commits
 // This handler is responsible for searching through Commits
 import { Octokit } from "octokit";
-import { SearchCommitParam, CommitSearch } from "../types/CommitSearch";
+import { IssueSearchQuery, issueSearch } from "../types/IssueSearch";
 
 const octokitHandle = new Octokit({
   auth: process.env.REACT_APP_GITHUB_TOKEN,
 });
 
-export async function GetSearchCommits(
-  commitSearch: CommitSearch
-): Promise<any> {
+export async function GetSearchIssues(issue: issueSearch): Promise<any> {
   // Creating the query to be sent off, expecting a string
-  const createQuery = (input: SearchCommitParam): string => {
+  const createQuery = (input: IssueSearchQuery): string => {
+    console.log(input.query);
     let query = `${input.query ?? ""}`;
     for (let [key, value] of Object.entries(input)) {
       if (!value) continue;
       if (key === "query") continue;
       query += ` ${key}:${value}`;
     }
+    query += ` is:issue`;
     return query.trim();
   };
 
   try {
-    const formattedQuery = createQuery(commitSearch.q);
+    const formattedQuery = createQuery(issue.q);
     // console.log("Commit search query:", formattedQuery);
-    console.log();
-    const result = await octokitHandle.rest.search.commits({
+    console.log(formattedQuery);
+    const result = await octokitHandle.rest.search.issuesAndPullRequests({
       q: formattedQuery,
       sort: "", // This field is closing down
-      per_page: Number(commitSearch.per_page)
-        ? Number(commitSearch.per_page)
-        : 30,
-      page: Number(commitSearch.page) ? Number(commitSearch.page) : 1,
+      per_page: Number(issue.per_page) ? Number(issue.per_page) : 30,
+      page: Number(issue.page) ? Number(issue.page) : 1,
     });
 
     return result;

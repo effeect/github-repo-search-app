@@ -13,6 +13,7 @@ import { RepoSearch } from "./routes/RepoSearch";
 import FileSearchPage from "./routes/FileSearchPage";
 import CommitSearchPage from "./routes/RepoSearchCommits";
 import { RepoMenuPage } from "./routes/RepoMenu";
+import RepoSearchIssues from "./routes/RepoSearchIssues";
 // For this app we are taking advantage of the app routes
 /*
   Following route details :
@@ -31,6 +32,8 @@ function App() {
           <Route path="/repo/:owner/:name" element={<RepoMenuPage />} />
           {/* Do a code search on a repo */}
           <Route path="/code/:owner/:name" element={<RepoSearchPage />} />
+          {/* Do a issue search on a repo */}
+          <Route path="/issue/:owner/:name" element={<RepoSearchIssues />} />
           {/* Allow viewing of content of the file without needing to go to Github */}
           <Route path="/code/:owner/:name/*" element={<FileSearchPage />} />
           {/* Do a search on Commits*/}

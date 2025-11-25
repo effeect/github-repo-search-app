@@ -1,19 +1,15 @@
-// https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#list-commits--parameters
-// Not sure about this one as there isn't an easy list of potenial search queries
-
+//https://docs.github.com/en/search-github/searching-on-github/searching-commits
 // nvm found this : https://github.com/github/docs/blob/main/content/search-github/searching-on-github/searching-commits.md
 export type SearchCommitParam = {
   query: string;
-  user?: string;
-  org?: string;
   repo?: string;
+  author?: string;
   merge?: boolean;
   hash?: string;
   parent?: string;
   is?: string;
   authorName?: string;
   commiterName?: string;
-  author?: string;
   commiter?: string;
 };
 

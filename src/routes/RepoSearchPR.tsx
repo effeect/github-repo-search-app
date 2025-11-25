@@ -10,7 +10,7 @@ import { PageControls } from "../components/functions/PageControls";
 import { ISSUE_OPTIONAL_PARAMS } from "../constants/searchParams";
 
 // Repo Search Page is the overview page to search code among a selected repo
-export default function RepoSearchIssues() {
+export default function RepoSearchPR() {
   const [query, setQuery] = useState<IssueSearchQuery>({ query: "" });
   const { owner, name } = useParams<{ owner: string; name: string }>();
   const [page, setPage] = useState(1);

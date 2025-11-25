@@ -1,12 +1,14 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { GetSearchCommits } from "../api/searchCommit";
-import { SearchCommitParam, CommitSearch } from "../types/CommitSearch";
+import { SearchCommitParam } from "../types/CommitSearch";
 
 import styles from "../styles/AppHeader.module.css";
 import { SearchBar } from "../components/functions/SearchBar";
 import { PageControls } from "../components/functions/PageControls";
 import { CommitResultsTable } from "../components/functions/CommitResults";
+
+import { COMMIT_OPTIONAL_PARAMS } from "../constants/searchParams";
 
 export default function CommitSearchPage() {
   const [query, setQuery] = useState<SearchCommitParam>({ query: "" });
@@ -54,7 +56,7 @@ export default function CommitSearchPage() {
         query={query}
         setQuery={(q) => setQuery(q)}
         onSearch={handleQuery}
-        optionalParams={[]} // you can define commit-specific params
+        optionalParams={COMMIT_OPTIONAL_PARAMS} // you can define commit-specific params
       />
       <h1 className="pure-heading">Results:</h1>
       <CommitResultsTable results={visibleResults} />

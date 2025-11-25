@@ -1,7 +1,7 @@
 // Many thanks to https://docs2.lfe.io/v3/search/
 
 export type IssueSearchQuery = {
-  keyword: string;
+  query: string;
   in?: string;
   author?: string;
   assignee?: string;
@@ -23,10 +23,12 @@ export type IssueSearchQuery = {
   repo?: string;
 };
 
-export type SearchIssue = {
+export type issueSearch = {
   q: IssueSearchQuery;
   sort?: string;
   order?: string;
+  per_page?: number;
+  page?: number;
 };
 
 /* 
