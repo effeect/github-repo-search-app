@@ -1,4 +1,4 @@
-// This page is responsible for the Repo Menu that gives some repo details + next steps!
+// This page is responsible for the Repo Menu that gives some repo details and next steps
 import { useState, useEffect } from "react";
 // Import Styles
 import styles from "../styles/AppHeader.module.css";
@@ -56,15 +56,31 @@ export function RepoMenuPage() {
       </h1>
       <small>List details of the repository here</small>
       {/* Buttons to navigate to the seperate routes*/}
-      <Link to={`/code/${owner}/${repo}`} className={styles.repoLink}>
-        Link to the Code Search{" "}
-      </Link>
-      <Link to={`/commit/${owner}/${repo}`} className={styles.repoLink}>
-        Link to the Commit Search
-      </Link>
+      <div className="pure-g">
+        {" "}
+        <Link to={`/code/${owner}/${repo}`} className={styles.repoLink}>
+          Link to the Code Search{" "}
+        </Link>
+      </div>
+      <div className="pure-g">
+        <Link to={`/commit/${owner}/${repo}`} className={styles.repoLink}>
+          Link to the Commit Search
+        </Link>
+      </div>
+      <div className="pure-g">
+        <Link to={`/issue/${owner}/${repo}`} className={styles.repoLink}>
+          Link to the Issue Search
+        </Link>
+      </div>
+      <div className="pure-g">
+        <Link to={`/pr/${owner}/${repo}`} className={styles.repoLink}>
+          Link to PRs search
+        </Link>
+      </div>
+
       {loading && <p>Loading...</p>}
       {error && <p className={styles.error}>{error}</p>}
-
+      {/* Details of the Repo */}
       {details && (
         <div className={styles.repoDetails}>
           <h2>{details.name}</h2>
