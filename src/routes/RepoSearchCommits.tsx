@@ -8,7 +8,10 @@ import { SearchBar } from "../components/functions/SearchBar";
 import { PageControls } from "../components/functions/PageControls";
 import { CommitResultsTable } from "../components/functions/CommitResults";
 
-import { COMMIT_OPTIONAL_PARAMS } from "../constants/searchParams";
+import {
+  COMMIT_OPTIONAL_PARAMS,
+  COMMIT_PARAM_CONFIG,
+} from "../constants/searchParams";
 
 export default function CommitSearchPage() {
   const [query, setQuery] = useState<SearchCommitParam>({ query: "" });
@@ -57,6 +60,7 @@ export default function CommitSearchPage() {
         setQuery={(q) => setQuery(q)}
         onSearch={handleQuery}
         optionalParams={COMMIT_OPTIONAL_PARAMS} // you can define commit-specific params
+        paramConfig={COMMIT_PARAM_CONFIG}
       />
       <h1 className="pure-heading">Results:</h1>
       <CommitResultsTable results={visibleResults} />

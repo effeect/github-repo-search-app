@@ -10,7 +10,10 @@ import { SearchBar } from "../components/functions/SearchBar";
 import { SearchRepoTable } from "../components/functions/TableResults";
 import { PageControls } from "../components/functions/PageControls";
 import { RepoSearchParams } from "../types/RepoSearch";
-import { REPO_OPTIONAL_PARAMS } from "../constants/searchParams";
+import {
+  REPO_OPTIONAL_PARAMS,
+  REPO_PARAM_CONFIG,
+} from "../constants/searchParams";
 
 // Keeping everything under AppHeader
 export function RepoSearch() {
@@ -100,6 +103,7 @@ export function RepoSearch() {
             onSearch={handleQuery}
             optionalParams={REPO_OPTIONAL_PARAMS}
             showOrder={true}
+            paramConfig={REPO_PARAM_CONFIG}
           />
         </div>
         <div className="pure-g">

@@ -14,9 +14,16 @@ type SearchBarDefinition<T> = {
   onSearch: () => void;
 };
 
+type ParamType = "string" | "number" | "boolean";
+
+type ParamConfig<T> = {
+  [K in keyof Omit<T, "query">]?: ParamType;
+};
+
 type SearchBarProps<T> = SearchBarDefinition<T> & {
   optionalParams: readonly (keyof Omit<T, "query">)[];
   showOrder?: boolean;
+  paramConfig: ParamConfig<T>;
 };
 
 // Component will need a type input of some sorts
@@ -26,6 +33,7 @@ export function SearchBar<T extends BaseQuery>({
   onSearch,
   optionalParams,
   showOrder,
+  paramConfig = {},
 }: SearchBarProps<T>) {
   const [params, setParams] = useState<Partial<T>>({});
   // State of the modal, which is allowed to add "Rules"
@@ -35,7 +43,7 @@ export function SearchBar<T extends BaseQuery>({
     []
   );
 
-  const handleChange = (key: keyof T, value: string) => {
+  const handleChange = (key: keyof T, value: string | number | boolean) => {
     setParams({ ...params, [key]: value });
     setQuery({ ...query, [key]: value } as T);
   };
@@ -56,6 +64,7 @@ export function SearchBar<T extends BaseQuery>({
     setActiveParams([...activeParams, param as keyof Omit<T, "query">]);
     setIsModalOpen(false);
   };
+
   // Button Search here
   const onSearchClick = () => {
     const fullParams = { ...query, ...params } as T;
@@ -100,19 +109,40 @@ export function SearchBar<T extends BaseQuery>({
 
       {/* Render active params */}
       <div className={styles.centerContent}>
-        {activeParams.map((key) => (
-          <div className={styles.centerContent} key={String(key)}>
-            <input
-              type="search"
-              placeholder={`Enter ${String(key)}...`}
-              value={String(query[key] ?? "")}
-              onChange={(e) => handleChange(key, e.target.value)}
-            />
-            <button type="button" onClick={() => handleRemoveParam(key)}>
-              Remove
-            </button>
-          </div>
-        ))}
+        {activeParams.map((key) => {
+          const type = paramConfig[key];
+
+          const value = query[key] ?? "";
+          return (
+            <div key={String(key)} className={styles.centerContent}>
+              {/* Some basic input validation abliet would like to do something a bit tidier*/}
+              {type === "string" && (
+                <input
+                  type="text"
+                  value={String(value)}
+                  onChange={(e) => handleChange(key, e.target.value)}
+                />
+              )}
+              {type === "number" && (
+                <input
+                  type="number"
+                  value={value as number | ""}
+                  onChange={(e) => handleChange(key, Number(e.target.value))}
+                />
+              )}
+              {type === "boolean" && (
+                <select
+                  value={String(value)}
+                  onChange={(e) => handleChange(key, e.target.value === "true")}
+                >
+                  <option value="">Select...</option>
+                  <option value="true">True</option>
+                  <option value="false">False</option>
+                </select>
+              )}
+            </div>
+          );
+        })}
       </div>
       {/* Sort Dropdown for search*/}
       {showOrder && (

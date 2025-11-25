@@ -7,7 +7,10 @@ import styles from "../styles/AppHeader.module.css";
 import { IssueResultTable } from "../components/functions/IssueResults";
 import { SearchBar } from "../components/functions/SearchBar";
 import { PageControls } from "../components/functions/PageControls";
-import { ISSUE_OPTIONAL_PARAMS } from "../constants/searchParams";
+import {
+  ISSUE_OPTIONAL_PARAMS,
+  ISSUE_PARAM_CONFIG,
+} from "../constants/searchParams";
 
 // Repo Search Page is the overview page to search code among a selected repo
 export default function RepoSearchPR() {
@@ -57,6 +60,7 @@ export default function RepoSearchPR() {
         setQuery={(q) => setQuery(q)}
         onSearch={handleQuery}
         optionalParams={ISSUE_OPTIONAL_PARAMS} // you can define commit-specific params
+        paramConfig={ISSUE_PARAM_CONFIG}
       />
       <h1 className="pure-heading">Results:</h1>
       <IssueResultTable results={visibleResults} />

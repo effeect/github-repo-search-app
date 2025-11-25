@@ -7,7 +7,10 @@ import styles from "../styles/AppHeader.module.css";
 import { SearchCodeTable } from "../components/functions/CodeResults";
 import { SearchBar } from "../components/functions/SearchBar";
 import { PageControls } from "../components/functions/PageControls";
-import { CODE_OPTIONAL_PARAMS } from "../constants/searchParams";
+import {
+  CODE_OPTIONAL_PARAMS,
+  CODE_PARAM_CONFIG,
+} from "../constants/searchParams";
 
 // Repo Search Page is the overview page to search code among a selected repo
 export default function RepoSearchPage() {
@@ -92,6 +95,7 @@ export default function RepoSearchPage() {
               setQuery={(q) => setQuery(q)}
               onSearch={handleQuery}
               optionalParams={CODE_OPTIONAL_PARAMS}
+              paramConfig={CODE_PARAM_CONFIG}
             />
             {/* Need to center this  */}
             <h1 className="pure-heading">Results : </h1>
