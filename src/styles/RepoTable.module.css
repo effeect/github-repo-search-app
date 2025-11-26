@@ -48,18 +48,18 @@
   /* Uncomment below to make this circular*/
   border-radius: 50%;
   object-fit: cover;
-  margin-right: 0.75rem;
+  margin-right: 0rem;
   vertical-align: middle;
   /* needed to make sure images are all the same size */
-  min-width: 10rem;
+  min-width: 5em;
 }
 
 .repoAvatarWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 10rem;
-  height: 10rem;
+  width: 5rem;
+  height: 5rem;
 }
 
 .repoText {

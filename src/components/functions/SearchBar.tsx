@@ -139,6 +139,7 @@ export function SearchBar<T extends BaseQuery>({
             optionalParams.filter((p) => !activeParams.includes(p)) as string[]
           }
         />
+        <div className="mt-4"></div>
 
         {/* Active Params */}
         {activeParams.map((key) => {
@@ -148,7 +149,14 @@ export function SearchBar<T extends BaseQuery>({
           return (
             <div key={String(key)} className="field">
               <div className="field has-addons">
-                <label className="label">{String(key)}</label>
+                {/* Doing a static button as had an issue with the Label object*/}
+                <div className="control">
+                  <a className="button is-static">
+                    {/* Thanks to https://www.geeksforgeeks.org/javascript/how-to-make-first-letter-of-a-string-uppercase-in-javascript/*/}
+                    {String(key).replace(/^./, (char) => char.toUpperCase())}
+                  </a>
+                </div>
+
                 <div className="control is-expanded">
                   {type === "string" && (
                     <input

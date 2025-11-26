@@ -22,6 +22,8 @@ export default function RepoSearchIssues() {
   useEffect(() => {
     document.title = `GitSearch : Issues of ${owner}/${name}`;
   });
+
+  // Fetch Page Data
   const fetchPageData = async (Page: number) => {
     if (cache[Page]) return;
     const data = await GetSearchIssues({

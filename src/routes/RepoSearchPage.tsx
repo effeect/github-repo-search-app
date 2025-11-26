@@ -24,6 +24,7 @@ export default function RepoSearchPage() {
   useEffect(() => {
     document.title = `GitSearch : Code of ${owner}/${name}`;
   });
+
   // Taken from Repo Search, need to make some additonal modifications
   const fetchPageData = async (Page: number) => {
     if (cache[Page]) return; // Don't bother if its already there

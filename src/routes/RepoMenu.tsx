@@ -6,11 +6,14 @@ import { useParams } from "react-router-dom";
 import { GetRepoDetails } from "../api/searchRepo";
 import { Link } from "react-router-dom";
 
+import { ReactComponent as GithubIcon } from "../svg/github-mark.svg";
+
 // Variables we are going to use in the GUI
 type RepoDetails = {
   name: string;
   description?: string;
   stargazers_count?: number;
+  stargazers?: number;
   forks_count?: number;
   html_url?: string;
   watchers: string;
@@ -19,6 +22,7 @@ type RepoDetails = {
   // Archived
   archived: boolean;
   allow_forking: boolean;
+  created_at: string;
   // Topics Array
   topics?: string[];
 };
@@ -56,7 +60,7 @@ export function RepoMenuPage() {
   return (
     <>
       {/* Taken from https://bulma.io/documentation/layout/hero/*/}
-      <section className="hero is-medium is-link">
+      <section className="hero is-large is-link">
         <div className="hero-body">
           <div className="subtitle">
             <Link to={`/`}>
@@ -69,16 +73,35 @@ export function RepoMenuPage() {
           </p>
 
           {!loading && (
-            <p className="subtitle">
-              {details?.description ?? "No description provided."}
-            </p>
+            <>
+              <p className="subtitle">
+                {details?.description ?? "No description provided."}
+              </p>
+              <p className="subtitle">
+                {details?.created_at
+                  ? new Date(details.created_at).toLocaleString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "2-digit",
+                    })
+                  : "No creation date provided."}
+              </p>
+            </>
           )}
+
           {/* Add Links to the individual tags maybe?*/}
           {details?.topics?.length ? (
             <div className="tags mt-3 is-centered">
               {details?.topics?.map((topic) => (
-                <span key={topic} className="tag is-info is-light">
-                  {topic}
+                <span key={topic} className="tag is-rounded">
+                  <Link
+                    className={styles.repoLink}
+                    to={`https://github.com/topics/${topic}`}
+                  >
+                    <h3>{topic}</h3>
+                  </Link>
                 </span>
               ))}
             </div>
@@ -86,7 +109,7 @@ export function RepoMenuPage() {
 
           <div className="columns is-centered mt-4">
             <div className="column is-narrow">
-              <div className="field is-grouped is-grouped-multiline is-centered">
+              <div className="field is-grouped is-grouped-multiline is-centered is-justify-content-center">
                 <div className="control">
                   {" "}
                   <Link
@@ -125,15 +148,56 @@ export function RepoMenuPage() {
           </div>
           {details && (
             <div className="columns is-centered mt-4">
-              <div className="column is-narrow">Things</div>
               <div className="column is-narrow">
-                Forks : {details.forks_count}
+                <div className="field has-addons is-centered is-justify-content-center">
+                  <p className="control">
+                    <span className="input is-light">Forks : </span>
+                  </p>
+                  <p className="control">
+                    <button className="button is-info" onClick={() => {}}>
+                      <Link
+                        to={`https://github.com/${owner}/${repo}/forks`}
+                        className={styles.repoDescription}
+                      >
+                        {details.forks_count}
+                      </Link>
+                    </button>
+                  </p>
+                </div>
               </div>
               <div className="column is-narrow">
-                Stars : {details.stargazers_count}
+                <div className="field has-addons is-centered is-justify-content-center">
+                  <p className="control">
+                    <span className="input is-light">Watchers :</span>
+                  </p>
+                  <p className="control">
+                    <button className="button is-info" onClick={() => {}}>
+                      <Link
+                        to={`https://github.com/${owner}/${repo}/watchers`}
+                        className={styles.repoDescription}
+                      >
+                        {details.watchers}
+                      </Link>
+                    </button>
+                  </p>
+                </div>
               </div>
               <div className="column is-narrow">
-                Watchers : {details.watchers}
+                {/* Stars Symbol and Links */}
+                <div className="field has-addons is-centered is-justify-content-center">
+                  <p className="control">
+                    <span className="input is-light">Stars :</span>
+                  </p>
+                  <p className="control">
+                    <button className="button is-info" onClick={() => {}}>
+                      <Link
+                        to={`https://github.com/${owner}/${repo}/stargazers`}
+                      >
+                        {details.stargazers_count}
+                      </Link>
+                    </button>
+                  </p>
+                </div>
               </div>
             </div>
           )}
@@ -141,19 +205,6 @@ export function RepoMenuPage() {
       </section>
       {loading && <p>Loading...</p>}
       {error && <p className={styles.error}>{error}</p>}
-      {/* Details of the Repo */}
-      {details && (
-        <div className={styles.repoDetails}>
-          <h2>{details.name}</h2>
-          <p>{details.description ?? "No description provided."}</p>
-          <p> Star Count: {details.stargazers_count}</p>
-          <p> Fork Count: {details.forks_count}</p>
-          <p> Watcher Count: {details.watchers}</p>
-          <a href={details.html_url} target="_blank" rel="noopener noreferrer">
-            View on GitHub
-          </a>
-        </div>
-      )}
     </>
   );
 }
