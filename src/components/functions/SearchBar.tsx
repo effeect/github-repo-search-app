@@ -73,108 +73,133 @@ export function SearchBar<T extends BaseQuery>({
   };
 
   return (
-    <form
-      className={styles.searchform}
-      role="search"
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSearchClick();
-      }}
-    >
-      <label htmlFor="search">Search</label>
-      <input
-        id="search"
-        type="search"
-        placeholder="Search..."
-        value={query.query}
-        onChange={(e) => setQuery({ ...query, query: e.target.value })}
-        required
-        autoFocus
-      />
-      <button type="submit">Go</button>
+    <>
+      <form
+        className="box"
+        role="search"
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSearchClick();
+        }}
+      >
+        {/* Search input */}
+        <div className="field  has-addons">
+          <div className="control is-expanded">
+            <input
+              id="search"
+              type="search"
+              className="input"
+              placeholder="Search for Repository here..."
+              value={query.query}
+              onChange={(e) => setQuery({ ...query, query: e.target.value })}
+              required
+              autoFocus
+            />
+          </div>
 
-      {/* Add Rule button */}
-      <button type="button" onClick={() => setIsModalOpen(true)}>
-        Add Rule
-      </button>
+          <div className="control">
+            <button type="submit" className="button is-primary">
+              Go
+            </button>
+          </div>
 
-      <AddRule
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onAdd={handleAddParam}
-        availableParams={
-          optionalParams.filter((p) => !activeParams.includes(p)) as string[]
-        }
-      />
+          {showOrder && (
+            <div className="control">
+              <div className="select is-fullwidth">
+                <select
+                  id="sort"
+                  value={query.sort ?? ""}
+                  onChange={(e) => setQuery({ ...query, sort: e.target.value })}
+                >
+                  <option value="">Best Match (default)</option>
+                  <option value="stars">Stars</option>
+                  <option value="forks">Forks</option>
+                  <option value="updated">Updated</option>
+                </select>
+              </div>
+            </div>
+          )}
+        </div>
 
-      {/* Render active params */}
-      <div className={styles.centerContent}>
+        {/* Modal for adding rules */}
+        <div className="control">
+          <button
+            type="button"
+            className="button is-link"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Add Rule
+          </button>
+        </div>
+        <AddRule
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onAdd={handleAddParam}
+          availableParams={
+            optionalParams.filter((p) => !activeParams.includes(p)) as string[]
+          }
+        />
+
+        {/* Active Params */}
         {activeParams.map((key) => {
           const type = paramConfig[key];
-
           const value = query[key] ?? "";
+
           return (
-            <div key={String(key)} className={styles.centerContent}>
-              {/* Some basic input validation abliet would like to do something a bit tidier*/}
-              {type === "string" && (
-                <input
-                  type="text"
-                  value={String(value)}
-                  onChange={(e) => handleChange(key, e.target.value)}
-                />
-              )}
-              {type === "number" && (
-                <input
-                  type="number"
-                  value={value as number | ""}
-                  onChange={(e) => handleChange(key, Number(e.target.value))}
-                />
-              )}
-              {type === "boolean" && (
-                <select
-                  value={String(value)}
-                  onChange={(e) => handleChange(key, e.target.value === "true")}
-                >
-                  <option value="">Select...</option>
-                  <option value="true">True</option>
-                  <option value="false">False</option>
-                </select>
-              )}
+            <div key={String(key)} className="field">
+              <div className="field has-addons">
+                <label className="label">{String(key)}</label>
+                <div className="control is-expanded">
+                  {type === "string" && (
+                    <input
+                      type="text"
+                      className="input"
+                      value={String(value)}
+                      onChange={(e) => handleChange(key, e.target.value)}
+                    />
+                  )}
+                  {type === "number" && (
+                    <input
+                      type="number"
+                      className="input"
+                      value={value as number | ""}
+                      onChange={(e) =>
+                        handleChange(key, Number(e.target.value))
+                      }
+                    />
+                  )}
+                  {/* With the design of the handler, if there is no value selected it shouldn't "break" the query*/}
+                  {type === "boolean" && (
+                    <div className="select is-fullwidth">
+                      <select
+                        value={String(value)}
+                        onChange={(e) =>
+                          handleChange(key, e.target.value === "true")
+                        }
+                      >
+                        <option value="">Select...</option>
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                      </select>
+                    </div>
+                  )}
+                </div>
+
+                {/* Remove button beside optional input field */}
+                <div className="control">
+                  <button
+                    type="button"
+                    className="button is-danger"
+                    onClick={() => handleRemoveParam(key)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
             </div>
           );
         })}
-      </div>
-      {/* Sort Dropdown for search*/}
-      {showOrder && (
-        <div className={styles.centerContent}>
-          <label htmlFor="sort">Sort by:</label>
-          <select
-            id="sort"
-            // Best Match by default
-            value={query.sort ?? ""}
-            onChange={(e) => setQuery({ ...query, sort: e.target.value })}
-          >
-            <option value="">Best Match (default)</option>
-            <option value="stars">Stars</option>
-            <option value="forks">Forks</option>
-            <option value="updated">Updated</option>
-          </select>
-        </div>
-      )}
-
-      {/* Order dropdown */}
-      {/* <div className={styles.centerContent}>
-        <label htmlFor="order">Order:</label>
-        <select
-          id="order"
-          // Descending by default
-          value={query.order ?? "desc"}
-          onChange={(e) => setQuery({ ...query, order: e.target.value })}
-        >
-          <option value="desc">Descending (default)</option>
-          <option value="asc">Ascending</option>
-        </select>
-      </div> */}
-    </form>
+      </form>
+    </>
   );
 }

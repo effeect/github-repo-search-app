@@ -3,6 +3,13 @@
   list-style: none;
   margin-top: 1rem;
 }
+/* Row Formatting */
+.repoRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  align-items: center;
+}
 
 .repoItem {
   width: 100%;
@@ -43,14 +50,6 @@
   object-fit: cover;
   margin-right: 0.75rem;
   vertical-align: middle;
-}
-
-/* Row Formatting */
-.repoRow {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  align-items: center;
 }
 
 .repoAvatarWrapper {
