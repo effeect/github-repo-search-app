@@ -41,7 +41,7 @@ export default function FileSearchPage() {
   return (
     <>
       <div className={styles.AppHeader}>
-        {/* Need to center this  */}
+        {/* Need to center this */}
         <h1 className="pure-heading">
           File Details for{" "}
           <big>

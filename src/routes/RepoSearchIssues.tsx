@@ -10,13 +10,21 @@ import {
   ISSUE_PARAM_CONFIG,
 } from "../constants/searchParams";
 
+import SearchResultsContainer from "../components/functions/wrappers/SearchTable";
+import GetResults from "../api/page-handler";
+
 import { useEffect } from "react";
+
 // Repo Search Page is the overview page to search code among a selected repo
 export default function RepoSearchIssues() {
   const [query, setQuery] = useState<IssueSearchQuery>({ query: "" });
   const { owner, name } = useParams<{ owner: string; name: string }>();
   const [page, setPage] = useState(1);
   const [cache, setCache] = useState<Record<number, any[]>>({});
+
+  // For Loading Icon
+  const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   // A cheeky way of updating meta data, would use something like NextJS to handle this but don't want to install too much stuff
   useEffect(() => {
@@ -26,34 +34,51 @@ export default function RepoSearchIssues() {
   // Fetch Page Data
   const fetchPageData = async (Page: number) => {
     if (cache[Page]) return;
-    const data = await GetSearchIssues({
-      q: { ...query, repo: `${owner}/${name}` },
-      sort: "",
-      per_page: 30,
-      page: Page,
-    });
-    const items = data?.data?.items ?? [];
-    setCache((prev) => ({ ...prev, [Page]: items }));
+    setLoading(true);
+    try {
+      const data = await GetSearchIssues({
+        q: { ...query, repo: `${owner}/${name}` },
+        sort: "",
+        per_page: 30,
+        page: Page,
+      });
+      const items = data?.data?.items ?? [];
+      setCache((prev) => ({ ...prev, [Page]: items }));
+      setHasSearched(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleQuery = async () => {
-    const data = await GetSearchIssues({
-      q: { ...query, repo: `${owner}/${name}` },
-      sort: "",
-      per_page: 30,
-      page: 1,
-    });
-    const items = data?.data?.items ?? [];
-    setCache({ 1: items });
-    setPage(1);
+    setLoading(true);
+    try {
+      const data = await GetSearchIssues({
+        q: { ...query, repo: `${owner}/${name}` },
+        sort: "",
+        per_page: 30,
+        page: 1,
+      });
+      const items = data?.data?.items ?? [];
+      setCache({ 1: items });
+      setPage(1);
+      setHasSearched(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePageChange = async (newPageNumber: number) => {
     setPage(newPageNumber);
-    await fetchPageData(newPageNumber);
+    const apiPage = Math.ceil(newPageNumber / 3); //In current setup, should be 15 per page
+    // await fetchPageData(apiPage);
+    // Prefetch the next chunk if we are on page 2/3
+    if (newPageNumber % 3 === 2) {
+      await fetchPageData(apiPage + 1);
+    }
   };
 
-  const visibleResults = cache[page] || [];
+  const result = GetResults(page, cache);
 
   return (
     <div className="section has-text-centered">
@@ -76,21 +101,24 @@ export default function RepoSearchIssues() {
           />
         </div>
       </div>
-      {/* Results table row */}
-      <div className="columns is-centered">
-        <div className="column is-10">
-          <IssueResultTable results={visibleResults} />
-        </div>
-      </div>
+      {/* Search Table below, wrapped below*/}
+      <SearchResultsContainer
+        loading={loading}
+        results={result.visibleResults}
+        hasSearched={hasSearched}
+      >
+        {/* Using same table layout for PRs/Issues*/}
+        <IssueResultTable results={result.visibleResults} />
+      </SearchResultsContainer>
 
       <div className="mt-4"></div>
-      {visibleResults.length > 0 && (
+      {result.visibleResults.length > 0 && (
         <div className="columns is-centered">
-          <div className="column is-10">
+          <div className="column is-4">
             <PageControls
               page={page}
               handlePageChange={handlePageChange}
-              disableNext={visibleResults.length === 0}
+              disableNext={result.nextResults.length === 0}
             />
           </div>
         </div>

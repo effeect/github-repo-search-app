@@ -10,24 +10,45 @@ type PageDef = {
 // Note the following
 // Buttons will not be shown if there are no results (look at the routes)
 export function PageControls(controls: PageDef) {
+  // This is here to allow smooth scrolling to the top when you click the next button
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Could change to below in future fyi
+    // window.scrollTo(0, 0);
+  };
   return (
     <>
-      <div className={styles.buttonContainer}>
-        {/* Previous Button*/}
+      <nav
+        className="pagination is-centered mt-4"
+        role="navigation"
+        aria-label="pagination"
+      >
         <button
+          className="pagination-previous"
           disabled={controls.page === 1}
-          onClick={() => controls.handlePageChange(controls.page - 1)}
+          onClick={() => {
+            controls.handlePageChange(controls.page - 1);
+            scrollToTop();
+          }}
         >
-          Prev
+          Previous
         </button>
-        {/* Next Button*/}
         <button
+          className="pagination-next"
           disabled={controls.disableNext}
-          onClick={() => controls.handlePageChange(controls.page + 1)}
+          onClick={() => {
+            controls.handlePageChange(controls.page + 1);
+            scrollToTop();
+          }}
         >
           Next
         </button>
-      </div>
+        <ul className="pagination-list">
+          <li>
+            <span className="pagination-link is-current">{controls.page}</span>
+          </li>
+        </ul>
+      </nav>
     </>
   );
 }

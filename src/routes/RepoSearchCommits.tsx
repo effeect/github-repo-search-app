@@ -2,12 +2,13 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { GetSearchCommits } from "../api/searchCommit";
 import { SearchCommitParam } from "../types/CommitSearch";
-
-import styles from "../styles/AppHeader.module.css";
 import { SearchBar } from "../components/functions/SearchBar";
 import { PageControls } from "../components/functions/PageControls";
 import { CommitResultsTable } from "../components/functions/CommitResults";
 import { useEffect } from "react";
+
+import SearchResultsContainer from "../components/functions/wrappers/SearchTable";
+import GetResults from "../api/page-handler";
 
 import {
   COMMIT_OPTIONAL_PARAMS,
@@ -20,33 +21,54 @@ export default function CommitSearchPage() {
   const [page, setPage] = useState(1);
   const [cache, setCache] = useState<Record<number, any[]>>({});
 
+  // For Loading Icon
+  const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+
   const fetchPageData = async (Page: number) => {
-    if (cache[Page]) return;
-    const data = await GetSearchCommits({
-      q: { ...query, repo: `${owner}/${name}` },
-      sort: "author-date",
-      per_page: "30",
-      page: String(Page),
-    });
-    const items = data?.data?.items ?? [];
-    setCache((prev) => ({ ...prev, [Page]: items }));
+    if (cache[Page]) return; // Don't bother if its already there
+    setLoading(true);
+    try {
+      const data = await GetSearchCommits({
+        q: { ...query, repo: `${owner}/${name}` },
+        sort: "author-date",
+        per_page: "30",
+        page: String(Page),
+      });
+      const items = data?.data?.items ?? [];
+      setCache((prev) => ({ ...prev, [Page]: items }));
+      setHasSearched(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleQuery = async () => {
-    const data = await GetSearchCommits({
-      q: { ...query, repo: `${owner}/${name}` },
-      sort: "author-date",
-      per_page: "30",
-      page: "1",
-    });
-    const items = data?.data?.items ?? [];
-    setCache({ 1: items });
-    setPage(1);
+    setLoading(true);
+    try {
+      const data = await GetSearchCommits({
+        q: { ...query, repo: `${owner}/${name}` },
+        sort: "author-date",
+        per_page: "30",
+        page: "1",
+      });
+      const items = data?.data?.items ?? [];
+      setCache({ 1: items });
+      setPage(1);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // Might trigger this so we can have the next one ready so the user don't notice
   const handlePageChange = async (newPageNumber: number) => {
     setPage(newPageNumber);
-    await fetchPageData(newPageNumber);
+    const apiPage = Math.ceil(newPageNumber / 3); //In current setup, should be 15 per page
+    // await fetchPageData(apiPage);
+    // Prefetch the next chunk if we are on page 2/3
+    if (newPageNumber % 3 === 2) {
+      await fetchPageData(apiPage + 1);
+    }
   };
 
   // A cheeky way of updating meta data, would use something like NextJS to handle this but don't want to install too much stuff
@@ -54,7 +76,7 @@ export default function CommitSearchPage() {
     document.title = `GitSearch : Commits of ${owner}/${name}`;
   });
 
-  const visibleResults = cache[page] || [];
+  const result = GetResults(page, cache);
 
   return (
     <div className="section has-text-centered">
@@ -77,22 +99,24 @@ export default function CommitSearchPage() {
           />
         </div>
       </div>
-      {/* Results table row */}
-      <div className="columns is-centered">
-        <div className="column is-10">
-          <CommitResultsTable results={visibleResults} />
-        </div>
-      </div>
+      {/* Search Table below, wrapped below*/}
+      <SearchResultsContainer
+        loading={loading}
+        results={result.visibleResults}
+        hasSearched={hasSearched}
+      >
+        <CommitResultsTable results={result.visibleResults} />
+      </SearchResultsContainer>
       <div className="mt-4"></div>
 
       {/* Will hide page controls if there are no visible results*/}
-      {visibleResults.length > 0 && (
+      {result.visibleResults.length > 0 && (
         <div className="columns is-centered">
-          <div className="column is-10">
+          <div className="column is-4">
             <PageControls
               page={page}
               handlePageChange={handlePageChange}
-              disableNext={visibleResults.length === 0}
+              disableNext={result.nextResults.length === 0}
             />
           </div>
         </div>
