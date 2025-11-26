@@ -2,8 +2,6 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { GetSearchIssues } from "../api/searchIssues";
 import { IssueSearchQuery } from "../types/IssueSearch";
-
-import styles from "../styles/AppHeader.module.css";
 import { IssueResultTable } from "../components/functions/IssueResults";
 import { SearchBar } from "../components/functions/SearchBar";
 import { PageControls } from "../components/functions/PageControls";
@@ -51,25 +49,44 @@ export default function RepoSearchIssues() {
   const visibleResults = cache[page] || [];
 
   return (
-    <div className={styles.AppHeader}>
-      <h1 className="pure-heading">
-        Issues in {owner}/{name}
+    <div className="section has-text-centered">
+      {/* Need to center this  */}
+      <h1 className="title">
+        Search Issues in {owner}/{name}
       </h1>
-      <SearchBar<IssueSearchQuery>
-        query={query}
-        setQuery={(q) => setQuery(q)}
-        onSearch={handleQuery}
-        optionalParams={ISSUE_OPTIONAL_PARAMS} // you can define commit-specific params
-        paramConfig={ISSUE_PARAM_CONFIG}
-      />
-      <h1 className="pure-heading">Results:</h1>
-      <IssueResultTable results={visibleResults} />
+      <p className="subtitle">
+        {" "}
+        Search for "repositories" on Github, use add rules to get more specific
+      </p>
+      <div className="columns is-centered">
+        <div className="column is-10">
+          <SearchBar<IssueSearchQuery>
+            query={query}
+            setQuery={(q) => setQuery(q)}
+            onSearch={handleQuery}
+            optionalParams={ISSUE_OPTIONAL_PARAMS} // you can define commit-specific params
+            paramConfig={ISSUE_PARAM_CONFIG}
+          />
+        </div>
+      </div>
+      {/* Results table row */}
+      <div className="columns is-centered">
+        <div className="column is-10">
+          <IssueResultTable results={visibleResults} />
+        </div>
+      </div>
+
+      <div className="mt-4"></div>
       {visibleResults.length > 0 && (
-        <PageControls
-          page={page}
-          handlePageChange={handlePageChange}
-          disableNext={visibleResults.length === 0}
-        />
+        <div className="columns is-centered">
+          <div className="column is-10">
+            <PageControls
+              page={page}
+              handlePageChange={handlePageChange}
+              disableNext={visibleResults.length === 0}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

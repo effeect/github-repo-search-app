@@ -2,12 +2,12 @@
 .RepoTable {
   list-style: none;
   margin-top: 1rem;
+  margin-left: -1rem;
 }
 /* Row Formatting */
 .repoRow {
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
+  gap: 0.5rem;
   align-items: center;
 }
 
@@ -50,6 +50,8 @@
   object-fit: cover;
   margin-right: 0.75rem;
   vertical-align: middle;
+  /* needed to make sure images are all the same size */
+  min-width: 10rem;
 }
 
 .repoAvatarWrapper {
@@ -58,4 +60,11 @@
   justify-content: center;
   width: 10rem;
   height: 10rem;
+}
+
+.repoText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
 }

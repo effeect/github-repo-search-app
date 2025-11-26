@@ -51,25 +51,45 @@ export default function CommitSearchPage() {
   const visibleResults = cache[page] || [];
 
   return (
-    <div className={styles.AppHeader}>
-      <h1 className="pure-heading">
-        Commits in {owner}/{name}
+    <div className="section has-text-centered">
+      {/* Need to center this  */}
+      <h1 className="title">
+        Search Commits in {owner}/{name}
       </h1>
-      <SearchBar<SearchCommitParam>
-        query={query}
-        setQuery={(q) => setQuery(q)}
-        onSearch={handleQuery}
-        optionalParams={COMMIT_OPTIONAL_PARAMS} // you can define commit-specific params
-        paramConfig={COMMIT_PARAM_CONFIG}
-      />
-      <h1 className="pure-heading">Results:</h1>
-      <CommitResultsTable results={visibleResults} />
+      <p className="subtitle">
+        {" "}
+        Search for "repositories" on Github, use add rules to get more specific
+      </p>
+      <div className="columns is-centered">
+        <div className="column is-10">
+          <SearchBar<SearchCommitParam>
+            query={query}
+            setQuery={(q) => setQuery(q)}
+            onSearch={handleQuery}
+            optionalParams={COMMIT_OPTIONAL_PARAMS} // you can define commit-specific params
+            paramConfig={COMMIT_PARAM_CONFIG}
+          />
+        </div>
+      </div>
+      {/* Results table row */}
+      <div className="columns is-centered">
+        <div className="column is-10">
+          <CommitResultsTable results={visibleResults} />
+        </div>
+      </div>
+      <div className="mt-4"></div>
+
+      {/* Will hide page controls if there are no visible results*/}
       {visibleResults.length > 0 && (
-        <PageControls
-          page={page}
-          handlePageChange={handlePageChange}
-          disableNext={visibleResults.length === 0}
-        />
+        <div className="columns is-centered">
+          <div className="column is-10">
+            <PageControls
+              page={page}
+              handlePageChange={handlePageChange}
+              disableNext={visibleResults.length === 0}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

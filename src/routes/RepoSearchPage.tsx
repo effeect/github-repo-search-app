@@ -3,7 +3,6 @@ import { useState } from "react";
 import { GetSearchCode } from "../api/searchCode";
 import { CodeSearchParams } from "../types/CodeSearch";
 import { Link } from "react-router-dom";
-import styles from "../styles/AppHeader.module.css";
 import { SearchCodeTable } from "../components/functions/CodeResults";
 import { SearchBar } from "../components/functions/SearchBar";
 import { PageControls } from "../components/functions/PageControls";
