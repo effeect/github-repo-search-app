@@ -6,13 +6,13 @@ export default function AppNavbar() {
   const [isActive, setIsActive] = useState(false);
   return (
     <nav
-      className="navbar is-light"
+      className="navbar is-dark"
       role="navigation"
       aria-label="main navigation"
     >
       <div className="navbar-brand">
         <a className="navbar-item" href="/">
-          <h3 className="">GitSearch</h3>
+          <h3 className="title is-4">GitSearch</h3>
         </a>
 
         <a
@@ -36,7 +36,6 @@ export default function AppNavbar() {
       >
         {/* Navbar items can go here */}
         <div className="navbar-end">
-          <a className="navbar-item">Home</a>
           <a className="navbar-item">About</a>
           <a
             href="https://github.com/effeect/github-repo-search-app"

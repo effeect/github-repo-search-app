@@ -49,7 +49,7 @@ export function AddRule({
                   <option value="">-- Choose --</option>
                   {availableParams.map((p) => (
                     <option key={p} value={p}>
-                      {p}
+                      {p.replace(/^./, (char) => char.toUpperCase())}
                     </option>
                   ))}
                 </select>
@@ -61,7 +61,6 @@ export function AddRule({
         <footer className="modal-card-foot is-centered is-justify-content-center">
           <div className="field has-addons">
             <div className="control">
-              {" "}
               <button
                 className="button is-success"
                 onClick={() => {
