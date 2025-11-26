@@ -8,28 +8,27 @@ type TableResultsDef = {
 export function SearchRepoTable({ results }: TableResultsDef) {
   return (
     <>
-      <div className={styles.RepoTable}>
-        <div className="pure-g">
-          <div className="pure-u-3-3">
-            <ul className={styles.pureList}>
-              {results.map((result) => (
-                <li key={result.id} className={styles.pureListItem}>
-                  <Link
-                    to={`/repo/${result.full_name}`}
-                    className={styles.repoLink}
-                  >
-                    <div className={styles.repoItem}>
-                      <h3 className={styles.repoName}>
-                        {/* {" "}
-                        <a
-                          href={result.html_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.repoLink}
-                        > */}
-                        {result.full_name}
-                        {/* </a> */}
-                      </h3>
+      <div className="content">
+        <h2 className="title is-4">Results</h2>
+        <ul className={"is-inline-block"}>
+          {results.map((result) => (
+            <li key={result.id} className={`${styles.RepoTable}`}>
+              <Link
+                to={`/repo/${result.full_name}`}
+                className={styles.repoLink}
+              >
+                <div className={styles.repoItem}>
+                  <div className={styles.repoRow}>
+                    {/* Left column: avatar */}
+                    <div className={styles.repoAvatarWrapper}>
+                      <img
+                        src={result.owner.avatar_url}
+                        alt={`${result.owner.login}'s avatar`}
+                        className={styles.repoAvatar}
+                      />
+                    </div>
+                    <div className={styles.repoText}>
+                      <h3 className={styles.repoName}>{result.full_name}</h3>
 
                       <p className={styles.repoDescription}>
                         {result.description}
@@ -39,12 +38,12 @@ export function SearchRepoTable({ results }: TableResultsDef) {
                         {result.watchers}
                       </p>
                     </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+                  </div>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );

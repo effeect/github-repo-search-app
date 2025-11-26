@@ -89,36 +89,46 @@ export function RepoSearch() {
   //=============================
   return (
     <>
-      <div className={styles.AppHeader}>
+      <div className="section has-text-centered">
         {/* Need to center this  */}
-        <h1 className="pure-heading">Github Repo Search</h1>
-        <small>
+        <h1 className="title">Github Repo Search</h1>
+        <p className="subtitle">
+          {" "}
           Search for "repositories" on Github, use add rules to get more
           specific
-        </small>
-        <div className="pure-g">
-          <SearchBar<RepoSearchParams>
-            query={query}
-            setQuery={setQuery}
-            onSearch={handleQuery}
-            optionalParams={REPO_OPTIONAL_PARAMS}
-            showOrder={true}
-            paramConfig={REPO_PARAM_CONFIG}
-          />
+        </p>
+
+        <div className="columns is-centered">
+          <div className="column is-10">
+            <SearchBar<RepoSearchParams>
+              query={query}
+              setQuery={setQuery}
+              onSearch={handleQuery}
+              optionalParams={REPO_OPTIONAL_PARAMS}
+              showOrder={true}
+              paramConfig={REPO_PARAM_CONFIG}
+            />
+          </div>
         </div>
-        <div className="pure-g">
-          <SearchRepoTable results={visibleResults} />
+        {/* Results table row */}
+        <div className="columns is-centered">
+          <div className="column is-10">
+            <SearchRepoTable results={visibleResults} />
+          </div>
         </div>
-        <div className="padding">{page}</div>
+
+        <div className="mt-4"></div>
 
         {/* Will hide page controls if there are no visible results*/}
         {visibleResults.length > 0 && (
-          <div>
-            <PageControls
-              page={page}
-              handlePageChange={handlePageChange}
-              disableNext={nextResults.length === 0}
-            />
+          <div className="columns is-centered">
+            <div className="column is-10">
+              <PageControls
+                page={page}
+                handlePageChange={handlePageChange}
+                disableNext={nextResults.length === 0}
+              />
+            </div>
           </div>
         )}
       </div>

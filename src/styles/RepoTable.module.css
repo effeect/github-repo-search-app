@@ -1,42 +1,25 @@
-/* Note that this taken from the React Quickstart */
-
+/* remove default bullets and sets a top margin between it and the search bar*/
 .RepoTable {
-  background-color: #504e4e;
-  display: flex;
-  min-height: 70vh; /* Needed */
-  flex-direction: column;
-  align-items: left; /* Might change this back to center */
-  justify-content: flex-start;
-  color: white;
-  width: 100vw;
-}
-
-/* Overrides for pure.css*/
-.pureList {
-  align-items: left;
   list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-
-.pureListItem {
-  text-align: left;
+  margin-top: 1rem;
 }
 
 .repoItem {
   width: 100%;
-  box-sizing: border-box;
-  padding: 1rem;
+  padding: 0.5rem;
+  border-top: 1px solid #e2e2e2;
   border-bottom: 1px solid #e2e2e2;
-  display: block;
+  display: flex;
+  text-align: left;
 }
 
+/* Title of the List item */
 .repoName {
-  font-weight: bold;
   margin: 0.5rem 0.5rem;
-  align-items: left;
+  padding: auto;
 }
 
+/* Description of the Item */
 .repoDescription {
   margin: 0.5rem 0.5rem;
   color: #ffffff;
@@ -48,16 +31,32 @@
   color: #ffffff;
 }
 
-.repoLink {
-  text-decoration: none;
-  width: 100%;
-  color: inherit; /* Needed or the links go all ugly and blue */
-  flex: 1;
-  display: block;
+/* If hover over the item light up the item, need to update the placement*/
+.repoLink:hover .repoItem {
+  background-color: #827e7e;
+  transition: background 1s ease;
 }
 
-/* If hover over the item light up the item*/
-.repoLink:hover .repoItem {
-  background-color: #d1bcbc;
-  transition: background 0.5s ease;
+.repoAvatar {
+  /* Uncomment below to make this circular*/
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.75rem;
+  vertical-align: middle;
+}
+
+/* Row Formatting */
+.repoRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  align-items: center;
+}
+
+.repoAvatarWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10rem;
+  height: 10rem;
 }
