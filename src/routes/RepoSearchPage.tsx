@@ -11,6 +11,8 @@ import {
   CODE_PARAM_CONFIG,
 } from "../constants/searchParams";
 
+import { useEffect } from "react";
+
 // Repo Search Page is the overview page to search code among a selected repo
 export default function RepoSearchPage() {
   const [query, setQuery] = useState<CodeSearchParams>({ query: "" });
@@ -18,6 +20,10 @@ export default function RepoSearchPage() {
   const [page, setPage] = useState(1);
   const [cache, setCache] = useState<Record<number, any[]>>({});
 
+  // A cheeky way of updating meta data, would use something like NextJS to handle this but don't want to install too much stuff
+  useEffect(() => {
+    document.title = `GitSearch : Code of ${owner}/${name}`;
+  });
   // Taken from Repo Search, need to make some additonal modifications
   const fetchPageData = async (Page: number) => {
     if (cache[Page]) return; // Don't bother if its already there

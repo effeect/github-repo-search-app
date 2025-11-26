@@ -10,6 +10,7 @@ import {
   ISSUE_PARAM_CONFIG,
 } from "../constants/searchParams";
 
+import { useEffect } from "react";
 // Repo Search Page is the overview page to search code among a selected repo
 export default function RepoSearchIssues() {
   const [query, setQuery] = useState<IssueSearchQuery>({ query: "" });
@@ -17,6 +18,10 @@ export default function RepoSearchIssues() {
   const [page, setPage] = useState(1);
   const [cache, setCache] = useState<Record<number, any[]>>({});
 
+  // A cheeky way of updating meta data, would use something like NextJS to handle this but don't want to install too much stuff
+  useEffect(() => {
+    document.title = `GitSearch : Issues of ${owner}/${name}`;
+  });
   const fetchPageData = async (Page: number) => {
     if (cache[Page]) return;
     const data = await GetSearchIssues({

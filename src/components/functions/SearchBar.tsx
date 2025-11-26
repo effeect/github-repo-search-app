@@ -83,7 +83,7 @@ export function SearchBar<T extends BaseQuery>({
         }}
       >
         {/* Search input */}
-        <div className="field  has-addons">
+        <div className="field has-addons">
           <div className="control is-expanded">
             <input
               id="search"

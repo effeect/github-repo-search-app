@@ -18,7 +18,10 @@ export default function FileSearchPage() {
   const [content, setContent] = useState<any | null>(null);
   // const [loading, setLoading] = useState(true);
   // Grabbing params from overview
-
+  // A cheeky way of updating meta data, would use something like NextJS to handle this but don't want to install too much stuff
+  useEffect(() => {
+    document.title = `GitSearch : File from ${owner}/${repo}`;
+  });
   // Upon page load, do the following
   useEffect(() => {
     if (!owner || !repo) {

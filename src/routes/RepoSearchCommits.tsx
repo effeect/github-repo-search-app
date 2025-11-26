@@ -7,6 +7,7 @@ import styles from "../styles/AppHeader.module.css";
 import { SearchBar } from "../components/functions/SearchBar";
 import { PageControls } from "../components/functions/PageControls";
 import { CommitResultsTable } from "../components/functions/CommitResults";
+import { useEffect } from "react";
 
 import {
   COMMIT_OPTIONAL_PARAMS,
@@ -47,6 +48,11 @@ export default function CommitSearchPage() {
     setPage(newPageNumber);
     await fetchPageData(newPageNumber);
   };
+
+  // A cheeky way of updating meta data, would use something like NextJS to handle this but don't want to install too much stuff
+  useEffect(() => {
+    document.title = `GitSearch : Commits of ${owner}/${name}`;
+  });
 
   const visibleResults = cache[page] || [];
 

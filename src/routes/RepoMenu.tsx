@@ -29,6 +29,10 @@ export function RepoMenuPage() {
   const owner = rawOwner ?? "";
   const repo = rawName ?? "";
 
+  // A cheeky way of updating meta data, would use something like NextJS to handle this but don't want to install too much stuff
+  useEffect(() => {
+    document.title = `GitSearch : ${owner}/${repo}`;
+  });
   const [details, setDetails] = useState<RepoDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
