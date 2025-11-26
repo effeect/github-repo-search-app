@@ -20,7 +20,7 @@ type RepoDetails = {
   archived: boolean;
   allow_forking: boolean;
   // Topics Array
-  topics: String[];
+  topics?: string[];
 };
 
 export function RepoMenuPage() {
@@ -38,6 +38,7 @@ export function RepoMenuPage() {
       try {
         setLoading(true);
         const result = await GetRepoDetails({ owner, repo });
+        console.log(result);
         setDetails(result);
       } catch (err) {
         setError("Failed to load repo details");
@@ -49,35 +50,91 @@ export function RepoMenuPage() {
     fetchDetails();
   }, [owner, repo]);
   return (
-    <div className={styles.AppHeader}>
-      {/* <img></img> */}
-      <h1 className="pure-heading">
-        {owner}/{repo}
-      </h1>
-      <small>List details of the repository here</small>
-      {/* Buttons to navigate to the seperate routes*/}
-      <div className="pure-g">
-        {" "}
-        <Link to={`/code/${owner}/${repo}`} className={styles.repoLink}>
-          Link to the Code Search{" "}
-        </Link>
-      </div>
-      <div className="pure-g">
-        <Link to={`/commit/${owner}/${repo}`} className={styles.repoLink}>
-          Link to the Commit Search
-        </Link>
-      </div>
-      <div className="pure-g">
-        <Link to={`/issue/${owner}/${repo}`} className={styles.repoLink}>
-          Link to the Issue Search
-        </Link>
-      </div>
-      <div className="pure-g">
-        <Link to={`/pr/${owner}/${repo}`} className={styles.repoLink}>
-          Link to PRs search
-        </Link>
-      </div>
+    <>
+      {/* Taken from https://bulma.io/documentation/layout/hero/*/}
+      <section className="hero is-medium is-link">
+        <div className="hero-body">
+          <div className="subtitle">
+            <Link to={`/`}>
+              <small className="link">Back</small>
+            </Link>
+          </div>
+          <div className="mt-4"></div>
+          <p className="title">
+            {owner}/{repo}
+          </p>
 
+          {!loading && (
+            <p className="subtitle">
+              {details?.description ?? "No description provided."}
+            </p>
+          )}
+          {/* Add Links to the individual tags maybe?*/}
+          {details?.topics?.length ? (
+            <div className="tags mt-3 is-centered">
+              {details?.topics?.map((topic) => (
+                <span key={topic} className="tag is-info is-light">
+                  {topic}
+                </span>
+              ))}
+            </div>
+          ) : null}
+
+          <div className="columns is-centered mt-4">
+            <div className="column is-narrow">
+              <div className="field is-grouped is-grouped-multiline is-centered">
+                <div className="control">
+                  {" "}
+                  <Link
+                    to={`/code/${owner}/${repo}`}
+                    className="button is-light"
+                  >
+                    Search Code
+                  </Link>
+                </div>
+                <div className="control ">
+                  {" "}
+                  <Link
+                    to={`/commit/${owner}/${repo}`}
+                    className="button is-light"
+                  >
+                    Search Commits
+                  </Link>
+                </div>
+                <div className="control ">
+                  {" "}
+                  <Link
+                    to={`/issue/${owner}/${repo}`}
+                    className="button is-light"
+                  >
+                    Search Issues
+                  </Link>
+                </div>
+                <div className="control ">
+                  {" "}
+                  <Link to={`/pr/${owner}/${repo}`} className="button is-light">
+                    Search PRs
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+          {details && (
+            <div className="columns is-centered mt-4">
+              <div className="column is-narrow">Things</div>
+              <div className="column is-narrow">
+                Forks : {details.forks_count}
+              </div>
+              <div className="column is-narrow">
+                Stars : {details.stargazers_count}
+              </div>
+              <div className="column is-narrow">
+                Watchers : {details.watchers}
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
       {loading && <p>Loading...</p>}
       {error && <p className={styles.error}>{error}</p>}
       {/* Details of the Repo */}
@@ -93,6 +150,6 @@ export function RepoMenuPage() {
           </a>
         </div>
       )}
-    </div>
+    </>
   );
 }

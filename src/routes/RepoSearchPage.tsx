@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { GetSearchCode } from "../api/searchCode";
 import { CodeSearchParams } from "../types/CodeSearch";
-
+import { Link } from "react-router-dom";
 import styles from "../styles/AppHeader.module.css";
 import { SearchCodeTable } from "../components/functions/CodeResults";
 import { SearchBar } from "../components/functions/SearchBar";
@@ -80,16 +80,19 @@ export default function RepoSearchPage() {
 
   return (
     <>
-      <div className={styles.AppHeader}>
-        {/* Need to center this  */}
-        <h1 className="pure-heading">
-          Code Search for{" "}
-          <big>
-            {owner}/{name}
-          </big>
+      <div className="section has-text-centered">
+        <h3 className="title">
+          <Link to={`/repo/${owner}/${name}`}>Go Back</Link>
+        </h3>
+        <h1 className="title">
+          Search code in {owner}/{name}
         </h1>
-        <div>
-          <div className={styles.AppHeader}>
+        <p className="subtitle">
+          {" "}
+          Search for Code in the {name} repository. Add rules if needed.
+        </p>
+        <div className="columns is-centered">
+          <div className="column is-10">
             <SearchBar<CodeSearchParams>
               query={query}
               setQuery={(q) => setQuery(q)}
@@ -97,13 +100,11 @@ export default function RepoSearchPage() {
               optionalParams={CODE_OPTIONAL_PARAMS}
               paramConfig={CODE_PARAM_CONFIG}
             />
-            {/* Need to center this  */}
-            <h1 className="pure-heading">Results : </h1>
-
             {/* Search Table below*/}
-            <div className="pure-g">
-              {" "}
-              <SearchCodeTable results={visibleResults} />
+            <div className="columns is-centered">
+              <div className="column is-10">
+                <SearchCodeTable results={visibleResults} />
+              </div>
             </div>
             {/* Will hide page controls if there are no visible results*/}
             {visibleResults.length > 0 && (

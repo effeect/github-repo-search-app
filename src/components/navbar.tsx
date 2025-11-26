@@ -7,7 +7,7 @@ export default function AppNavbar() {
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
-        <a className="navbar-item" href="https://bulma.io">
+        <a className="navbar-item" href="/">
           <h3 className="">Github Repo Search App</h3>
         </a>
 

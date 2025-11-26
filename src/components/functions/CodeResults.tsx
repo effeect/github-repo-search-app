@@ -4,6 +4,7 @@
 
 import styles from "../../styles/RepoTable.module.css";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 type TableResultsDef = {
   results: any[];
@@ -11,42 +12,69 @@ type TableResultsDef = {
 
 export function SearchCodeTable({ results }: TableResultsDef) {
   // const location = useLocation();
+  const [copiedSha, setCopiedSha] = useState<string | null>(null);
+
+  const copyToClipboard = async (sha: string) => {
+    try {
+      await navigator.clipboard.writeText(sha);
+      setCopiedSha(sha);
+      setTimeout(() => setCopiedSha(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy!", err);
+    }
+  };
+
   return (
     <>
-      <div className="section">
-        <div className="container">
-          <div className="columns is-centered">
-            <div className="column is-10">
-              <ul className="menu-list">
-                {results.map((result) => {
-                  // console.log(result);
-                  const owner = result.repository.owner.login;
-                  const repo = result.repository.name;
-                  const filePath = result.path;
+      <div className="content">
+        <h2 className="title is-4">Results</h2>
+        <ul className={"is-inline-block"}>
+          {results.map((result) => {
+            console.log(result);
 
-                  return (
-                    <li key={result.id} className="mb-4">
-                      <div className="box">
-                        {/* File Path for the file on Github below*/}
-                        <Link
-                          to={`/code/${owner}/${repo}/${filePath}`}
-                          className="has-text-weight-semibold is-size-5"
-                        >
-                          <h3 className="title is-5">{result.name}</h3>
-                        </Link>
-                        <p className="subtitle is-6">Path : {result.path}</p>
-                        <p className="subtitle is-6">
-                          {" "}
-                          Download link : {result.repository.downloads_url}
+            const owner = result.repository.owner.login;
+            const repo = result.repository.name;
+            const filePath = result.path;
+
+            return (
+              <li key={result.id} className={`${styles.RepoTable}`}>
+                {/* File Path for the file on Github below*/}
+                <div className={styles.repoItem}>
+                  <div className={styles.repoRow}>
+                    <div className={styles.repoText}>
+                      {/* */}
+                      <Link
+                        to={`/code/${owner}/${repo}/${filePath}`}
+                        className={styles.repoLink}
+                      >
+                        <h3 className={styles.repoName}>{result.name}</h3>
+                      </Link>
+
+                      <p className={styles.repoDescription}>
+                        File Path : {result.path}
+                      </p>
+                      <div className="field is-grouped has-addons">
+                        <p className="control">
+                          <span className="input is-light">
+                            SHA: {result.sha}
+                          </span>
+                        </p>
+                        <p className="control">
+                          <button
+                            className={`button is-info`}
+                            onClick={() => copyToClipboard(result.sha)}
+                          >
+                            {copiedSha === result.sha ? "Copied!" : "Copy"}
+                          </button>
                         </p>
                       </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          </div>
-        </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </>
   );
