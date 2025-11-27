@@ -108,15 +108,11 @@ export default function CommitSearchPage() {
 
       {/* Will hide page controls if there are no visible results*/}
       {result.visibleResults.length > 0 && (
-        <div className="columns is-centered">
-          <div className="column is-4">
-            <PageControls
-              page={page}
-              handlePageChange={handlePageChange}
-              disableNext={result.nextResults.length === 0}
-            />
-          </div>
-        </div>
+        <PageControls
+          page={page}
+          handlePageChange={handlePageChange}
+          disableNext={result.nextResults.length === 0}
+        />
       )}
     </div>
   );

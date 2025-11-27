@@ -106,17 +106,14 @@ export default function RepoSearchPR() {
           {/* Using same table layout for PRs/Issues*/}
           <IssueResultTable results={result.visibleResults} />
         </SearchResultsContainer>
-        <div className="columns is-centered">
-          <div className="column is-4">
-            {result.visibleResults.length > 0 && (
-              <PageControls
-                page={page}
-                handlePageChange={handlePageChange}
-                disableNext={result.nextResults.length === 0}
-              />
-            )}
-          </div>
-        </div>
+
+        {result.visibleResults.length > 0 && (
+          <PageControls
+            page={page}
+            handlePageChange={handlePageChange}
+            disableNext={result.nextResults.length === 0}
+          />
+        )}
       </div>
     </>
   );

@@ -18,37 +18,43 @@ export function PageControls(controls: PageDef) {
   };
   return (
     <>
-      <nav
-        className="pagination is-centered mt-4"
-        role="navigation"
-        aria-label="pagination"
-      >
-        <button
-          className="pagination-previous"
-          disabled={controls.page === 1}
-          onClick={() => {
-            controls.handlePageChange(controls.page - 1);
-            scrollToTop();
-          }}
-        >
-          Previous
-        </button>
-        <button
-          className="pagination-next"
-          disabled={controls.disableNext}
-          onClick={() => {
-            controls.handlePageChange(controls.page + 1);
-            scrollToTop();
-          }}
-        >
-          Next
-        </button>
-        <ul className="pagination-list">
-          <li>
-            <span className="pagination-link is-current">{controls.page}</span>
-          </li>
-        </ul>
-      </nav>
+      <div className="columns is-centered">
+        <div className="column is-4">
+          <nav
+            className="pagination is-centered mt-4"
+            role="navigation"
+            aria-label="pagination"
+          >
+            <button
+              className="pagination-previous"
+              disabled={controls.page === 1}
+              onClick={() => {
+                controls.handlePageChange(controls.page - 1);
+                scrollToTop();
+              }}
+            >
+              Previous
+            </button>
+            <button
+              className="pagination-next"
+              disabled={controls.disableNext}
+              onClick={() => {
+                controls.handlePageChange(controls.page + 1);
+                scrollToTop();
+              }}
+            >
+              Next
+            </button>
+            <ul className="pagination-list">
+              <li>
+                <span className="pagination-link is-current">
+                  {controls.page}
+                </span>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
     </>
   );
 }
