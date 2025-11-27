@@ -76,6 +76,7 @@ export async function GetSearchRepos(repo: RepoSearchParams) {
     if (!repo.language) {
       repo.language = "";
     }
+    console.log(createQuery(repo));
     // console.log(queryHandle(repo.query, repo.language));
     const result = await octokitHandle.rest.search.repos({
       q: createQuery(repo),

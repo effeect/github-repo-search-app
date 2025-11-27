@@ -5,22 +5,34 @@ import styles from "../styles/AppHeader.module.css";
 import { useParams } from "react-router-dom";
 import { GetRepoDetails } from "../api/searchRepo";
 import { Link } from "react-router-dom";
+import stylesTable from "../styles/RepoTable.module.css";
 
+// Import SVG Files, could wrap into a export function for future use
+// import { ReactComponent as GithubIcon } from "../svg/github.svg";
+// import { ReactComponent as ForkIcon } from "../svg/fork.svg";
+import { ReactComponent as CodeIcon } from "../svg/code.svg";
+import { ReactComponent as CommitIcon } from "../svg/commit.svg";
+import { ReactComponent as PRIcon } from "../svg/pr.svg";
+import { ReactComponent as IssueIcon } from "../svg/issue.svg";
 // Variables we are going to use in the GUI
+
 type RepoDetails = {
   name: string;
   description?: string;
   stargazers_count?: number;
+  stargazers?: number;
   forks_count?: number;
   html_url?: string;
   watchers: string;
-  //Issue related things
   open_issues: string;
-  // Archived
   archived: boolean;
   allow_forking: boolean;
-  // Topics Array
-  topics: String[];
+  created_at: string;
+  topics?: string[];
+  owner?: {
+    avatar_url: string;
+    login: string;
+  };
 };
 
 export function RepoMenuPage() {
@@ -29,7 +41,13 @@ export function RepoMenuPage() {
   const owner = rawOwner ?? "";
   const repo = rawName ?? "";
 
-  const [details, setDetails] = useState<RepoDetails | null>(null);
+  // A cheeky way of updating meta data, would use something like NextJS to handle this but don't want to install too much stuff
+  useEffect(() => {
+    document.title = `GitSearch : ${owner}/${repo}`;
+  });
+
+  const [results, setResults] = useState<RepoDetails | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,7 +56,8 @@ export function RepoMenuPage() {
       try {
         setLoading(true);
         const result = await GetRepoDetails({ owner, repo });
-        setDetails(result);
+        console.log(result);
+        setResults(result);
       } catch (err) {
         setError("Failed to load repo details");
       } finally {
@@ -49,50 +68,170 @@ export function RepoMenuPage() {
     fetchDetails();
   }, [owner, repo]);
   return (
-    <div className={styles.AppHeader}>
-      {/* <img></img> */}
-      <h1 className="pure-heading">
-        {owner}/{repo}
-      </h1>
-      <small>List details of the repository here</small>
-      {/* Buttons to navigate to the seperate routes*/}
-      <div className="pure-g">
-        {" "}
-        <Link to={`/code/${owner}/${repo}`} className={styles.repoLink}>
-          Link to the Code Search{" "}
-        </Link>
-      </div>
-      <div className="pure-g">
-        <Link to={`/commit/${owner}/${repo}`} className={styles.repoLink}>
-          Link to the Commit Search
-        </Link>
-      </div>
-      <div className="pure-g">
-        <Link to={`/issue/${owner}/${repo}`} className={styles.repoLink}>
-          Link to the Issue Search
-        </Link>
-      </div>
-      <div className="pure-g">
-        <Link to={`/pr/${owner}/${repo}`} className={styles.repoLink}>
-          Link to PRs search
-        </Link>
-      </div>
+    <>
+      {/* Taken from https://bulma.io/documentation/layout/hero/*/}
+      <section className="hero is-large is-dark">
+        <div className="hero-body">
+          <div className="subtitle">
+            <Link to={`/`}>Back Home</Link>
+          </div>
+          <div className="mt-4"></div>
 
+          <div className={`${stylesTable.repoAvatarWrapper}`}>
+            <img
+              src={results?.owner?.avatar_url}
+              alt={`${results?.owner?.login}'s avatar`}
+              className={stylesTable.repoAvatar}
+            />
+          </div>
+          <div className="mt-4"></div>
+          <Link className="title" to={`https://github.com/${owner}/${repo}`}>
+            {owner}/{repo}
+          </Link>
+          <div className="mt-4"></div>
+
+          <div className="columns is-centered">
+            <div className="column is-narrow">
+              <div className="field is-grouped is-grouped-multiline is-centered is-justify-content-center">
+                <div className="control">
+                  {" "}
+                  <Link
+                    to={`/code/${owner}/${repo}`}
+                    className="button is-light"
+                  >
+                    <span className="icon is-small">
+                      <CodeIcon></CodeIcon>
+                    </span>
+                    {/* https://www.svgrepo.com/svg/533324/code */}
+                    <span>Search Code</span>
+                  </Link>
+                </div>
+                <div className="control ">
+                  {" "}
+                  <Link
+                    to={`/commit/${owner}/${repo}`}
+                    className="button is-light"
+                  >
+                    <span className="icon is-small">
+                      <CommitIcon></CommitIcon>
+                    </span>
+                    <span>Search Commits</span>
+                  </Link>
+                </div>
+                <div className="control ">
+                  {" "}
+                  <Link
+                    to={`/issue/${owner}/${repo}`}
+                    className="button is-light"
+                  >
+                    <span className="icon is-small">
+                      <IssueIcon></IssueIcon>
+                    </span>
+                    <span>Search Issues</span>
+                  </Link>
+                </div>
+                <div className="control ">
+                  {" "}
+                  <Link to={`/pr/${owner}/${repo}`} className="button is-light">
+                    <span className="icon is-small">
+                      <PRIcon></PRIcon>
+                    </span>
+                    <span>Search PRs</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Add Links to the individual tags maybe?*/}
+          {results?.topics?.length ? (
+            <div className="tags mt-3 is-centered">
+              {results?.topics?.map((topic) => (
+                <span key={topic} className="tag is-rounded">
+                  <Link
+                    className={styles.repoLink}
+                    to={`https://github.com/topics/${topic}`}
+                  >
+                    <h3>{topic}</h3>
+                  </Link>
+                </span>
+              ))}
+            </div>
+          ) : null}
+
+          {!loading && (
+            <>
+              <p className="subtitle">
+                {results?.description ?? "No description provided."}
+              </p>
+              <p className="subtitle">
+                Created on{" "}
+                {results?.created_at
+                  ? new Date(results.created_at).toLocaleString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "2-digit",
+                    })
+                  : "No creation date provided."}
+              </p>
+            </>
+          )}
+
+          {results && (
+            <div className="columns is-centered mt-4">
+              <div className="column is-narrow">
+                <div className="field has-addons is-centered is-justify-content-center">
+                  <p className="control">
+                    <span className="input is-light">Forks : </span>
+                  </p>
+                  <p className="control">
+                    <Link
+                      to={`https://github.com/${owner}/${repo}/forks`}
+                      className={`button is-info ${styles.repoDescription}`}
+                    >
+                      {results.forks_count}
+                    </Link>
+                  </p>
+                </div>
+              </div>
+              <div className="column is-narrow">
+                <div className="field has-addons is-centered is-justify-content-center">
+                  <p className="control">
+                    <span className="input is-light">Watchers :</span>
+                  </p>
+                  <p className="control">
+                    <Link
+                      to={`https://github.com/${owner}/${repo}/watchers`}
+                      className={`button is-info ${styles.repoDescription}`}
+                    >
+                      {results.watchers}
+                    </Link>
+                  </p>
+                </div>
+              </div>
+              <div className="column is-narrow">
+                {/* Stars Symbol and Links */}
+                <div className="field has-addons is-centered is-justify-content-center">
+                  <p className="control">
+                    <span className="input is-light">Stars :</span>
+                  </p>
+                  <p className="control">
+                    <Link
+                      to={`https://github.com/${owner}/${repo}/stargazers`}
+                      className={`button is-info ${styles.repoDescription}`}
+                    >
+                      {results.stargazers_count}
+                    </Link>
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
       {loading && <p>Loading...</p>}
       {error && <p className={styles.error}>{error}</p>}
-      {/* Details of the Repo */}
-      {details && (
-        <div className={styles.repoDetails}>
-          <h2>{details.name}</h2>
-          <p>{details.description ?? "No description provided."}</p>
-          <p> Star Count: {details.stargazers_count}</p>
-          <p> Fork Count: {details.forks_count}</p>
-          <p> Watcher Count: {details.watchers}</p>
-          <a href={details.html_url} target="_blank" rel="noopener noreferrer">
-            View on GitHub
-          </a>
-        </div>
-      )}
-    </div>
+    </>
   );
 }

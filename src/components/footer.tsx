@@ -8,13 +8,16 @@ export default function AppFooter() {
   };
 
   return (
-    <div className={styles.footer}>
-      <div className="pure-u-1">
-        Built with <a href="https://react.dev/">React</a>,{" "}
-        <a href="https://github.com/octokit/octokit.js">Octokit</a>,{" "}
-        <a href="https://pure-css.github.io/">Pure.css </a>| Oliver Dimes{" "}
-        {getYear()}{" "}
-      </div>
-    </div>
+    <>
+      <footer className="footer">
+        <div className="content has-text-centered">
+          <p>
+            <strong>Github Repo Search App </strong> by Oliver Dimes {getYear()}
+            . Built with <a href="https://reactjs.org/">React</a> and{" "}
+            <a href="https://bulma.io/">Bulma</a>.
+          </p>
+        </div>
+      </footer>
+    </>
   );
 }

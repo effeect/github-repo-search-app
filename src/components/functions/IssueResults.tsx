@@ -4,6 +4,8 @@
 
 import styles from "../../styles/RepoTable.module.css";
 import { Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import DOMPurify from "dompurify";
 
 type TableResultsDef = {
   results: any[];
@@ -13,36 +15,50 @@ export function IssueResultTable({ results }: TableResultsDef) {
   // const location = useLocation();
   return (
     <>
-      <div className={styles.RepoTable}>
-        <div className="pure-g">
-          <div className="pure-u-3-3">
-            <ul className={styles.pureList}>
-              {results.map((result) => {
-                console.log(result);
-                const title = result.title;
-                //const repo = result.repository.name;
-                //const filePath = result.path;
+      <h2 className="title is-4">Results</h2>
+      <ul className={"is-block"}>
+        {results.map((result) => {
+          console.log(result);
+          const title = result.title;
+          //const repo = result.repository.name;
+          //const filePath = result.path;
 
-                return (
-                  <li key={result.id} className={styles.pureListItem}>
-                    <div className={styles.repoItem}>
-                      {/* File Path for the file on Github below*/}
-                      <Link to={`/code/`} className={styles.repoLink}>
-                        <h3 className={styles.repoName}>{title}</h3>
-                      </Link>
-                      <p className={styles.description}>Path : {result.path}</p>
+          return (
+            <li key={result.node_id} className={`${styles.RepoTable}`}>
+              {/* File Path for the file on Github below*/}
+              <Link
+                to={`${result.html_url}`}
+                target="_blank"
+                className={styles.repoLink}
+              >
+                <div className={styles.repoItem}>
+                  <div className={styles.repoRow}>
+                    {/* Left column: avatar */}
+                    <div className={styles.repoAvatarWrapper}>
+                      <img
+                        src={result.user.avatar_url}
+                        alt={`${result.user.avatar_url}s avatar`}
+                        className={styles.repoAvatar}
+                      />
+                    </div>
+                    <div className={styles.repoText}>
+                      <h3 className={styles.repoName}>{result.title}</h3>
+                      <p className={styles.repoDescription}>
+                        <ReactMarkdown
+                          children={DOMPurify.sanitize(result.body || "")}
+                        />
+                      </p>
                       <p className={styles.repoStars}>
-                        {" "}
-                        Testing Testing Testing
+                        Published on : {result.created_at}
                       </p>
                     </div>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </div>
-      </div>
+                  </div>
+                </div>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </>
   );
 }

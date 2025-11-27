@@ -1,19 +1,50 @@
 // Simple Navbar
-import styles from "../styles/Navbar.module.css";
-// Based on https://pure-css.github.io/menus/ horiziontal menu example
+import React, { useState } from "react";
+// import styles from "../styles/Navbar.module.css";
+// Based on https://bulma.io/documentation/components/navbar/ example
 export default function AppNavbar() {
+  const [isActive, setIsActive] = useState(false);
   return (
-    <div className={`${styles.NavbarFormat} pure-menu pure-menu-horizontal`}>
-      <a href="/" className="pure-menu-heading pure-menu-link">
-        Home
-      </a>
-      <ul className="pure-menu-list">
-        <li className="pure-menu-item">
-          <a href="https://www.google.com" className="pure-menu-link">
-            Test Link
+    <nav
+      className="navbar is-dark"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div className="navbar-brand">
+        <a className="navbar-item" href="/">
+          <h3 className="title is-4">GitSearch</h3>
+        </a>
+
+        <a
+          role="button"
+          className={`navbar-burger ${isActive ? "is-active" : ""}`}
+          aria-label="menu"
+          aria-expanded={isActive}
+          data-target="navbarBasicExample"
+          onClick={() => setIsActive(!isActive)}
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div
+        id="navbarBasicExample"
+        className={`navbar-menu ${isActive ? "is-active" : ""}`}
+      >
+        {/* Navbar items can go here */}
+        <div className="navbar-end">
+          <a className="navbar-item">About</a>
+          <a
+            href="https://github.com/effeect/github-repo-search-app"
+            className="navbar-item"
+          >
+            Github
           </a>
-        </li>
-      </ul>
-    </div>
+        </div>
+      </div>
+    </nav>
   );
 }

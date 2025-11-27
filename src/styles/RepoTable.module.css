@@ -1,45 +1,40 @@
-/* Note that this taken from the React Quickstart */
-
+/* remove default bullets and sets a top margin between it and the search bar*/
 .RepoTable {
-  background-color: #504e4e;
-  display: flex;
-  min-height: 70vh; /* Needed */
-  flex-direction: column;
-  align-items: left; /* Might change this back to center */
-  justify-content: flex-start;
-  color: white;
-  width: 100vw;
-}
-
-/* Overrides for pure.css*/
-.pureList {
-  align-items: left;
   list-style: none;
-  padding-left: 0;
-  margin: 0;
+  margin-top: 1rem;
+  margin-left: -1rem;
 }
-
-.pureListItem {
-  text-align: left;
+/* Row Formatting */
+.repoRow {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .repoItem {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 1rem;
+  padding: 0.5rem;
+  border-top: 1px solid #e2e2e2;
   border-bottom: 1px solid #e2e2e2;
-  display: block;
+  display: flex;
+  text-align: left;
 }
 
+/* Title of the List item */
 .repoName {
-  font-weight: bold;
   margin: 0.5rem 0.5rem;
-  align-items: left;
+  padding: auto;
 }
 
+/* Description of the Item */
 .repoDescription {
   margin: 0.5rem 0.5rem;
+  /* To stop text from overflowing weirdly, likely a better way to fix this */
+  padding-right: 5rem;
   color: #ffffff;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .repoStars {
@@ -48,16 +43,50 @@
   color: #ffffff;
 }
 
-.repoLink {
-  text-decoration: none;
-  width: 100%;
-  color: inherit; /* Needed or the links go all ugly and blue */
-  flex: 1;
-  display: block;
+/* If hover over the item light up the item, need to update the placement*/
+.repoLink:hover .repoItem {
+  background-color: #434343;
+  transition: background 1s ease;
 }
 
-/* If hover over the item light up the item*/
-.repoLink:hover .repoItem {
-  background-color: #d1bcbc;
-  transition: background 0.5s ease;
+.repoAvatar {
+  /* Uncomment below to make this circular*/
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0rem;
+  vertical-align: middle;
+  /* needed to make sure images are all the same size */
+  min-width: 5em;
+}
+
+.repoAvatarWrapper {
+  display: block;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+}
+
+.repoText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+}
+
+.repoText {
+  min-width: 0; /* allow flex item to shrink */
+  word-break: break-word; /* break long text */
+  overflow-wrap: anywhere; /* handle long URLs or code */
+}
+
+.repoText p,
+.repoText pre,
+.repoText code {
+  white-space: pre-wrap; /* prevents code blocks from overflowing */
+}
+
+.RepoTable {
+  max-height: 300px;
+  overflow-y: auto;
 }

@@ -5,14 +5,13 @@ type TableResultsDef = {
   results: any[];
 };
 
-export function SearchRepoTable({ results }: TableResultsDef) {
+export function TableTemplate({ results }: TableResultsDef) {
   return (
     <>
-      <h2 className="title is-4">Results</h2>
-      <ul className={"is-block"}>
-        {results.map((result) => {
-          console.log(result);
-          return (
+      <div className="content">
+        <h2 className="title is-4">Results</h2>
+        <ul className={"is-inline-block"}>
+          {results.map((result) => (
             <li key={result.id} className={`${styles.RepoTable}`}>
               <Link
                 to={`/repo/${result.full_name}`}
@@ -34,31 +33,18 @@ export function SearchRepoTable({ results }: TableResultsDef) {
                       <p className={styles.repoDescription}>
                         {result.description}
                       </p>
-                      {result?.topics?.length ? (
-                        <div className="tags mt-4">
-                          {result?.topics?.map((topic: string) => (
-                            <span key={topic} className="tag is-rounded ">
-                              <Link
-                                className={styles.repoLink}
-                                to={`https://github.com/topics/${topic}`}
-                              >
-                                <h3>{topic}</h3>
-                              </Link>
-                            </span>
-                          ))}
-                        </div>
-                      ) : null}
                       <p className={styles.repoStars}>
-                        Stars : {result.stargazers_count} Forks : {result.forks}
+                        Stars : {result.stargazers_count} Watchers :{" "}
+                        {result.watchers}
                       </p>
                     </div>
                   </div>
                 </div>
               </Link>
             </li>
-          );
-        })}
-      </ul>
+          ))}
+        </ul>
+      </div>
     </>
   );
 }
