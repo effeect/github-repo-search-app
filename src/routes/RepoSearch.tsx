@@ -1,8 +1,5 @@
 // Main Header
-
 import { useState } from "react";
-// Import Styles
-import styles from "../styles/AppHeader.module.css";
 
 import { GetSearchRepos } from "../api/searchRepo";
 
@@ -106,8 +103,6 @@ export function RepoSearch() {
         >
           <SearchRepoTable results={result.visibleResults} />
         </SearchResultsContainer>
-
-        <div className="mt-4"></div>
 
         {/* Will hide page controls if there are no visible results*/}
         {result.visibleResults.length > 0 && (

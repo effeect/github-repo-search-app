@@ -2,8 +2,6 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { GetSearchPR } from "../api/searchPR";
 import { IssueSearchQuery } from "../types/IssueSearch";
-
-import { Link } from "react-router-dom";
 import { IssueResultTable } from "../components/functions/IssueResults";
 import { SearchBar } from "../components/functions/SearchBar";
 import { PageControls } from "../components/functions/PageControls";

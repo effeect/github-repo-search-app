@@ -17,7 +17,8 @@ export default function SearchResultsContainer({
       <div className="column is-10">
         {loading ? (
           <div className="has-text-centered">
-            <button className="button is-loading is-large is-white" />
+            {/* Loading stuff goes here, currently a default bulma button*/}
+            <button className="button is-loading is-medium is-white" />
           </div>
         ) : results.length > 0 ? (
           children

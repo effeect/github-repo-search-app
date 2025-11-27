@@ -6,9 +6,15 @@ import { useParams } from "react-router-dom";
 import { GetRepoDetails } from "../api/searchRepo";
 import { Link } from "react-router-dom";
 
-import { ReactComponent as GithubIcon } from "../svg/github-mark.svg";
-import { ReactComponent as ForkIcon } from "../svg/fork.svg";
+// Import SVG Files, could wrap into a export function for future use
+// import { ReactComponent as GithubIcon } from "../svg/github.svg";
+// import { ReactComponent as ForkIcon } from "../svg/fork.svg";
+import { ReactComponent as CodeIcon } from "../svg/code.svg";
+import { ReactComponent as CommitIcon } from "../svg/commit.svg";
+import { ReactComponent as PRIcon } from "../svg/pr.svg";
+import { ReactComponent as IssueIcon } from "../svg/issue.svg";
 // Variables we are going to use in the GUI
+
 type RepoDetails = {
   name: string;
   description?: string;
@@ -59,17 +65,69 @@ export function RepoMenuPage() {
   return (
     <>
       {/* Taken from https://bulma.io/documentation/layout/hero/*/}
-      <section className="hero is-large is-link">
+      <section className="hero is-large is-dark">
         <div className="hero-body">
           <div className="subtitle">
-            <Link to={`/`}>
-              <small className="link">Back</small>
-            </Link>
+            <Link to={`/`}>Back Home</Link>
           </div>
           <div className="mt-4"></div>
-          <p className="title">
+          <Link className="title" to={`https://github.com/${owner}/${repo}`}>
             {owner}/{repo}
-          </p>
+          </Link>
+          <div className="mt-4"></div>
+
+          <div className="columns is-centered">
+            <div className="column is-narrow">
+              <div className="field is-grouped is-grouped-multiline is-centered is-justify-content-center">
+                <div className="control">
+                  {" "}
+                  <Link
+                    to={`/code/${owner}/${repo}`}
+                    className="button is-light"
+                  >
+                    <span className="icon is-small">
+                      <CodeIcon></CodeIcon>
+                    </span>
+                    {/* https://www.svgrepo.com/svg/533324/code */}
+                    <span>Search Code</span>
+                  </Link>
+                </div>
+                <div className="control ">
+                  {" "}
+                  <Link
+                    to={`/commit/${owner}/${repo}`}
+                    className="button is-light"
+                  >
+                    <span className="icon is-small">
+                      <CommitIcon></CommitIcon>
+                    </span>
+                    <span>Search Commits</span>
+                  </Link>
+                </div>
+                <div className="control ">
+                  {" "}
+                  <Link
+                    to={`/issue/${owner}/${repo}`}
+                    className="button is-light"
+                  >
+                    <span className="icon is-small">
+                      <IssueIcon></IssueIcon>
+                    </span>
+                    <span>Search Issues</span>
+                  </Link>
+                </div>
+                <div className="control ">
+                  {" "}
+                  <Link to={`/pr/${owner}/${repo}`} className="button is-light">
+                    <span className="icon is-small">
+                      <PRIcon></PRIcon>
+                    </span>
+                    <span>Search PRs</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
           {/* Add Links to the individual tags maybe?*/}
           {results?.topics?.length ? (
             <div className="tags mt-3 is-centered">
@@ -92,6 +150,7 @@ export function RepoMenuPage() {
                 {results?.description ?? "No description provided."}
               </p>
               <p className="subtitle">
+                Created on{" "}
                 {results?.created_at
                   ? new Date(results.created_at).toLocaleString("en-US", {
                       year: "numeric",
@@ -105,45 +164,6 @@ export function RepoMenuPage() {
             </>
           )}
 
-          <div className="columns is-centered mt-4">
-            <div className="column is-narrow">
-              <div className="field is-grouped is-grouped-multiline is-centered is-justify-content-center">
-                <div className="control">
-                  {" "}
-                  <Link
-                    to={`/code/${owner}/${repo}`}
-                    className="button is-light"
-                  >
-                    Search Code
-                  </Link>
-                </div>
-                <div className="control ">
-                  {" "}
-                  <Link
-                    to={`/commit/${owner}/${repo}`}
-                    className="button is-light"
-                  >
-                    Search Commits
-                  </Link>
-                </div>
-                <div className="control ">
-                  {" "}
-                  <Link
-                    to={`/issue/${owner}/${repo}`}
-                    className="button is-light"
-                  >
-                    Search Issues
-                  </Link>
-                </div>
-                <div className="control ">
-                  {" "}
-                  <Link to={`/pr/${owner}/${repo}`} className="button is-light">
-                    Search PRs
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
           {results && (
             <div className="columns is-centered mt-4">
               <div className="column is-narrow">
@@ -152,14 +172,12 @@ export function RepoMenuPage() {
                     <span className="input is-light">Forks : </span>
                   </p>
                   <p className="control">
-                    <button className="button is-info" onClick={() => {}}>
-                      <Link
-                        to={`https://github.com/${owner}/${repo}/forks`}
-                        className={styles.repoDescription}
-                      >
-                        {results.forks_count}
-                      </Link>
-                    </button>
+                    <Link
+                      to={`https://github.com/${owner}/${repo}/forks`}
+                      className={`button is-info ${styles.repoDescription}`}
+                    >
+                      {results.forks_count}
+                    </Link>
                   </p>
                 </div>
               </div>
@@ -169,14 +187,12 @@ export function RepoMenuPage() {
                     <span className="input is-light">Watchers :</span>
                   </p>
                   <p className="control">
-                    <button className="button is-info" onClick={() => {}}>
-                      <Link
-                        to={`https://github.com/${owner}/${repo}/watchers`}
-                        className={styles.repoDescription}
-                      >
-                        {results.watchers}
-                      </Link>
-                    </button>
+                    <Link
+                      to={`https://github.com/${owner}/${repo}/watchers`}
+                      className={`button is-info ${styles.repoDescription}`}
+                    >
+                      {results.watchers}
+                    </Link>
                   </p>
                 </div>
               </div>
@@ -187,13 +203,12 @@ export function RepoMenuPage() {
                     <span className="input is-light">Stars :</span>
                   </p>
                   <p className="control">
-                    <button className="button is-info" onClick={() => {}}>
-                      <Link
-                        to={`https://github.com/${owner}/${repo}/stargazers`}
-                      >
-                        {results.stargazers_count}
-                      </Link>
-                    </button>
+                    <Link
+                      to={`https://github.com/${owner}/${repo}/stargazers`}
+                      className={`button is-info ${styles.repoDescription}`}
+                    >
+                      {results.stargazers_count}
+                    </Link>
                   </p>
                 </div>
               </div>

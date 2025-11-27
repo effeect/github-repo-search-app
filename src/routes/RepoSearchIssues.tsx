@@ -107,8 +107,6 @@ export default function RepoSearchIssues() {
         {/* Using same table layout for PRs/Issues*/}
         <IssueResultTable results={result.visibleResults} />
       </SearchResultsContainer>
-
-      <div className="mt-4"></div>
       {result.visibleResults.length > 0 && (
         <PageControls
           page={page}

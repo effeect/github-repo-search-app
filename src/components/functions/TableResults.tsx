@@ -12,7 +12,11 @@ export function SearchRepoTable({ results }: TableResultsDef) {
       <ul className={"is-inline-block"}>
         {results.map((result) => (
           <li key={result.id} className={`${styles.RepoTable}`}>
-            <Link to={`/repo/${result.full_name}`} className={styles.repoLink}>
+            <Link
+              to={`/repo/${result.full_name}`}
+              className={styles.repoLink}
+              viewTransition
+            >
               <div className={styles.repoItem}>
                 <div className={styles.repoRow}>
                   {/* Left column: avatar */}

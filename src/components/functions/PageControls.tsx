@@ -18,6 +18,7 @@ export function PageControls(controls: PageDef) {
   };
   return (
     <>
+      <div className="mt-4"></div>
       <div className="columns is-centered">
         <div className="column is-4">
           <nav

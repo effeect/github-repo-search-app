@@ -104,7 +104,6 @@ export default function CommitSearchPage() {
       >
         <CommitResultsTable results={result.visibleResults} />
       </SearchResultsContainer>
-      <div className="mt-4"></div>
 
       {/* Will hide page controls if there are no visible results*/}
       {result.visibleResults.length > 0 && (
