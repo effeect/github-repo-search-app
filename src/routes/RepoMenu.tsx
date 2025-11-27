@@ -5,6 +5,7 @@ import styles from "../styles/AppHeader.module.css";
 import { useParams } from "react-router-dom";
 import { GetRepoDetails } from "../api/searchRepo";
 import { Link } from "react-router-dom";
+import stylesTable from "../styles/RepoTable.module.css";
 
 // Import SVG Files, could wrap into a export function for future use
 // import { ReactComponent as GithubIcon } from "../svg/github.svg";
@@ -28,6 +29,10 @@ type RepoDetails = {
   allow_forking: boolean;
   created_at: string;
   topics?: string[];
+  owner?: {
+    avatar_url: string;
+    login: string;
+  };
 };
 
 export function RepoMenuPage() {
@@ -69,6 +74,15 @@ export function RepoMenuPage() {
         <div className="hero-body">
           <div className="subtitle">
             <Link to={`/`}>Back Home</Link>
+          </div>
+          <div className="mt-4"></div>
+
+          <div className={`${stylesTable.repoAvatarWrapper}`}>
+            <img
+              src={results?.owner?.avatar_url}
+              alt={`${results?.owner?.login}'s avatar`}
+              className={stylesTable.repoAvatar}
+            />
           </div>
           <div className="mt-4"></div>
           <Link className="title" to={`https://github.com/${owner}/${repo}`}>
