@@ -100,37 +100,35 @@ export default function RepoSearchPage() {
           title={`Code Search in ${owner}/${name}`}
           description={`Search for Code Files in ${name}, add rules if needed`}
         ></HeaderWrapper>
-        <div className="columns is-centered">
-          <div className="column is-10">
-            <SearchBar<CodeSearchParams>
-              query={query}
-              setQuery={(q) => setQuery(q)}
-              onSearch={handleQuery}
-              optionalParams={CODE_OPTIONAL_PARAMS}
-              paramConfig={CODE_PARAM_CONFIG}
-            />
-            {/* Search Table below, wrapped below*/}
-            <SearchResultsContainer
-              loading={loading}
-              results={result.visibleResults}
-              hasSearched={hasSearched}
-            >
-              <SearchCodeTable results={result.visibleResults} />
-            </SearchResultsContainer>
-            {/* Will hide page controls if there are no visible results*/}
-            {result.visibleResults.length > 0 && (
-              <div className="columns is-centered">
-                <div className="column is-4">
-                  <PageControls
-                    page={page}
-                    handlePageChange={handlePageChange}
-                    disableNext={result.nextResults.length === 0}
-                  />
-                </div>
-              </div>
-            )}
+
+        <SearchBar<CodeSearchParams>
+          query={query}
+          setQuery={(q) => setQuery(q)}
+          onSearch={handleQuery}
+          optionalParams={CODE_OPTIONAL_PARAMS}
+          paramConfig={CODE_PARAM_CONFIG}
+        />
+
+        {/* Search Table below, wrapped below*/}
+        <SearchResultsContainer
+          loading={loading}
+          results={result.visibleResults}
+          hasSearched={hasSearched}
+        >
+          <SearchCodeTable results={result.visibleResults} />
+        </SearchResultsContainer>
+        {/* Will hide page controls if there are no visible results*/}
+        {result.visibleResults.length > 0 && (
+          <div className="columns is-centered">
+            <div className="column is-4">
+              <PageControls
+                page={page}
+                handlePageChange={handlePageChange}
+                disableNext={result.nextResults.length === 0}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

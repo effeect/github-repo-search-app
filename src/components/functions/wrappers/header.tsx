@@ -11,14 +11,19 @@ interface HeaderWrapper {
 export default function HeaderWrapper(header: HeaderWrapper) {
   return (
     <>
-      <div className="field">
-        <h3 className="title">
-          <Link to={`/repo/${header.owner}/${header.repo}`}>Go Back</Link>
-        </h3>
-        <h3 className="title">
-          <Link to={`/`}>Go Home</Link>
-        </h3>
-      </div>
+      {/* If we don't supply a owner/repo, just ignore the links,
+        This is mostly for the main home page for searching
+    */}
+      {header.owner && header.repo ? (
+        <div className="field">
+          <h3 className="title">
+            <Link to={`/repo/${header.owner}/${header.repo}`}>Go Back</Link>
+          </h3>
+          <h3 className="title">
+            <Link to={`/`}>Go Home</Link>
+          </h3>
+        </div>
+      ) : null}
 
       <h1 className="title">{header.title}</h1>
       <p className="subtitle">{header.description}</p>

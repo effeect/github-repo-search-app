@@ -17,6 +17,7 @@ import {
 
 import SearchResultsContainer from "../components/functions/wrappers/SearchTable";
 import GetResults from "../api/page-handler";
+import HeaderWrapper from "../components/functions/wrappers/header";
 
 // Keeping everything under AppHeader
 export function RepoSearch() {
@@ -84,25 +85,19 @@ export function RepoSearch() {
     <>
       <div className="section has-text-centered">
         {/* Need to center this  */}
-        <h1 className="title">Github Repo Search</h1>
-        <p className="subtitle">
-          {" "}
-          Search for "repositories" on Github, use add rules to get more
-          specific
-        </p>
-
-        <div className="columns is-centered">
-          <div className="column is-10">
-            <SearchBar<RepoSearchParams>
-              query={query}
-              setQuery={setQuery}
-              onSearch={handleQuery}
-              optionalParams={REPO_OPTIONAL_PARAMS}
-              showOrder={true}
-              paramConfig={REPO_PARAM_CONFIG}
-            />
-          </div>
-        </div>
+        <HeaderWrapper
+          title={`Search for Repositories`}
+          description={`Search for repos on Github, add rules if needed`}
+        ></HeaderWrapper>
+        {/* Search Bar Field */}
+        <SearchBar<RepoSearchParams>
+          query={query}
+          setQuery={setQuery}
+          onSearch={handleQuery}
+          optionalParams={REPO_OPTIONAL_PARAMS}
+          showOrder={true}
+          paramConfig={REPO_PARAM_CONFIG}
+        />
         {/* Search Table below, wrapped below*/}
         <SearchResultsContainer
           loading={loading}

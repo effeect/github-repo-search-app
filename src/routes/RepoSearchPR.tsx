@@ -88,17 +88,14 @@ export default function RepoSearchPR() {
           title={`Pull Request Search in ${owner}/${name}`}
           description={`Search for Pull Requests in ${name}, add rules if needed`}
         ></HeaderWrapper>
-        <div className="columns is-centered">
-          <div className="column is-10">
-            <SearchBar<IssueSearchQuery>
-              query={query}
-              setQuery={(q) => setQuery(q)}
-              onSearch={handleQuery}
-              optionalParams={ISSUE_OPTIONAL_PARAMS} // you can define commit-specific params
-              paramConfig={ISSUE_PARAM_CONFIG}
-            />
-          </div>
-        </div>
+
+        <SearchBar<IssueSearchQuery>
+          query={query}
+          setQuery={(q) => setQuery(q)}
+          onSearch={handleQuery}
+          optionalParams={ISSUE_OPTIONAL_PARAMS} // you can define commit-specific params
+          paramConfig={ISSUE_PARAM_CONFIG}
+        />
 
         {/* Search Table below, wrapped below*/}
         <SearchResultsContainer

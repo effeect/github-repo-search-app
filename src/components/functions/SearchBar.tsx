@@ -74,140 +74,152 @@ export function SearchBar<T extends BaseQuery>({
 
   return (
     <>
-      <form
-        className="box"
-        role="search"
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSearchClick();
-        }}
-      >
-        {/* Search input */}
-        <div className="field has-addons">
-          <div className="control is-expanded">
-            <input
-              id="search"
-              type="search"
-              className="input"
-              placeholder="Search for Repository here..."
-              value={query.query}
-              onChange={(e) => setQuery({ ...query, query: e.target.value })}
-              required
-              autoFocus
-            />
-          </div>
-
-          <div className="control">
-            <button type="submit" className="button is-primary">
-              Go
-            </button>
-          </div>
-
-          {showOrder && (
-            <div className="control">
-              <div className="select is-fullwidth">
-                <select
-                  id="sort"
-                  value={query.sort ?? ""}
-                  onChange={(e) => setQuery({ ...query, sort: e.target.value })}
-                >
-                  <option value="">Best Match (default)</option>
-                  <option value="stars">Stars</option>
-                  <option value="forks">Forks</option>
-                  <option value="updated">Updated</option>
-                </select>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Modal for adding rules */}
-        <div className="control">
-          <button
-            type="button"
-            className="button is-link"
-            onClick={() => setIsModalOpen(true)}
+      <div className="columns is-centered">
+        <div className="column is-10">
+          <form
+            className="box"
+            role="search"
+            onSubmit={(e) => {
+              e.preventDefault();
+              onSearchClick();
+            }}
           >
-            Add Rule
-          </button>
-        </div>
-        <AddRule
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onAdd={handleAddParam}
-          availableParams={
-            optionalParams.filter((p) => !activeParams.includes(p)) as string[]
-          }
-        />
-        <div className="mt-4"></div>
-
-        {/* Active Params */}
-        {activeParams.map((key) => {
-          const type = paramConfig[key];
-          const value = query[key] ?? "";
-
-          return (
-            <div key={String(key)} className="field">
-              <div className="field has-addons">
-                {/* Doing a static button as had an issue with the Label object*/}
-                <div className="control">
-                  <a className="button is-static">
-                    {/* Thanks to https://www.geeksforgeeks.org/javascript/how-to-make-first-letter-of-a-string-uppercase-in-javascript/*/}
-                    {String(key).replace(/^./, (char) => char.toUpperCase())}
-                  </a>
-                </div>
-
-                <div className="control is-expanded">
-                  {type === "string" && (
-                    <input
-                      type="text"
-                      className="input"
-                      value={String(value)}
-                      onChange={(e) => handleChange(key, e.target.value)}
-                    />
-                  )}
-                  {type === "number" && (
-                    <input
-                      type="number"
-                      className="input"
-                      value={value as number | ""}
-                      onChange={(e) =>
-                        handleChange(key, Number(e.target.value))
-                      }
-                    />
-                  )}
-                  {/* With the design of the handler, if there is no value selected it shouldn't "break" the query*/}
-                  {type === "boolean" && (
-                    <div className="select is-fullwidth">
-                      <select
-                        value={String(value)}
-                        onChange={(e) =>
-                          handleChange(key, e.target.value === "true")
-                        }
-                      >
-                        <option value="">Select...</option>
-                        <option value="true">True</option>
-                        <option value="false">False</option>
-                      </select>
-                    </div>
-                  )}
-                </div>
-
-                {/* Remove button beside optional input field */}
-                <div className="control">
-                  <button
-                    type="button"
-                    className="button is-danger"
-                    onClick={() => handleRemoveParam(key)}
-                  >
-                    Remove
-                  </button>
-                </div>
+            {/* Search input */}
+            <div className="field has-addons">
+              <div className="control is-expanded">
+                <input
+                  id="search"
+                  type="search"
+                  className="input"
+                  placeholder="Search for Repository here..."
+                  value={query.query}
+                  onChange={(e) =>
+                    setQuery({ ...query, query: e.target.value })
+                  }
+                  required
+                  autoFocus
+                />
               </div>
+
+              <div className="control">
+                <button type="submit" className="button is-primary">
+                  Go
+                </button>
+              </div>
+
+              {showOrder && (
+                <div className="control">
+                  <div className="select is-fullwidth">
+                    <select
+                      id="sort"
+                      value={query.sort ?? ""}
+                      onChange={(e) =>
+                        setQuery({ ...query, sort: e.target.value })
+                      }
+                    >
+                      <option value="">Best Match (default)</option>
+                      <option value="stars">Stars</option>
+                      <option value="forks">Forks</option>
+                      <option value="updated">Updated</option>
+                    </select>
+                  </div>
+                </div>
+              )}
             </div>
-          );
-        })}
-      </form>
+
+            {/* Modal for adding rules */}
+            <div className="control">
+              <button
+                type="button"
+                className="button is-link"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Add Rule
+              </button>
+            </div>
+            <AddRule
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              onAdd={handleAddParam}
+              availableParams={
+                optionalParams.filter(
+                  (p) => !activeParams.includes(p)
+                ) as string[]
+              }
+            />
+            <div className="mt-4"></div>
+
+            {/* Active Params */}
+            {activeParams.map((key) => {
+              const type = paramConfig[key];
+              const value = query[key] ?? "";
+
+              return (
+                <div key={String(key)} className="field">
+                  <div className="field has-addons">
+                    {/* Doing a static button as had an issue with the Label object*/}
+                    <div className="control">
+                      <a className="button is-static">
+                        {/* Thanks to https://www.geeksforgeeks.org/javascript/how-to-make-first-letter-of-a-string-uppercase-in-javascript/*/}
+                        {String(key).replace(/^./, (char) =>
+                          char.toUpperCase()
+                        )}
+                      </a>
+                    </div>
+
+                    <div className="control is-expanded">
+                      {type === "string" && (
+                        <input
+                          type="text"
+                          className="input"
+                          value={String(value)}
+                          onChange={(e) => handleChange(key, e.target.value)}
+                        />
+                      )}
+                      {type === "number" && (
+                        <input
+                          type="number"
+                          className="input"
+                          value={value as number | ""}
+                          onChange={(e) =>
+                            handleChange(key, Number(e.target.value))
+                          }
+                        />
+                      )}
+                      {/* With the design of the handler, if there is no value selected it shouldn't "break" the query*/}
+                      {type === "boolean" && (
+                        <div className="select is-fullwidth">
+                          <select
+                            value={String(value)}
+                            onChange={(e) =>
+                              handleChange(key, e.target.value === "true")
+                            }
+                          >
+                            <option value="">Select...</option>
+                            <option value="true">True</option>
+                            <option value="false">False</option>
+                          </select>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Remove button beside optional input field */}
+                    <div className="control">
+                      <button
+                        type="button"
+                        className="button is-danger"
+                        onClick={() => handleRemoveParam(key)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </form>
+        </div>
+      </div>
     </>
   );
 }

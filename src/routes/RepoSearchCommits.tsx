@@ -88,17 +88,14 @@ export default function CommitSearchPage() {
         title={`Commit Search in ${owner}/${name}`}
         description={`Search for commits in ${name}, add rules if needed`}
       ></HeaderWrapper>
-      <div className="columns is-centered">
-        <div className="column is-10">
-          <SearchBar<SearchCommitParam>
-            query={query}
-            setQuery={(q) => setQuery(q)}
-            onSearch={handleQuery}
-            optionalParams={COMMIT_OPTIONAL_PARAMS} // you can define commit-specific params
-            paramConfig={COMMIT_PARAM_CONFIG}
-          />
-        </div>
-      </div>
+
+      <SearchBar<SearchCommitParam>
+        query={query}
+        setQuery={(q) => setQuery(q)}
+        onSearch={handleQuery}
+        optionalParams={COMMIT_OPTIONAL_PARAMS} // you can define commit-specific params
+        paramConfig={COMMIT_PARAM_CONFIG}
+      />
       {/* Search Table below, wrapped below*/}
       <SearchResultsContainer
         loading={loading}
