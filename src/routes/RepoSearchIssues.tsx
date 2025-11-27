@@ -12,7 +12,7 @@ import {
 
 import SearchResultsContainer from "../components/functions/wrappers/SearchTable";
 import GetResults from "../api/page-handler";
-
+import HeaderWrapper from "../components/functions/wrappers/header";
 import { useEffect } from "react";
 
 // Repo Search Page is the overview page to search code among a selected repo
@@ -83,13 +83,12 @@ export default function RepoSearchIssues() {
   return (
     <div className="section has-text-centered">
       {/* Need to center this  */}
-      <h1 className="title">
-        Search Issues in {owner}/{name}
-      </h1>
-      <p className="subtitle">
-        {" "}
-        Search for "repositories" on Github, use add rules to get more specific
-      </p>
+      <HeaderWrapper
+        owner={owner}
+        repo={name}
+        title={`Issue Search in ${owner}/${name}`}
+        description={`Search for Issues in ${name}, add rules if needed`}
+      ></HeaderWrapper>
       <div className="columns is-centered">
         <div className="column is-10">
           <SearchBar<IssueSearchQuery>

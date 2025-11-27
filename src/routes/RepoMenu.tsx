@@ -7,7 +7,7 @@ import { GetRepoDetails } from "../api/searchRepo";
 import { Link } from "react-router-dom";
 
 import { ReactComponent as GithubIcon } from "../svg/github-mark.svg";
-
+import { ReactComponent as ForkIcon } from "../svg/fork.svg";
 // Variables we are going to use in the GUI
 type RepoDetails = {
   name: string;
@@ -17,13 +17,10 @@ type RepoDetails = {
   forks_count?: number;
   html_url?: string;
   watchers: string;
-  //Issue related things
   open_issues: string;
-  // Archived
   archived: boolean;
   allow_forking: boolean;
   created_at: string;
-  // Topics Array
   topics?: string[];
 };
 
@@ -37,7 +34,9 @@ export function RepoMenuPage() {
   useEffect(() => {
     document.title = `GitSearch : ${owner}/${repo}`;
   });
-  const [details, setDetails] = useState<RepoDetails | null>(null);
+
+  const [results, setResults] = useState<RepoDetails | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,7 +46,7 @@ export function RepoMenuPage() {
         setLoading(true);
         const result = await GetRepoDetails({ owner, repo });
         console.log(result);
-        setDetails(result);
+        setResults(result);
       } catch (err) {
         setError("Failed to load repo details");
       } finally {
@@ -71,30 +70,10 @@ export function RepoMenuPage() {
           <p className="title">
             {owner}/{repo}
           </p>
-
-          {!loading && (
-            <>
-              <p className="subtitle">
-                {details?.description ?? "No description provided."}
-              </p>
-              <p className="subtitle">
-                {details?.created_at
-                  ? new Date(details.created_at).toLocaleString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                      hour: "numeric",
-                      minute: "2-digit",
-                    })
-                  : "No creation date provided."}
-              </p>
-            </>
-          )}
-
           {/* Add Links to the individual tags maybe?*/}
-          {details?.topics?.length ? (
+          {results?.topics?.length ? (
             <div className="tags mt-3 is-centered">
-              {details?.topics?.map((topic) => (
+              {results?.topics?.map((topic) => (
                 <span key={topic} className="tag is-rounded">
                   <Link
                     className={styles.repoLink}
@@ -106,6 +85,25 @@ export function RepoMenuPage() {
               ))}
             </div>
           ) : null}
+
+          {!loading && (
+            <>
+              <p className="subtitle">
+                {results?.description ?? "No description provided."}
+              </p>
+              <p className="subtitle">
+                {results?.created_at
+                  ? new Date(results.created_at).toLocaleString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "numeric",
+                      minute: "2-digit",
+                    })
+                  : "No creation date provided."}
+              </p>
+            </>
+          )}
 
           <div className="columns is-centered mt-4">
             <div className="column is-narrow">
@@ -146,7 +144,7 @@ export function RepoMenuPage() {
               </div>
             </div>
           </div>
-          {details && (
+          {results && (
             <div className="columns is-centered mt-4">
               <div className="column is-narrow">
                 <div className="field has-addons is-centered is-justify-content-center">
@@ -159,7 +157,7 @@ export function RepoMenuPage() {
                         to={`https://github.com/${owner}/${repo}/forks`}
                         className={styles.repoDescription}
                       >
-                        {details.forks_count}
+                        {results.forks_count}
                       </Link>
                     </button>
                   </p>
@@ -176,7 +174,7 @@ export function RepoMenuPage() {
                         to={`https://github.com/${owner}/${repo}/watchers`}
                         className={styles.repoDescription}
                       >
-                        {details.watchers}
+                        {results.watchers}
                       </Link>
                     </button>
                   </p>
@@ -193,7 +191,7 @@ export function RepoMenuPage() {
                       <Link
                         to={`https://github.com/${owner}/${repo}/stargazers`}
                       >
-                        {details.stargazers_count}
+                        {results.stargazers_count}
                       </Link>
                     </button>
                   </p>

@@ -15,6 +15,8 @@ import {
   COMMIT_PARAM_CONFIG,
 } from "../constants/searchParams";
 
+import HeaderWrapper from "../components/functions/wrappers/header";
+
 export default function CommitSearchPage() {
   const [query, setQuery] = useState<SearchCommitParam>({ query: "" });
   const { owner, name } = useParams<{ owner: string; name: string }>();
@@ -80,14 +82,12 @@ export default function CommitSearchPage() {
 
   return (
     <div className="section has-text-centered">
-      {/* Need to center this  */}
-      <h1 className="title">
-        Search Commits in {owner}/{name}
-      </h1>
-      <p className="subtitle">
-        {" "}
-        Search for "repositories" on Github, use add rules to get more specific
-      </p>
+      <HeaderWrapper
+        owner={owner}
+        repo={name}
+        title={`Commit Search in ${owner}/${name}`}
+        description={`Search for commits in ${name}, add rules if needed`}
+      ></HeaderWrapper>
       <div className="columns is-centered">
         <div className="column is-10">
           <SearchBar<SearchCommitParam>

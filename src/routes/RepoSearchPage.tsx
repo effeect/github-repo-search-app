@@ -15,7 +15,7 @@ import SearchResultsContainer from "../components/functions/wrappers/SearchTable
 import GetResults from "../api/page-handler";
 
 import { useEffect } from "react";
-
+import HeaderWrapper from "../components/functions/wrappers/header";
 // Repo Search Page is the overview page to search code among a selected repo
 export default function RepoSearchPage() {
   const [query, setQuery] = useState<CodeSearchParams>({ query: "" });
@@ -94,16 +94,12 @@ export default function RepoSearchPage() {
   return (
     <>
       <div className="section has-text-centered">
-        <h3 className="title">
-          <Link to={`/repo/${owner}/${name}`}>Go Back</Link>
-        </h3>
-        <h1 className="title">
-          Search code in {owner}/{name}
-        </h1>
-        <p className="subtitle">
-          {" "}
-          Search for Code in the {name} repository. Add rules if needed.
-        </p>
+        <HeaderWrapper
+          owner={owner}
+          repo={name}
+          title={`Code Search in ${owner}/${name}`}
+          description={`Search for Code Files in ${name}, add rules if needed`}
+        ></HeaderWrapper>
         <div className="columns is-centered">
           <div className="column is-10">
             <SearchBar<CodeSearchParams>
