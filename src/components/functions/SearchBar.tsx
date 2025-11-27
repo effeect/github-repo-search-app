@@ -85,11 +85,10 @@ export function SearchBar<T extends BaseQuery>({
   const onSearchClick = () => {
     const fullParams = { ...query, ...params } as T;
 
+    // If we are dealing with numbers, need to handle the operators
     Object.keys(operators).forEach((k) => {
-      console.log(operators);
       const key = k as keyof T;
       const op = operators[key];
-      console.log(op);
       if (op && fullParams[key]) {
         fullParams[key] = `${op}${fullParams[key]}` as unknown as T[keyof T];
       }

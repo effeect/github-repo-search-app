@@ -17,7 +17,7 @@ export function CommitResultsTable({ results }: { results: any[] }) {
           const date = result.commit?.author?.date;
           // Not sure what else to use this for at the moment
           // const commiter = result.commiter;
-          console.log(result);
+          // console.log(result);
           return (
             <li key={result.node_id} className={`${styles.RepoTable}`}>
               {/* File Path for the file on Github below*/}
@@ -31,8 +31,8 @@ export function CommitResultsTable({ results }: { results: any[] }) {
                     {/* Left column: avatar */}
                     <div className={styles.repoAvatarWrapper}>
                       <img
-                        src={author.avatar_url}
-                        alt={`${author.login}'s avatar`}
+                        src={author?.avatar_url ?? ""}
+                        alt={`${author?.login}'s avatar`}
                         className={styles.repoAvatar}
                       />
                     </div>

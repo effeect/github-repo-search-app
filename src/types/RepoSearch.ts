@@ -17,4 +17,6 @@ export type RepoSearchParams = {
   order?: "asc" | "desc";
   quantity?: number;
   stars?: number;
+  forks?: number;
+  followers?: number;
 };

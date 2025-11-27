@@ -45,6 +45,8 @@ export default function RepoSearchPage() {
           in: "file",
           language: query.language,
           repo: `${owner}/${name}`,
+          extension: query.extension,
+          filename: query.filename,
         },
         page: Page,
         per_page: 30,
@@ -68,6 +70,9 @@ export default function RepoSearchPage() {
           in: "file",
           language: query.language,
           repo: `${owner}/${name}`,
+          extension: query.extension,
+          filename: query.filename,
+          size: query.size,
         },
       });
       const items = data?.data?.items ?? [];
