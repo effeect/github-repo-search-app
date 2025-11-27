@@ -13,7 +13,7 @@ export default function SearchResultsContainer({
   children,
 }: ResultsWrapperProps) {
   return (
-    <div className="columns is-centered">
+    <div className="columns is-centered is-full">
       <div className="column is-10">
         {loading ? (
           <div className="has-text-centered">

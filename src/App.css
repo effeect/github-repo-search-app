@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+/* Custom Scroll Bar stuff*/
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #5e5d5d;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b5b5b5;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9b9b9b;
+}

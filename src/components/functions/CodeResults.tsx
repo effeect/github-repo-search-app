@@ -27,7 +27,7 @@ export function SearchCodeTable({ results }: TableResultsDef) {
   return (
     <>
       <h2 className="title is-4">Results</h2>
-      <ul className={"is-inline-block"}>
+      <ul className={"is-block"}>
         {results.map((result) => {
           console.log(result);
 

@@ -12,7 +12,6 @@
 }
 
 .repoItem {
-  width: 100%;
   padding: 0.5rem;
   border-top: 1px solid #e2e2e2;
   border-bottom: 1px solid #e2e2e2;
@@ -29,7 +28,13 @@
 /* Description of the Item */
 .repoDescription {
   margin: 0.5rem 0.5rem;
+  /* To stop text from overflowing weirdly, likely a better way to fix this */
+  padding-right: 5rem;
   color: #ffffff;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .repoStars {
@@ -40,7 +45,7 @@
 
 /* If hover over the item light up the item, need to update the placement*/
 .repoLink:hover .repoItem {
-  background-color: #827e7e;
+  background-color: #434343;
   transition: background 1s ease;
 }
 
@@ -67,4 +72,21 @@
   flex-direction: column;
   justify-content: center;
   flex: 1;
+}
+
+.repoText {
+  min-width: 0; /* allow flex item to shrink */
+  word-break: break-word; /* break long text */
+  overflow-wrap: anywhere; /* handle long URLs or code */
+}
+
+.repoText p,
+.repoText pre,
+.repoText code {
+  white-space: pre-wrap; /* prevents code blocks from overflowing */
+}
+
+.RepoTable {
+  max-height: 300px;
+  overflow-y: auto;
 }

@@ -4,6 +4,8 @@
 
 import styles from "../../styles/RepoTable.module.css";
 import { Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import DOMPurify from "dompurify";
 
 type TableResultsDef = {
   results: any[];
@@ -14,7 +16,7 @@ export function IssueResultTable({ results }: TableResultsDef) {
   return (
     <>
       <h2 className="title is-4">Results</h2>
-      <ul className={"is-inline-block"}>
+      <ul className={"is-block"}>
         {results.map((result) => {
           console.log(result);
           const title = result.title;
@@ -41,7 +43,11 @@ export function IssueResultTable({ results }: TableResultsDef) {
                     </div>
                     <div className={styles.repoText}>
                       <h3 className={styles.repoName}>{result.title}</h3>
-                      <p className={styles.repoDescription}>{result.body}</p>
+                      <p className={styles.repoDescription}>
+                        <ReactMarkdown
+                          children={DOMPurify.sanitize(result.body || "")}
+                        />
+                      </p>
                       <p className={styles.repoStars}>
                         Published on : {result.created_at}
                       </p>
