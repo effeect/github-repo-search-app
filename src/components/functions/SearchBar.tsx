@@ -6,6 +6,12 @@ type BaseQuery = {
   query: string;
   sort?: "stars" | "forks" | "updated";
   order?: "asc" | "desc";
+  [key: string]: string | number | boolean | undefined;
+};
+
+type NumericFilter = {
+  op: ">" | "<" | "=";
+  value: number;
 };
 
 type SearchBarDefinition<T> = {
@@ -42,8 +48,18 @@ export function SearchBar<T extends BaseQuery>({
   const [activeParams, setActiveParams] = useState<(keyof Omit<T, "query">)[]>(
     []
   );
-
-  const handleChange = (key: keyof T, value: string | number | boolean) => {
+  // For number filtering if you want more/less/equal operators
+  const [operators, setOperators] = useState<Partial<Record<keyof T, string>>>(
+    {}
+  );
+  const handleChange = (
+    key: keyof T,
+    value: string | number | boolean,
+    operator?: string
+  ) => {
+    if (operator) {
+      value = operator + String(value);
+    }
     setParams({ ...params, [key]: value });
     setQuery({ ...query, [key]: value } as T);
   };
@@ -68,6 +84,17 @@ export function SearchBar<T extends BaseQuery>({
   // Button Search here
   const onSearchClick = () => {
     const fullParams = { ...query, ...params } as T;
+
+    Object.keys(operators).forEach((k) => {
+      console.log(operators);
+      const key = k as keyof T;
+      const op = operators[key];
+      console.log(op);
+      if (op && fullParams[key]) {
+        fullParams[key] = `${op}${fullParams[key]}` as unknown as T[keyof T];
+      }
+    });
+
     setQuery(fullParams);
     onSearch();
   };
@@ -172,19 +199,58 @@ export function SearchBar<T extends BaseQuery>({
                         <input
                           type="text"
                           className="input"
-                          value={String(value)}
+                          value={String(value) ?? ""}
                           onChange={(e) => handleChange(key, e.target.value)}
                         />
                       )}
+                      {/* Number Operations */}
                       {type === "number" && (
-                        <input
-                          type="number"
-                          className="input"
-                          value={value as number | ""}
-                          onChange={(e) =>
-                            handleChange(key, Number(e.target.value))
-                          }
-                        />
+                        <div className="field has-addons">
+                          <div className="control">
+                            <div className="select">
+                              <select
+                                value={operators[String(key)] ?? ""}
+                                onChange={(e) => {
+                                  const nextOp = e.target.value;
+                                  setOperators({ ...operators, [key]: nextOp });
+                                  const rawNumber = params[key];
+                                  if (
+                                    rawNumber !== undefined &&
+                                    rawNumber !== ""
+                                  ) {
+                                    setQuery({
+                                      ...query,
+                                      [key]: `${nextOp}${rawNumber}`,
+                                    } as T);
+                                  }
+                                }}
+                              >
+                                <option value="">Equal to </option>
+                                <option value=">">More Than (&gt;)</option>
+                                <option value="<">Less Than (&lt;)</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="control is-expanded">
+                            <input
+                              type="number"
+                              className="input"
+                              value={(params[key] as number) ?? 0}
+                              onChange={(e) => {
+                                const rawNumber = e.target.value;
+                                setParams({
+                                  ...params,
+                                  [key]: rawNumber as any,
+                                });
+                                const op = operators[key] ?? "";
+                                setQuery({
+                                  ...query,
+                                  [key]: `${op}${rawNumber}`,
+                                } as T);
+                              }}
+                            />
+                          </div>
+                        </div>
                       )}
                       {/* With the design of the handler, if there is no value selected it shouldn't "break" the query*/}
                       {type === "boolean" && (

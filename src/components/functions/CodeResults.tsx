@@ -36,7 +36,7 @@ export function SearchCodeTable({ results }: TableResultsDef) {
           const filePath = result.path;
 
           return (
-            <li key={result.id} className={`${styles.RepoTable}`}>
+            <li key={result.sha} className={`${styles.RepoTable}`}>
               {/* File Path for the file on Github below*/}
               <div className={styles.repoItem}>
                 <div className={styles.repoRow}>
