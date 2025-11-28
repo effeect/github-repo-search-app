@@ -11,7 +11,7 @@ export function SearchRepoTable({ results }: TableResultsDef) {
       <h2 className="title is-4">Results</h2>
       <ul className={"is-block"}>
         {results.map((result) => {
-          console.log(result);
+          // console.log(result);
           return (
             <li key={result.id} className={`${styles.RepoTable}`}>
               <Link
@@ -38,12 +38,13 @@ export function SearchRepoTable({ results }: TableResultsDef) {
                         <div className="tags mt-4">
                           {result?.topics?.map((topic: string) => (
                             <span key={topic} className="tag is-rounded ">
-                              <Link
+                              {/* Uncomment below, causes nesting issue hence the reason why its gone*/}
+                              {/* <Link
                                 className={styles.repoLink}
                                 to={`https://github.com/topics/${topic}`}
-                              >
-                                <h3>{topic}</h3>
-                              </Link>
+                              > */}
+                              <h3>{topic}</h3>
+                              {/* </Link> */}
                             </span>
                           ))}
                         </div>

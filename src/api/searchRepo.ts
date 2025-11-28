@@ -76,7 +76,7 @@ export async function GetSearchRepos(repo: RepoSearchParams) {
     if (!repo.language) {
       repo.language = "";
     }
-    console.log(createQuery(repo));
+    // console.log(createQuery(repo));
     // console.log(queryHandle(repo.query, repo.language));
     const result = await octokitHandle.rest.search.repos({
       q: createQuery(repo),
@@ -97,7 +97,7 @@ export async function GetRepoDetails(repo: repoDetails) {
       owner: repo.owner,
       repo: repo.repo,
     });
-    console.log(result);
+    // console.log(result);
     return result.data;
   } catch (error: any) {
     console.error("Error in searchRepos:", error.message || error);

@@ -8,7 +8,7 @@ export function CommitResultsTable({ results }: { results: any[] }) {
       <h2 className="title is-4">Results</h2>
       <ul className={"is-block"}>
         {results.map((result) => {
-          console.log(result);
+          // console.log(result);
           // Uncomment below to see results of everything
           // console.log(result);
           const commit_message = result.commit.message;

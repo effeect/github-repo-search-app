@@ -18,8 +18,8 @@ export function IssueResultTable({ results }: TableResultsDef) {
       <h2 className="title is-4">Results</h2>
       <ul className={"is-block"}>
         {results.map((result) => {
-          console.log(result);
-          const title = result.title;
+          //console.log(result);
+          //const title = result.title;
           //const repo = result.repository.name;
           //const filePath = result.path;
 
@@ -43,11 +43,11 @@ export function IssueResultTable({ results }: TableResultsDef) {
                     </div>
                     <div className={styles.repoText}>
                       <h3 className={styles.repoName}>{result.title}</h3>
-                      <p className={styles.repoDescription}>
+                      <div className={styles.repoDescription}>
                         <ReactMarkdown
                           children={DOMPurify.sanitize(result.body || "")}
                         />
-                      </p>
+                      </div>
                       <p className={styles.repoStars}>
                         Published on : {result.created_at}
                       </p>

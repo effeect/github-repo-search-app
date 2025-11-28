@@ -1,6 +1,6 @@
 // Simple Navbar
 import { useState } from "react";
-// import styles from "../styles/Navbar.module.css";
+import { Link } from "react-router-dom";
 // Based on https://bulma.io/documentation/components/navbar/ example
 export default function AppNavbar() {
   const [isActive, setIsActive] = useState(false);
@@ -11,12 +11,11 @@ export default function AppNavbar() {
       aria-label="main navigation"
     >
       <div className="navbar-brand">
-        <a className="navbar-item" href="/">
+        <Link to="/" className="navbar-item">
           <h3 className="title is-4">GitSearch</h3>
-        </a>
+        </Link>
 
-        <a
-          role="button"
+        <button
           className={`navbar-burger ${isActive ? "is-active" : ""}`}
           aria-label="menu"
           aria-expanded={isActive}
@@ -27,7 +26,7 @@ export default function AppNavbar() {
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
-        </a>
+        </button>
       </div>
 
       <div

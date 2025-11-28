@@ -1,7 +1,5 @@
 // This page is responsible for the Repo Menu that gives some repo details and next steps
 import { useState, useEffect } from "react";
-// Import Styles
-import styles from "../styles/AppHeader.module.css";
 import { useParams } from "react-router-dom";
 import { GetRepoDetails } from "../api/searchRepo";
 import { Link } from "react-router-dom";
@@ -14,8 +12,8 @@ import { ReactComponent as CodeIcon } from "../svg/code.svg";
 import { ReactComponent as CommitIcon } from "../svg/commit.svg";
 import { ReactComponent as PRIcon } from "../svg/pr.svg";
 import { ReactComponent as IssueIcon } from "../svg/issue.svg";
-// Variables we are going to use in the GUI
 
+// Variables we are going to use in the GUI
 type RepoDetails = {
   name: string;
   description?: string;
@@ -23,11 +21,11 @@ type RepoDetails = {
   stargazers?: number;
   forks_count?: number;
   html_url?: string;
-  watchers: string;
-  open_issues: string;
-  archived: boolean;
-  allow_forking: boolean;
-  created_at: string;
+  watchers?: string;
+  open_issues?: number;
+  archived?: boolean;
+  allow_forking?: boolean;
+  created_at?: string;
   topics?: string[];
   owner?: {
     avatar_url: string;
@@ -76,13 +74,17 @@ export function RepoMenuPage() {
           </div>
           <div className="mt-4"></div>
 
-          <div className={`${stylesTable.repoAvatarWrapper}`}>
-            <img
-              src={results?.owner?.avatar_url}
-              alt={`${results?.owner?.login}'s avatar`}
-              className={stylesTable.repoAvatar}
-            />
-          </div>
+          {/* If there is no image, don't bother showing anything */}
+          {results?.owner?.avatar_url && (
+            <div className={`${stylesTable.repoAvatarWrapper}`}>
+              <img
+                src={results?.owner?.avatar_url}
+                alt={`${results?.owner?.login}'s avatar`}
+                className={stylesTable.repoAvatar}
+              />
+            </div>
+          )}
+
           <div className="mt-4"></div>
           <Link className="title" to={`https://github.com/${owner}/${repo}`}>
             {owner}/{repo}
@@ -146,10 +148,7 @@ export function RepoMenuPage() {
             <div className="tags mt-3 is-centered">
               {results?.topics?.map((topic) => (
                 <span key={topic} className="tag is-rounded">
-                  <Link
-                    className={styles.repoLink}
-                    to={`https://github.com/topics/${topic}`}
-                  >
+                  <Link to={`https://github.com/topics/${topic}`}>
                     <h3>{topic}</h3>
                   </Link>
                 </span>
@@ -187,7 +186,7 @@ export function RepoMenuPage() {
                   <p className="control">
                     <Link
                       to={`https://github.com/${owner}/${repo}/forks`}
-                      className={`button is-info ${styles.repoDescription}`}
+                      className={`button is-info`}
                     >
                       {results.forks_count}
                     </Link>
@@ -197,14 +196,14 @@ export function RepoMenuPage() {
               <div className="column is-narrow">
                 <div className="field has-addons is-centered is-justify-content-center">
                   <p className="control">
-                    <span className="input is-light">Watchers :</span>
+                    <span className="input is-light">Stars :</span>
                   </p>
                   <p className="control">
                     <Link
                       to={`https://github.com/${owner}/${repo}/watchers`}
-                      className={`button is-info ${styles.repoDescription}`}
+                      className={`button is-info`}
                     >
-                      {results.watchers}
+                      {results.stargazers_count}
                     </Link>
                   </p>
                 </div>
@@ -213,14 +212,14 @@ export function RepoMenuPage() {
                 {/* Stars Symbol and Links */}
                 <div className="field has-addons is-centered is-justify-content-center">
                   <p className="control">
-                    <span className="input is-light">Stars :</span>
+                    <span className="input is-light">Open Issues :</span>
                   </p>
                   <p className="control">
                     <Link
-                      to={`https://github.com/${owner}/${repo}/stargazers`}
-                      className={`button is-info ${styles.repoDescription}`}
+                      to={`https://github.com/${owner}/${repo}/issues`}
+                      className={`button is-info `}
                     >
-                      {results.stargazers_count}
+                      {results.open_issues}
                     </Link>
                   </p>
                 </div>
@@ -230,7 +229,7 @@ export function RepoMenuPage() {
         </div>
       </section>
       {loading && <p>Loading...</p>}
-      {error && <p className={styles.error}>{error}</p>}
+      {error && <p>{error}</p>}
     </>
   );
 }

@@ -24,7 +24,7 @@ export async function GetSearchCommits(
   try {
     const formattedQuery = createQuery(commitSearch.q);
     // console.log("Commit search query:", formattedQuery);
-    console.log();
+    // console.log();
     const result = await octokitHandle.rest.search.commits({
       q: formattedQuery,
       sort: "", // This field is closing down

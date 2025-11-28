@@ -20,7 +20,7 @@ export async function GetSearchCode(code: CodeSearch): Promise<any> {
       // console.log(key, value);
       // Will only add the neccessary bit if there is a value for it
       if (value != null) {
-        console.log(query);
+        // console.log(query);
         query = query + ` ${key}:${value}`;
       }
     }

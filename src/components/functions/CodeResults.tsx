@@ -29,7 +29,7 @@ export function SearchCodeTable({ results }: TableResultsDef) {
       <h2 className="title is-4">Results</h2>
       <ul className={"is-block"}>
         {results.map((result) => {
-          console.log(result);
+          // console.log(result);
 
           const owner = result.repository.owner.login;
           const repo = result.repository.name;

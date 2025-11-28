@@ -1,5 +1,7 @@
-/* TODO: Make some more global settings to avoid repeating lines of CSS*/
+/* Global CSS 
 
+Only using for Text font but could add transitions and stuff in future
+*/
 body {
   font-family: "Open Sans", sans-serif;
 }

@@ -10,7 +10,7 @@ const octokitHandle = new Octokit({
 export async function GetSearchPR(issue: issueSearch): Promise<any> {
   // Creating the query to be sent off, expecting a string
   const createQuery = (input: IssueSearchQuery): string => {
-    console.log(input.query);
+    // console.log(input.query);
     let query = `${input.query ?? ""}`;
     for (let [key, value] of Object.entries(input)) {
       if (!value) continue;
@@ -24,7 +24,7 @@ export async function GetSearchPR(issue: issueSearch): Promise<any> {
   try {
     const formattedQuery = createQuery(issue.q);
     // console.log("Commit search query:", formattedQuery);
-    console.log(formattedQuery);
+    // console.log(formattedQuery);
     const result = await octokitHandle.rest.search.issuesAndPullRequests({
       q: formattedQuery,
       sort: "", // This field is closing down

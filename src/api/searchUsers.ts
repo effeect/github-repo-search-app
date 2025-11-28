@@ -26,7 +26,7 @@ export async function GetSearchUsers(users: SearchUsers) {
     const result = await octokitHandle.rest.search.code({
       q: formattedQuery,
     });
-    console.log(result);
+    // console.log(result);
     return result;
   } catch (error: any) {
     console.error("Error in SearchCode: ", error.message || error);

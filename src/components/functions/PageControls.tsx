@@ -1,6 +1,4 @@
 // To allow for pagination of the results, can flip through the results for the Code Search and Repo Table
-import styles from "../../styles/PageButtons.module.css";
-
 type PageDef = {
   page: number;
   handlePageChange: (newPage: number) => void;
