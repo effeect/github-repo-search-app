@@ -3,7 +3,9 @@
 ![](/screenshots/final_product/Github%20Repo%20Search.png)
 
 Video : https://www.youtube.com/watch?v=ko2_ywRunOE
+
 Available on the web at : https://gitsearch-liard.vercel.app
+
 This is a small app that is designed to do the folllowing actions :
 
 - Search for Repositories on Github using the Github REST API via Octokit, able to sort by Stars/Forks/Updated and also add qualifiers (known as rules in the UI)
