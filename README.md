@@ -3,7 +3,7 @@
 ![](/screenshots/final_product/Github%20Repo%20Search.png)
 
 Video : https://www.youtube.com/watch?v=ko2_ywRunOE
-
+Available on the web at : https://gitsearch-liard.vercel.app
 This is a small app that is designed to do the folllowing actions :
 
 - Search for Repositories on Github using the Github REST API via Octokit, able to sort by Stars/Forks/Updated and also add qualifiers (known as rules in the UI)
@@ -16,9 +16,9 @@ This is handled via a standard React Router with multiple routes pointing within
 
 # How to use/setup
 
-There are two ways to use this, you can either navigate to the app hosted via Vercel on here :
+There are two ways to use this, you can either navigate to the app hosted via Vercel on here : https://gitsearch-liard.vercel.app
 
-However this vercel online site does not have the ability to use the "code search" react route as that requires an API key whilst the rest of the app works fine without it (hence why I've put it online despite one of the features missing).
+However this vercel online site does not have the ability to use the "code search" react route as that requires an API key. If you try to use the code search, the search will simply display no results found. Note that the rest of the app works fine (searching commits/prs/repos/issues is fine).
 
 If you want to check out the code search, you will need to do the following :
 
@@ -29,8 +29,6 @@ If you want to check out the code search, you will need to do the following :
 3. Edit the .env with a valid Github token
 4. Run `npm start` and the app should start running
 
-If you aren't interested in the code search, please just navigate to here for more info
-
 # Tools used
 
 I wanted to keep things small and not use any extreme npm packages, at first I was planning to not use a CSS framework (was originally going to use Pure.css and build upon it).
@@ -39,10 +37,11 @@ However, I ended up settling on Bulma mostly to speed up development, there is s
 
 I've used the following additional packages :
 
-- react-dom-router
-- bulma
-- React Markdown (This is needed to handle viewing the issues within the UI)
-- GitHub Octokit
+- react-dom-router ( https://reactrouter.com/ )
+- bulma ( https://bulma.io/ )
+- React Markdown ( https://www.npmjs.com/package/react-markdown/v/8.0.6)
+- DOMPurify ( https://www.npmjs.com/package/dompurify)
+- GitHub Octokit to handle the API requests ( https://github.com/octokit/octokit.js/)
 
 Note that prettier was used in the IDE hence the formatting looking super clean.
 
@@ -53,7 +52,8 @@ Whilst I'm happy with the result, there are some things I would like to change/i
 - There is fairly basic error handling and I'm not handling any api errors from GitHub in a nice way. I would like to spend some more time handling it so the UI can respond correctly.
 - There is code for a `SearchUser.ts` file under `/api/` however I didn't feel like it fit the scope of this app, however it can be quickly implemented if needed.
 - There is a route for a "file viewer" which would allow you to click the code item and view it within the app without going to github directly, however it wasn't particularly great and I decided to just redirect to the specific file on Github. This can be changed.
-- Not all qualifiers are included in the search items as some of the qualifiers can get a bit complex. I decided to limit them however the type interfaces are defined so they can be added back in, however there is a lot of complication with it.
+- Not all qualifiers are included in the search items as some of the qualifiers can get a bit complex. I decided to limit them however the type interfaces are defined so they can be added back in quickly.
+- Wanted to implement view transitions for the router `<Link>`'s but I didn't get time to look into it too much.
 - The "label" qualifier has an issue where if you don't put "" around the label it will not work.
 
 # Screenshots :
