@@ -16,7 +16,7 @@ import GetResults from "../api/page-handler";
 import { useEffect } from "react";
 import HeaderWrapper from "../components/functions/wrappers/header";
 // Repo Search Page is the overview page to search code among a selected repo
-export default function RepoSearchPage() {
+export default function RepoSearchCode() {
   const [query, setQuery] = useState<CodeSearchParams>({ query: "" });
   const { owner, name } = useParams<{ owner: string; name: string }>();
   const [page, setPage] = useState(1);

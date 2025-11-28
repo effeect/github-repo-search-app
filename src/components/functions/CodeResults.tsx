@@ -31,9 +31,9 @@ export function SearchCodeTable({ results }: TableResultsDef) {
         {results.map((result) => {
           // console.log(result);
 
-          const owner = result.repository.owner.login;
-          const repo = result.repository.name;
-          const filePath = result.path;
+          // const owner = result.repository.owner.login;
+          // const repo = result.repository.name;
+          // const filePath = result.path;
 
           return (
             <li key={result.sha} className={`${styles.RepoTable}`}>
@@ -41,11 +41,8 @@ export function SearchCodeTable({ results }: TableResultsDef) {
               <div className={styles.repoItem}>
                 <div className={styles.repoRow}>
                   <div className={styles.repoText}>
-                    {/* */}
-                    <Link
-                      to={`/code/${owner}/${repo}/${filePath}`}
-                      className={styles.repoLink}
-                    >
+                    {/* Was orignally planning to point to a route however didn't get time to finish that up to standard with the rest of the gui */}
+                    <Link to={`${result.html_url}`} className={styles.repoLink}>
                       <h3 className={styles.repoName}>{result.name}</h3>
                     </Link>
 

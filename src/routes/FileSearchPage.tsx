@@ -1,3 +1,9 @@
+/* 
+  This was originally planned to be included in the app however I didn't feel it was useful enough
+
+  Maybe with some better planning, I could of implemented this but at the moment this is fairly incomplete and super ugly at the moment
+*/
+
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import styles from "../styles/AppHeader.module.css";
