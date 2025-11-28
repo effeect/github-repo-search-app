@@ -124,7 +124,7 @@ export function SearchBar<T extends BaseQuery>({
 
               <div className="control">
                 <button type="submit" className="button is-primary">
-                  Go
+                  Search
                 </button>
               </div>
 
