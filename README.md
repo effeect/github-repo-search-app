@@ -12,7 +12,17 @@ This is handled via a standard React Router with multiple routes pointing within
 
 # How to use/setup
 
-There are two ways to use this :
+There are two ways to use this
+
+However this does not have the ability to use the "code search" route as that requires an API key whilst the rest of the app works fine without it (hence why I've put it online despite one of the features missing).
+
+If you want to check out the code search, you will need to do the following :
+
+1. Git clone the repo
+   `git clone https://github.com/effeect/github-repo-search-app`
+2. cd into the root and run
+   `cp default.env .env`
+3. Edit the .env with a valid Github token
 
 # Tools used
 
