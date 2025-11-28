@@ -1,4 +1,4 @@
-import styles from "../../styles/SearchBar.module.css";
+// import styles from "../../styles/SearchBar.module.css";
 import { useState } from "react";
 import { AddRule } from "../rules/AddRule";
 
@@ -7,11 +7,6 @@ type BaseQuery = {
   sort?: "stars" | "forks" | "updated";
   order?: "asc" | "desc";
   [key: string]: string | number | boolean | undefined;
-};
-
-type NumericFilter = {
-  op: ">" | "<" | "=";
-  value: number;
 };
 
 type SearchBarDefinition<T> = {
@@ -185,12 +180,12 @@ export function SearchBar<T extends BaseQuery>({
                   <div className="field has-addons">
                     {/* Doing a static button as had an issue with the Label object*/}
                     <div className="control">
-                      <a className="button is-static">
+                      <button className="button is-static">
                         {/* Thanks to https://www.geeksforgeeks.org/javascript/how-to-make-first-letter-of-a-string-uppercase-in-javascript/*/}
                         {String(key).replace(/^./, (char) =>
                           char.toUpperCase()
                         )}
-                      </a>
+                      </button>
                     </div>
 
                     <div className="control is-expanded">

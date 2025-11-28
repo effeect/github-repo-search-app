@@ -1,16 +1,40 @@
-# Github Repo Search Project
+# GitSearch (AKA GitHub Repo Search App)
 
-The following tools were used :
+This is a small app that is designed to do the folllowing actions :
 
-- React Router - To allow basic searching of code within the repository
-- Octokit
-- PureCSS as a starting point for CSS stuff. Would use Tailwind/Bulma for a bigger project however the word "small" is important for this project in my personal opinion. Much easier to move a smaller ship as they say...
+- Search for Repositories on Github using the Github REST API via Octokit, able to sort by Stars/Forks/Updated and also add qualifiers (known as rules in the UI)
+- Search for Code within a said Repository
+- Search for Issues within a said Repository
+- Search for PRs within a said Repository
+- Search for Commits within a said Repository
 
-IDE/Tools for code formatting :
+This is handled via a standard React Router with multiple routes pointing within the app + links to the Github Repos themselves.
 
-- Prettier
+# How to use/setup
 
-# Features
+There are two ways to use this :
 
-- Ability to search for repos and sort and add rules
-- Ability to search for code and view individual files within the GUI
+# Tools used
+
+I wanted to keep things small and not use any extreme npm packages, at first I was planning to not use a CSS framework (was originally going to use Pure.css and build upon it).
+
+However, I ended up settling on Bulma mostly to speed up development, there is still some custom CSS for the table results and other bits in the app.
+
+I've used the following additional packages :
+
+- react-dom-router
+- bulma
+- React Markdown (This is needed to handle viewing the issues within the UI)
+- GitHub Octokit
+
+Note that prettier was used in the IDE hence the formatting looking super clean.
+
+# What I would change/improve
+
+Whilst I'm happy with the result, there are some things I would like to change/improve in the future upon reflection :
+
+- There is fairly basic error handling and I'm not handling any api errors from GitHub in a nice way. I would like to spend some more time handling it so the UI can respond correctly.
+- There is code for a `SearchUser.ts` file under `/api/` however I didn't feel like it fit the scope of this app, however it can be quickly implemented if needed.
+- There is a route for a "file viewer" which would allow you to click the code item and view it within the app without going to github directly, however it wasn't particularly great and I decided to just redirect to the specific file on Github. This can be changed.
+- Not all qualifiers are included in the search items as some of the qualifiers can get a bit complex. I decided to limit them however the type interfaces are defined so they can be added back in, however there is a lot of complication with it.
+- The "label" qualifier has an issue where if you don't put "" around the label it will not work.

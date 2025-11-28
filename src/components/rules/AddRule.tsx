@@ -34,9 +34,7 @@ export function AddRule({
         </header>
 
         <section className="modal-card-body">
-          <small className="has-text-grey">
-            Add a search qualifier from GitHub
-          </small>
+          <small className="has-text-grey">Add a search rule</small>
           <hr />
 
           <div className="field">
