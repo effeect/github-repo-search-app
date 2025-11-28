@@ -28,6 +28,7 @@ function App() {
     <Router>
       <div className="App">
         <AppNavbar />
+        {/* <main className="hero is-fullheight"> */}
         <Routes>
           {/* Default Route */}
           <Route path="/" element={<RepoSearch />} />
@@ -44,6 +45,7 @@ function App() {
           {/* Do a search on Commits*/}
           <Route path="/commit/:owner/:name" element={<CommitSearchPage />} />
         </Routes>
+        {/* </main> */}
         <AppFooter />
       </div>
     </Router>

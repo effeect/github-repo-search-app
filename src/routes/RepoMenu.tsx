@@ -56,7 +56,6 @@ export function RepoMenuPage() {
       try {
         setLoading(true);
         const result = await GetRepoDetails({ owner, repo });
-        console.log(result);
         setResults(result);
       } catch (err) {
         setError("Failed to load repo details");

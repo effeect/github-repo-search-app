@@ -50,6 +50,7 @@ export function RepoSearch() {
 
   // Please note we are setting the Page to 1 when a new request is triggered
   const handleQuery = async () => {
+    // console.log("triggered");
     setLoading(true);
     try {
       // console.log("Handle Query Result", query);
@@ -80,38 +81,40 @@ export function RepoSearch() {
   const result = GetResults(page, cache);
   return (
     <>
-      <div className="section has-text-centered">
-        {/* Need to center this  */}
-        <HeaderWrapper
-          title={`Search for Repositories`}
-          description={`Search for repos on Github, add rules if needed`}
-        ></HeaderWrapper>
-        {/* Search Bar Field */}
-        <SearchBar<RepoSearchParams>
-          query={query}
-          setQuery={setQuery}
-          onSearch={handleQuery}
-          optionalParams={REPO_OPTIONAL_PARAMS}
-          showOrder={true}
-          paramConfig={REPO_PARAM_CONFIG}
-        />
-        {/* Search Table below, wrapped below*/}
-        <SearchResultsContainer
-          loading={loading}
-          results={result.visibleResults}
-          hasSearched={hasSearched}
-        >
-          <SearchRepoTable results={result.visibleResults} />
-        </SearchResultsContainer>
-
-        {/* Will hide page controls if there are no visible results*/}
-        {result.visibleResults.length > 0 && (
-          <PageControls
-            page={page}
-            handlePageChange={handlePageChange}
-            disableNext={result.nextResults.length === 0}
+      <div className="hero is-fullheight">
+        <div className="section has-text-centered">
+          {/* Need to center this  */}
+          <HeaderWrapper
+            title={`Search for Repositories`}
+            description={`Search for repos on Github, add rules if needed`}
+          ></HeaderWrapper>
+          {/* Search Bar Field */}
+          <SearchBar<RepoSearchParams>
+            query={query}
+            setQuery={setQuery}
+            onSearch={handleQuery}
+            optionalParams={REPO_OPTIONAL_PARAMS}
+            showOrder={true}
+            paramConfig={REPO_PARAM_CONFIG}
           />
-        )}
+          {/* Search Table below, wrapped below*/}
+          <SearchResultsContainer
+            loading={loading}
+            results={result.visibleResults}
+            hasSearched={hasSearched}
+          >
+            <SearchRepoTable results={result.visibleResults} />
+          </SearchResultsContainer>
+
+          {/* Will hide page controls if there are no visible results*/}
+          {result.visibleResults.length > 0 && (
+            <PageControls
+              page={page}
+              handlePageChange={handlePageChange}
+              disableNext={result.nextResults.length === 0}
+            />
+          )}
+        </div>
       </div>
     </>
   );

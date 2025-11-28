@@ -1,13 +1,14 @@
 /* remove default bullets and sets a top margin between it and the search bar*/
 .RepoTable {
   list-style: none;
-  margin-top: 1rem;
-  margin-left: -1rem;
+  /* margin-top: 1rem; */
+  max-height: 300px;
+  overflow-y: auto;
 }
 /* Row Formatting */
 .repoRow {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   align-items: center;
 }
 
@@ -38,7 +39,7 @@
 }
 
 .repoStars {
-  margin: 0.5rem 0.5rem;
+  margin: 0.5rem;
   font-size: 0.9rem;
   color: #ffffff;
 }
@@ -46,11 +47,11 @@
 /* If hover over the item light up the item, need to update the placement*/
 .repoLink:hover .repoItem {
   background-color: #434343;
-  transition: background 1s ease;
+  transition: background 0.5s ease;
 }
 
 .repoAvatar {
-  /* Uncomment below to make this circular*/
+  /* Uncomment below to make this non-circular (personal preference)*/
   border-radius: 50%;
   object-fit: cover;
   margin-right: 0rem;
@@ -58,11 +59,10 @@
   /* needed to make sure images are all the same size */
   min-width: 5em;
 }
-
 .repoAvatarWrapper {
   display: block;
-  align-items: center;
-  justify-content: center;
+  margin: 0 auto; /* Needed for the image centering,  */
+  /* Width and Height of the images are fixed*/
   width: 5rem;
   height: 5rem;
 }
@@ -72,21 +72,12 @@
   flex-direction: column;
   justify-content: center;
   flex: 1;
-}
-
-.repoText {
   min-width: 0; /* allow flex item to shrink */
   word-break: break-word; /* break long text */
-  overflow-wrap: anywhere; /* handle long URLs or code */
 }
-
+/* Needed for the React Markdown stuff seen on the commit and issue page*/
 .repoText p,
 .repoText pre,
 .repoText code {
   white-space: pre-wrap; /* prevents code blocks from overflowing */
-}
-
-.RepoTable {
-  max-height: 300px;
-  overflow-y: auto;
 }

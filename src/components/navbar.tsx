@@ -1,5 +1,5 @@
 // Simple Navbar
-import React, { useState } from "react";
+import { useState } from "react";
 // import styles from "../styles/Navbar.module.css";
 // Based on https://bulma.io/documentation/components/navbar/ example
 export default function AppNavbar() {
@@ -36,12 +36,11 @@ export default function AppNavbar() {
       >
         {/* Navbar items can go here */}
         <div className="navbar-end">
-          <a className="navbar-item">About</a>
           <a
             href="https://github.com/effeect/github-repo-search-app"
             className="navbar-item"
           >
-            Github
+            Github Repository
           </a>
         </div>
       </div>

@@ -81,38 +81,40 @@ export default function CommitSearchPage() {
   const result = GetResults(page, cache);
 
   return (
-    <div className="section has-text-centered">
-      <HeaderWrapper
-        owner={owner}
-        repo={name}
-        title={`Commit Search in ${owner}/${name}`}
-        description={`Search for commits in ${name}, add rules if needed`}
-      ></HeaderWrapper>
+    <div className="hero is-fullheight">
+      <div className="section has-text-centered">
+        <HeaderWrapper
+          owner={owner}
+          repo={name}
+          title={`Commit Search in ${owner}/${name}`}
+          description={`Search for commits in ${name}, add rules if needed`}
+        ></HeaderWrapper>
 
-      <SearchBar<SearchCommitParam>
-        query={query}
-        setQuery={(q) => setQuery(q)}
-        onSearch={handleQuery}
-        optionalParams={COMMIT_OPTIONAL_PARAMS} // you can define commit-specific params
-        paramConfig={COMMIT_PARAM_CONFIG}
-      />
-      {/* Search Table below, wrapped below*/}
-      <SearchResultsContainer
-        loading={loading}
-        results={result.visibleResults}
-        hasSearched={hasSearched}
-      >
-        <CommitResultsTable results={result.visibleResults} />
-      </SearchResultsContainer>
-
-      {/* Will hide page controls if there are no visible results*/}
-      {result.visibleResults.length > 0 && (
-        <PageControls
-          page={page}
-          handlePageChange={handlePageChange}
-          disableNext={result.nextResults.length === 0}
+        <SearchBar<SearchCommitParam>
+          query={query}
+          setQuery={(q) => setQuery(q)}
+          onSearch={handleQuery}
+          optionalParams={COMMIT_OPTIONAL_PARAMS} // you can define commit-specific params
+          paramConfig={COMMIT_PARAM_CONFIG}
         />
-      )}
+        {/* Search Table below, wrapped below*/}
+        <SearchResultsContainer
+          loading={loading}
+          results={result.visibleResults}
+          hasSearched={hasSearched}
+        >
+          <CommitResultsTable results={result.visibleResults} />
+        </SearchResultsContainer>
+
+        {/* Will hide page controls if there are no visible results*/}
+        {result.visibleResults.length > 0 && (
+          <PageControls
+            page={page}
+            handlePageChange={handlePageChange}
+            disableNext={result.nextResults.length === 0}
+          />
+        )}
+      </div>
     </div>
   );
 }

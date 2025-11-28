@@ -79,39 +79,41 @@ export default function RepoSearchPR() {
 
   return (
     <>
-      <div className="section has-text-centered">
-        <HeaderWrapper
-          owner={owner}
-          repo={name}
-          title={`Pull Request Search in ${owner}/${name}`}
-          description={`Search for Pull Requests in ${name}, add rules if needed`}
-        ></HeaderWrapper>
+      <div className="hero is-fullheight">
+        <div className="section has-text-centered">
+          <HeaderWrapper
+            owner={owner}
+            repo={name}
+            title={`Pull Request Search in ${owner}/${name}`}
+            description={`Search for Pull Requests in ${name}, add rules if needed`}
+          ></HeaderWrapper>
 
-        <SearchBar<IssueSearchQuery>
-          query={query}
-          setQuery={(q) => setQuery(q)}
-          onSearch={handleQuery}
-          optionalParams={ISSUE_OPTIONAL_PARAMS} // you can define commit-specific params
-          paramConfig={ISSUE_PARAM_CONFIG}
-        />
-
-        {/* Search Table below, wrapped below*/}
-        <SearchResultsContainer
-          loading={loading}
-          results={result.visibleResults}
-          hasSearched={hasSearched}
-        >
-          {/* Using same table layout for PRs/Issues*/}
-          <IssueResultTable results={result.visibleResults} />
-        </SearchResultsContainer>
-
-        {result.visibleResults.length > 0 && (
-          <PageControls
-            page={page}
-            handlePageChange={handlePageChange}
-            disableNext={result.nextResults.length === 0}
+          <SearchBar<IssueSearchQuery>
+            query={query}
+            setQuery={(q) => setQuery(q)}
+            onSearch={handleQuery}
+            optionalParams={ISSUE_OPTIONAL_PARAMS} // you can define commit-specific params
+            paramConfig={ISSUE_PARAM_CONFIG}
           />
-        )}
+
+          {/* Search Table below, wrapped below*/}
+          <SearchResultsContainer
+            loading={loading}
+            results={result.visibleResults}
+            hasSearched={hasSearched}
+          >
+            {/* Using same table layout for PRs/Issues*/}
+            <IssueResultTable results={result.visibleResults} />
+          </SearchResultsContainer>
+
+          {result.visibleResults.length > 0 && (
+            <PageControls
+              page={page}
+              handlePageChange={handlePageChange}
+              disableNext={result.nextResults.length === 0}
+            />
+          )}
+        </div>
       </div>
     </>
   );
