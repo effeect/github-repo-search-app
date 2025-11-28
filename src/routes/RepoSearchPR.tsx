@@ -10,10 +10,11 @@ import {
   ISSUE_PARAM_CONFIG,
 } from "../constants/searchParams";
 
-import { useEffect } from "react";
 import HeaderWrapper from "../components/functions/wrappers/header";
 import GetResults from "../api/page-handler";
 import SearchResultsContainer from "../components/functions/wrappers/SearchTable";
+import DynamicMeta from "../components/functions/wrappers/metadata";
+
 // Repo Search Page is the overview page to search code among a selected repo
 export default function RepoSearchPR() {
   const [query, setQuery] = useState<IssueSearchQuery>({ query: "" });
@@ -24,11 +25,6 @@ export default function RepoSearchPR() {
   // For Loading Icon
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
-  // A cheeky way of updating meta data, would use something like NextJS to handle this but don't want to install too much stuff
-  useEffect(() => {
-    document.title = `GitSearch : Pull Requests of ${owner}/${name}`;
-  });
-
   const fetchPageData = async (Page: number) => {
     setLoading(true);
     if (cache[Page]) return;
@@ -79,6 +75,10 @@ export default function RepoSearchPR() {
 
   return (
     <>
+      <DynamicMeta
+        title={`GitSearch : Pull Requests of ${owner}/${name}`}
+        description={`Search for Pull Requests under ${owner}/${name}`}
+      />
       <div className="hero is-fullheight">
         <div className="section has-text-centered">
           <HeaderWrapper

@@ -13,8 +13,9 @@ import {
 import SearchResultsContainer from "../components/functions/wrappers/SearchTable";
 import GetResults from "../api/page-handler";
 
-import { useEffect } from "react";
 import HeaderWrapper from "../components/functions/wrappers/header";
+import DynamicMeta from "../components/functions/wrappers/metadata";
+
 // Repo Search Page is the overview page to search code among a selected repo
 export default function RepoSearchCode() {
   const [query, setQuery] = useState<CodeSearchParams>({ query: "" });
@@ -25,11 +26,6 @@ export default function RepoSearchCode() {
   // For Loading Icon
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
-
-  // A cheeky way of updating meta data, would use something like NextJS to handle this but don't want to install too much stuff
-  useEffect(() => {
-    document.title = `GitSearch : Code of ${owner}/${name}`;
-  });
 
   // Taken from Repo Search, need to make some additonal modifications
   const fetchPageData = async (Page: number) => {
@@ -97,6 +93,10 @@ export default function RepoSearchCode() {
   const result = GetResults(page, cache);
   return (
     <>
+      <DynamicMeta
+        title={`GitSearch : Code of ${owner}/${name}`}
+        description={`Search for Code under ${owner}/${name}`}
+      />
       <div className="hero is-fullheight">
         <div className="section has-text-centered">
           <HeaderWrapper

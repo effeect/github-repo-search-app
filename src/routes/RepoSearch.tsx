@@ -15,6 +15,7 @@ import {
 import SearchResultsContainer from "../components/functions/wrappers/SearchTable";
 import GetResults from "../api/page-handler";
 import HeaderWrapper from "../components/functions/wrappers/header";
+import DynamicMeta from "../components/functions/wrappers/metadata";
 
 // Keeping everything under AppHeader
 export function RepoSearch() {
@@ -81,6 +82,10 @@ export function RepoSearch() {
   const result = GetResults(page, cache);
   return (
     <>
+      <DynamicMeta
+        title="GitSearch Home"
+        description="Search for Github Repos"
+      />
       <div className="hero is-fullheight">
         <div className="section has-text-centered">
           {/* Need to center this  */}

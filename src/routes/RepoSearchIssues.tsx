@@ -13,7 +13,7 @@ import {
 import SearchResultsContainer from "../components/functions/wrappers/SearchTable";
 import GetResults from "../api/page-handler";
 import HeaderWrapper from "../components/functions/wrappers/header";
-import { useEffect } from "react";
+import DynamicMeta from "../components/functions/wrappers/metadata";
 
 // Repo Search Page is the overview page to search code among a selected repo
 export default function RepoSearchIssues() {
@@ -25,11 +25,6 @@ export default function RepoSearchIssues() {
   // For Loading Icon
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
-
-  // A cheeky way of updating meta data, would use something like NextJS to handle this but don't want to install too much stuff
-  useEffect(() => {
-    document.title = `GitSearch : Issues of ${owner}/${name}`;
-  });
 
   // Fetch Page Data
   const fetchPageData = async (Page: number) => {
@@ -81,41 +76,48 @@ export default function RepoSearchIssues() {
   const result = GetResults(page, cache);
 
   return (
-    <div className="hero is-fullheight">
-      <div className="section has-text-centered">
-        {/* Need to center this  */}
-        <HeaderWrapper
-          owner={owner}
-          repo={name}
-          title={`Issue Search in ${owner}/${name}`}
-          description={`Search for Issues in ${name}, add rules if needed`}
-        ></HeaderWrapper>
+    <>
+      <DynamicMeta
+        title={`GitSearch : Issues of ${owner}/${name}`}
+        description={`Search for Issues under ${owner}/${name}`}
+      />
 
-        <SearchBar<IssueSearchQuery>
-          query={query}
-          setQuery={(q) => setQuery(q)}
-          onSearch={handleQuery}
-          optionalParams={ISSUE_OPTIONAL_PARAMS} // you can define commit-specific params
-          paramConfig={ISSUE_PARAM_CONFIG}
-        />
+      <div className="hero is-fullheight">
+        <div className="section has-text-centered">
+          {/* Need to center this  */}
+          <HeaderWrapper
+            owner={owner}
+            repo={name}
+            title={`Issue Search in ${owner}/${name}`}
+            description={`Search for Issues in ${name}, add rules if needed`}
+          ></HeaderWrapper>
 
-        {/* Search Table below, wrapped below*/}
-        <SearchResultsContainer
-          loading={loading}
-          results={result.visibleResults}
-          hasSearched={hasSearched}
-        >
-          {/* Using same table layout for PRs/Issues*/}
-          <IssueResultTable results={result.visibleResults} />
-        </SearchResultsContainer>
-        {result.visibleResults.length > 0 && (
-          <PageControls
-            page={page}
-            handlePageChange={handlePageChange}
-            disableNext={result.nextResults.length === 0}
+          <SearchBar<IssueSearchQuery>
+            query={query}
+            setQuery={(q) => setQuery(q)}
+            onSearch={handleQuery}
+            optionalParams={ISSUE_OPTIONAL_PARAMS} // you can define commit-specific params
+            paramConfig={ISSUE_PARAM_CONFIG}
           />
-        )}
+
+          {/* Search Table below, wrapped below*/}
+          <SearchResultsContainer
+            loading={loading}
+            results={result.visibleResults}
+            hasSearched={hasSearched}
+          >
+            {/* Using same table layout for PRs/Issues*/}
+            <IssueResultTable results={result.visibleResults} />
+          </SearchResultsContainer>
+          {result.visibleResults.length > 0 && (
+            <PageControls
+              page={page}
+              handlePageChange={handlePageChange}
+              disableNext={result.nextResults.length === 0}
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -5,7 +5,6 @@ import { SearchCommitParam } from "../types/CommitSearch";
 import { SearchBar } from "../components/functions/SearchBar";
 import { PageControls } from "../components/functions/PageControls";
 import { CommitResultsTable } from "../components/functions/CommitResults";
-import { useEffect } from "react";
 
 import SearchResultsContainer from "../components/functions/wrappers/SearchTable";
 import GetResults from "../api/page-handler";
@@ -16,6 +15,7 @@ import {
 } from "../constants/searchParams";
 
 import HeaderWrapper from "../components/functions/wrappers/header";
+import DynamicMeta from "../components/functions/wrappers/metadata";
 
 export default function CommitSearchPage() {
   const [query, setQuery] = useState<SearchCommitParam>({ query: "" });
@@ -73,48 +73,49 @@ export default function CommitSearchPage() {
     }
   };
 
-  // A cheeky way of updating meta data, would use something like NextJS to handle this but don't want to install too much stuff
-  useEffect(() => {
-    document.title = `GitSearch : Commits of ${owner}/${name}`;
-  });
-
   const result = GetResults(page, cache);
 
   return (
-    <div className="hero is-fullheight">
-      <div className="section has-text-centered">
-        <HeaderWrapper
-          owner={owner}
-          repo={name}
-          title={`Commit Search in ${owner}/${name}`}
-          description={`Search for commits in ${name}, add rules if needed`}
-        ></HeaderWrapper>
+    <>
+      <DynamicMeta
+        title={`GitSearch : Commits of ${owner}/${name}`}
+        description={`Search for Commits under ${owner}/${name}`}
+      />
+      <div className="hero is-fullheight">
+        <div className="section has-text-centered">
+          <HeaderWrapper
+            owner={owner}
+            repo={name}
+            title={`Commit Search in ${owner}/${name}`}
+            description={`Search for commits in ${name}, add rules if needed`}
+          ></HeaderWrapper>
 
-        <SearchBar<SearchCommitParam>
-          query={query}
-          setQuery={(q) => setQuery(q)}
-          onSearch={handleQuery}
-          optionalParams={COMMIT_OPTIONAL_PARAMS} // you can define commit-specific params
-          paramConfig={COMMIT_PARAM_CONFIG}
-        />
-        {/* Search Table below, wrapped below*/}
-        <SearchResultsContainer
-          loading={loading}
-          results={result.visibleResults}
-          hasSearched={hasSearched}
-        >
-          <CommitResultsTable results={result.visibleResults} />
-        </SearchResultsContainer>
-
-        {/* Will hide page controls if there are no visible results*/}
-        {result.visibleResults.length > 0 && (
-          <PageControls
-            page={page}
-            handlePageChange={handlePageChange}
-            disableNext={result.nextResults.length === 0}
+          <SearchBar<SearchCommitParam>
+            query={query}
+            setQuery={(q) => setQuery(q)}
+            onSearch={handleQuery}
+            optionalParams={COMMIT_OPTIONAL_PARAMS} // you can define commit-specific params
+            paramConfig={COMMIT_PARAM_CONFIG}
           />
-        )}
+          {/* Search Table below, wrapped below*/}
+          <SearchResultsContainer
+            loading={loading}
+            results={result.visibleResults}
+            hasSearched={hasSearched}
+          >
+            <CommitResultsTable results={result.visibleResults} />
+          </SearchResultsContainer>
+
+          {/* Will hide page controls if there are no visible results*/}
+          {result.visibleResults.length > 0 && (
+            <PageControls
+              page={page}
+              handlePageChange={handlePageChange}
+              disableNext={result.nextResults.length === 0}
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

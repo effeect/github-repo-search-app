@@ -13,6 +13,7 @@ import { ReactComponent as CommitIcon } from "../svg/commit.svg";
 import { ReactComponent as PRIcon } from "../svg/pr.svg";
 import { ReactComponent as IssueIcon } from "../svg/issue.svg";
 
+import DynamicMeta from "../components/functions/wrappers/metadata";
 // Variables we are going to use in the GUI
 type RepoDetails = {
   name: string;
@@ -39,11 +40,6 @@ export function RepoMenuPage() {
   const owner = rawOwner ?? "";
   const repo = rawName ?? "";
 
-  // A cheeky way of updating meta data, would use something like NextJS to handle this but don't want to install too much stuff
-  useEffect(() => {
-    document.title = `GitSearch : ${owner}/${repo}`;
-  });
-
   const [results, setResults] = useState<RepoDetails | null>(null);
 
   const [loading, setLoading] = useState(true);
@@ -66,6 +62,10 @@ export function RepoMenuPage() {
   }, [owner, repo]);
   return (
     <>
+      <DynamicMeta
+        title={`GitSearch : ${owner}/${repo}`}
+        description={`Details for ${owner}/${repo} on GitSearch.`}
+      />
       {/* Taken from https://bulma.io/documentation/layout/hero/*/}
       <section className="hero is-large is-dark">
         <div className="hero-body">
