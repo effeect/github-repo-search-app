@@ -1,5 +1,9 @@
 # GitSearch (AKA GitHub Repo Search App)
 
+![](/screenshots/final_product/Github%20Repo%20Search.png)
+
+Video : https://www.youtube.com/watch?v=ko2_ywRunOE
+
 This is a small app that is designed to do the folllowing actions :
 
 - Search for Repositories on Github using the Github REST API via Octokit, able to sort by Stars/Forks/Updated and also add qualifiers (known as rules in the UI)
@@ -12,9 +16,9 @@ This is handled via a standard React Router with multiple routes pointing within
 
 # How to use/setup
 
-There are two ways to use this
+There are two ways to use this, you can either navigate to the app hosted via Vercel on here :
 
-However this does not have the ability to use the "code search" route as that requires an API key whilst the rest of the app works fine without it (hence why I've put it online despite one of the features missing).
+However this vercel online site does not have the ability to use the "code search" react route as that requires an API key whilst the rest of the app works fine without it (hence why I've put it online despite one of the features missing).
 
 If you want to check out the code search, you will need to do the following :
 
@@ -23,6 +27,9 @@ If you want to check out the code search, you will need to do the following :
 2. cd into the root and run
    `cp default.env .env`
 3. Edit the .env with a valid Github token
+4. Run `npm start` and the app should start running
+
+If you aren't interested in the code search, please just navigate to here for more info
 
 # Tools used
 
@@ -48,3 +55,11 @@ Whilst I'm happy with the result, there are some things I would like to change/i
 - There is a route for a "file viewer" which would allow you to click the code item and view it within the app without going to github directly, however it wasn't particularly great and I decided to just redirect to the specific file on Github. This can be changed.
 - Not all qualifiers are included in the search items as some of the qualifiers can get a bit complex. I decided to limit them however the type interfaces are defined so they can be added back in, however there is a lot of complication with it.
 - The "label" qualifier has an issue where if you don't put "" around the label it will not work.
+
+# Screenshots :
+
+![](/screenshots/final_product/Github%20Repo%20Search.png)
+![](/screenshots/final_product/Github%20Repo%20Menu%20Facebook.png)
+![](/screenshots/final_product/CommitSearch.png)
+![](/screenshots/final_product/IssueSearch.png)
+![](/screenshots/final_product/GithubCode.png)
