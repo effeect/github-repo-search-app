@@ -57,6 +57,7 @@ Whilst I'm happy with the result, there are some things I would like to change/i
 - Not all qualifiers are included in the search items as some of the qualifiers can get a bit complex. I decided to limit them however the type interfaces are defined so they can be added back in quickly.
 - Wanted to implement view transitions for the router `<Link>`'s but I didn't get time to look into it too much.
 - The "label" qualifier has an issue where if you don't put "" around the label it will not work.
+- I would also like to implement a better way to show off Metadata, I've had some good experciences with Next.js when it comes to handling it however I wasn't wanting to add more npm packages for something relatively small and minor.
 
 # Screenshots :
 
