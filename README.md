@@ -2,40 +2,40 @@
 
 ![](/screenshots/final_product/Github%20Repo%20Search.png)
 
-Video : https://www.youtube.com/watch?v=ko2_ywRunOE
+Video: https://www.youtube.com/watch?v=ko2_ywRunOE
 
-Available on the web at : https://gitsearch-liard.vercel.app
+Available on the web at: https://gitsearch-liard.vercel.app
 
-This is a small app that is designed to do the folllowing actions :
+This is a small app that is designed to do the following actions:
 
-- Search for Repositories on Github using the Github REST API via Octokit, able to sort by Stars/Forks/Updated and also add qualifiers (known as rules in the UI)
-- Search for Code within a said Repository
-- Search for Issues within a said Repository
-- Search for PRs within a said Repository
-- Search for Commits within a said Repository
+- Search for repositories on GitHub using the GitHub REST API via Octokit, able to sort by Stars/Forks/Updated and also add qualifiers (known as rules in the UI)
+- Search for code within a said repository
+- Search for issues within a said repository
+- Search for PRs within a said repository
+- Search for commits within a said repository
 
-This is handled via a standard React Router with multiple routes pointing within the app + links to the Github Repos themselves.
+This is handled via a standard React Router with multiple routes pointing within the app + links to the GitHub repos themselves.
 
 # How to use/setup
 
-There are two ways to use this, you can either navigate to the app hosted via Vercel on here : https://gitsearch-liard.vercel.app
+There are two ways to use this, you can either navigate to the app hosted via Vercel on here: https://gitsearch-liard.vercel.app
 
-However this vercel online site does not have the ability to use the "code search" react route as that requires an API key. If you try to use the code search, the search will simply display no results found. Note that the rest of the app works fine (searching commits/prs/repos/issues is fine).
+However, this Vercel online site does not have the ability to use the "code search" React route as that requires an API key. If you try to use the code search, the search will simply display no results found. Note that the rest of the app works fine (searching commits/PRs/repos/issues is fine).
 
-If you want to check out the code search, you will need to do the following :
+If you want to check out the code search, you will need to do the following:
 
 1. Git clone the repo
    `git clone https://github.com/effeect/github-repo-search-app`
 2. cd into the root and run
    `cp default.env .env`
-3. Edit the .env with a valid Github token
+3. Edit the .env with a valid GitHub token
 4. Run `npm start` and the app should start running
 
 # Tools used
 
-I wanted to keep things small and not use any extreme npm packages, at first I was planning to not use a CSS framework (was originally going to use Pure.css and build upon it).
+I wanted to keep things small and not use any extreme npm packages. At first, I was planning not to use a CSS framework (Iwas originally going to use Pure.css and build upon it).
 
-However, I ended up settling on Bulma mostly to speed up development, there is still some custom CSS for the table results and other bits in the app.
+However, I ended up settling on Bulma mostly to speed up development. There is still some custom CSS for the table results and other bits in the app.
 
 I've used the following additional packages :
 
@@ -45,19 +45,19 @@ I've used the following additional packages :
 - DOMPurify ( https://www.npmjs.com/package/dompurify)
 - GitHub Octokit to handle the API requests ( https://github.com/octokit/octokit.js/)
 
-Note that prettier was used in the IDE hence the formatting looking super clean.
+Note that Prettier was used in the IDE, hence the formatting looking super clean.
 
 # What I would change/improve
 
 Whilst I'm happy with the result, there are some things I would like to change/improve in the future upon reflection :
 
-- There is fairly basic error handling and I'm not handling any api errors from GitHub in a nice way. I would like to spend some more time handling it so the UI can respond correctly.
-- There is code for a `SearchUser.ts` file under `/api/` however I didn't feel like it fit the scope of this app, however it can be quickly implemented if needed.
-- There is a route for a "file viewer" which would allow you to click the code item and view it within the app without going to github directly, however it wasn't particularly great and I decided to just redirect to the specific file on Github. This can be changed.
-- Not all qualifiers are included in the search items as some of the qualifiers can get a bit complex. I decided to limit them however the type interfaces are defined so they can be added back in quickly.
-- Wanted to implement view transitions for the router `<Link>`'s but I didn't get time to look into it too much.
-- The "label" qualifier has an issue where if you don't put "" around the label it will not work.
-- I would also like to implement a better way to show off Metadata, I've had some good experciences with Next.js when it comes to handling it however I wasn't wanting to add more npm packages for something relatively small and minor.
+- There is fairly basic error handling, and I'm not handling any API errors from GitHub in a nice way. I would like to spend some more time handling it so the UI can respond correctly.
+- There is code for a `SearchUser.ts` file under `/api/`, however, I didn't feel like it fit the scope of this app. However, it can be quickly implemented if needed.
+- There is a route for a "file viewer" which would allow you to click the code item and view it within the app without going to GitHub directly. However, it wasn't particularly great, and I decided to just redirect to the specific file on GitHub. This can be changed.
+- Not all qualifiers are included in the search items as some of the qualifiers can get a bit complex. I decided to limit them; however, the type interfaces are defined so they can be added back in quickly.
+- I wanted to implement view transitions for the router `<Link>`’s, but I didn't get time to look into it too much.
+- The "label" qualifier has an issue where if you don't put "" around the label, it will not work.
+- I would also like to implement a better way to show off metadata. I've had some good experiences with Next.js when it comes to handling it; however, I wasn't wanting to add more npm packages for something relatively small and minor.
 
 # Screenshots :
 
